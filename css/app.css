@@ -1,0 +1,150 @@
+.container {
+  width: 800px;
+  margin: 20px auto;
+}
+
+.aside {
+  width: 173px;
+  float: left;
+  padding: 10px;
+  border: 1px solid #888888;
+  margin: 0 5px 0 0;
+  background: #F0F0F0;
+}
+
+.content{
+  width: 600px;
+  float: right;
+}
+
+.filter-category {
+
+}
+
+.filter-title {
+  display: block;
+  padding: 10px;
+  border: 1px solid #888888;
+  margin: 0 0 5px 0;
+  background: #a3be8c;
+}
+
+.game-sort {
+  padding: 10px;
+  text-align: right;
+  border: 1px solid #888888;
+  margin: 0 0 5px 0;
+  background: #F0F0F0;
+}
+
+.game-list { }
+
+.game-list__ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.game-list__li {
+  padding: 10px;
+  border: 1px solid #888888;
+  margin: 5px 0;
+}
+
+.game-image {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 30px;
+}
+
+.game-name {
+  display: inline-block;
+  min-width: 300px;
+  vertical-align: middle;
+  margin-right: 30px;
+}
+
+.game-type {
+  color:red;
+}
+
+.game-rating {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.game-rating.rate-1 .star:nth-of-type(-n+1){
+  opacity: 1;
+}
+
+.game-rating.rate-2 .star:nth-of-type(-n+2) {
+  opacity: 1;
+}
+
+.game-rating.rate-3 .star:nth-of-type(-n+3){
+  opacity: 1;
+}
+
+.game-rating.rate-4 .star:nth-of-type(-n+4){
+  opacity: 1;
+}
+
+.game-rating.rate-5 .star:nth-of-type(-n+5){
+  opacity: 1;
+}
+
+.star {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 2px;
+  overflow: hidden;
+  text-indent: -200px;
+  background: url('../img/star.png') center center no-repeat;
+  background-size: cover;
+  opacity: 0.2;
+}
+
+.star:hover {
+  opacity: 0.8;
+}
+
+
+.game-remove {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  overflow: hidden;
+  text-indent: -200px;
+  float: right;
+  vertical-align: middle;
+  background: url('../img/close-btn-icon.png') center center no-repeat;
+  background-size: cover;
+  margin-top: 10px;
+}
+
+.game-add {
+  padding: 10px;
+  border: 1px solid #888888;
+  margin: 5px 0;
+  background: #F0F0F0;
+}
+
+.game-add__label {
+
+}
+
+.game-add__input {
+  padding: 5px;
+  margin: 0 20px 0 10px;
+  border: 1px solid #888888;
+}
+
+.game-add__button {
+  float: right;
+  padding: 6px;
+  background: #a3be8c;
+  border: 1px solid #888888;
+}
