@@ -76,6 +76,7 @@ class GameStore extends EventEmitter {
       this.filteredGameList = this.gameList;
       this.calcByType();
       this.calcByRating();
+      //this.sortGame();
       this.emit("change");
     }
   }
@@ -119,6 +120,7 @@ class GameStore extends EventEmitter {
       this.filteredGameList = this.gameList.filter(function(item){
         return (item.type == byKind);
       });
+      this.sortGame();
       this.emit("change");
     }
   }
@@ -147,6 +149,7 @@ class GameStore extends EventEmitter {
       this.ratingList.push(item);
     }
 
+    this.ratingList.reverse();
     //console.log(this.ratingList);
   }
 
@@ -156,7 +159,7 @@ class GameStore extends EventEmitter {
       this.filteredGameList = this.gameList.filter(function(item){
         return (item.rating == byRating);
       });
-
+      this.sortGame();
       this.emit("change");
     }
   }
@@ -188,23 +191,21 @@ class GameStore extends EventEmitter {
   /*------*/
 
   sortAtoZ(listData) {
-    return listData.sort(function(a,b) {return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : ((b.title.toLowerCase() > a.title.toLowerCase()) ? -1 : 0)});
+    return listData.sort(function(a,b) {return (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)});
   }
 
   sortZtoA(listData) {
-    return listData.sort(function(a,b) {return (b.title.toLowerCase() > a.title.toLowerCase()) ? 1 : ((b.title.toLowerCase() > a.title.toLowerCase()) ? -1 : 0)});
+    return listData.sort(function(a,b) {return (b.rating > a.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)}); //by Rating
   }
 
   calcSortDirection(direction) {
     if(typeof direction != "undefined"){
-      //console.log("direction", direction);
       this.sortDirection = direction;
       this.sortGame();
     }
   }
 
   sortGame() {
-    //console.log("this.sortDirection", this.sortDirection);
     if(this.sortDirection == "a-z"){
       this.filteredGameList = this.sortAtoZ(this.filteredGameList);
     }else{
@@ -243,3 +244,12 @@ class GameStore extends EventEmitter {
 const gameStore = new GameStore;
 dispatcher.register(gameStore.handleActions.bind(gameStore));
 export default gameStore;
+
+
+/*
+* TODO:
+* Change filter algoritm, make more simple
+* Create new branch
+* Add react router
+* Write unit tests
+**/

@@ -13,9 +13,9 @@ class FilterRating extends Component {
   }
 
   getRatings() {
-    this.setState = {
+    this.setState({
       ratingList: GameStore.getAllRatings()
-    }
+    })
   }
 
   filterByRating(e) {
@@ -24,7 +24,7 @@ class FilterRating extends Component {
   }
 
   componentWillMount() {
-    GameStore.on("change", this.getRatings)
+    GameStore.on("change", this.getRatings);
   }
 
   componentWillUnmount() {

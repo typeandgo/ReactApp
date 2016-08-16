@@ -8,9 +8,9 @@ class App extends React.Component {
     return (
       <div className="container">
 
-      <Filter />
+        <Filter />
 
-      <List />
+        <List />
 
       </div>
     )

@@ -6,7 +6,6 @@ class Item extends React.Component {
 
   deleteGame() {
     let id = this.props.id;
-    //console.log(id);
     GameActions.deleteGame(id);
   }
 

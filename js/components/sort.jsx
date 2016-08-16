@@ -12,7 +12,7 @@ class Sort extends React.Component {
 
   handleClick() {
     this.setState({sort: !this.state.sort});
-    const direction = this.state.sort ? "a-z" : "z-a";
+    let direction = this.state.sort ? "a-z" : "z-a";
     GameActions.calcSortDirection(direction);
   }
 
