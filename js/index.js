@@ -28042,7 +28042,6 @@
 	/*
 	* TODO:
 	* Change filter algoritm, make more simple
-	* Change filter methods for route params
 	* Write unit tests
 	**/
 
