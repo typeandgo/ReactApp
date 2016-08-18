@@ -4,7 +4,7 @@ import { Router, Route, hashHistory, browserHistory } from 'react-router';
 import App from "./components/app.jsx";
 
 ReactDom.render((
-  <Router history={hashHistory}>
+  <Router history={browserHistory}>
     <Route path="/" component={App}>
       <Route path="/filter/:filterCategory/:filterValue" component={App} />
     </Route>

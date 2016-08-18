@@ -2,18 +2,24 @@
   "name": "react-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot"
+    "start": "webpack --watch",
+    "start-server": "node ./server.js",
+    "start-webpack-server": "webpack-dev-server --hot"
   },
   "author": "Engin Ozturk",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.14.0",
     "flux": "^2.1.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-router": "^2.6.1",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^3.0.1",
+    "write-file-webpack-plugin": "^3.1.8"
   }
 }
