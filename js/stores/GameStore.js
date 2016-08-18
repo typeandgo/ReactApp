@@ -95,6 +95,18 @@ class GameStore extends EventEmitter {
 
   /*------*/
 
+  filterGame(category, value){
+    if(category){
+      if(category.toLowerCase() == "type") {
+        this.filterByType(value);
+      }else if(category.toLowerCase() == "rating") {
+        this.filterByRating(value);
+      }
+    }
+  }
+
+  /*------*/
+
   calcByType() {
     /* TODO: Make more simple */
     this.typeList = [];
@@ -116,13 +128,11 @@ class GameStore extends EventEmitter {
 
   filterByType(byKind) {
     //console.log("kind", byKind);
-    if(typeof byKind != "undefined" && byKind.length > 0){
-      this.filteredGameList = this.gameList.filter(function(item){
-        return (item.type == byKind);
-      });
-      this.sortGame();
-      this.emit("change");
-    }
+    this.filteredGameList = this.gameList.filter(function(item){
+      return (item.type == byKind);
+    });
+    this.sortGame();
+    this.emit("change");
   }
 
   getAllTypes() {
@@ -154,14 +164,12 @@ class GameStore extends EventEmitter {
   }
 
   filterByRating(byRating) {
-    /* TODO: Fix zero for new created item */
-    if(typeof byRating != "undefined" && byRating.length > 0){
-      this.filteredGameList = this.gameList.filter(function(item){
-        return (item.rating == byRating);
-      });
-      this.sortGame();
-      this.emit("change");
-    }
+    //console.log("rating", byRating);
+    this.filteredGameList = this.gameList.filter(function(item){
+      return (item.rating == byRating);
+    });
+    this.sortGame();
+    this.emit("change");
   }
 
   getAllRatings() {
@@ -217,7 +225,6 @@ class GameStore extends EventEmitter {
   /*------*/
 
   handleActions(action) {
-    //console.log("GameStore received an action", action);
     switch(action.type) {
       case "CREATE_GAME": {
         this.createGame(action.title, action.kind);
@@ -228,11 +235,8 @@ class GameStore extends EventEmitter {
       case "VOTE_GAME": {
         this.voteGame(action.id, action.rating);
       }
-      case "FILTER_BY_TYPE": {
-        this.filterByType(action.byKind);
-      }
-      case "FILTER_BY_RATING": {
-        this.filterByRating(action.byRating);
+      case "FILTER_GAME": {
+        this.filterGame(action.category, action.value);
       }
       case "SORT_GAME": {
         this.calcSortDirection(action.direction);
@@ -249,7 +253,6 @@ export default gameStore;
 /*
 * TODO:
 * Change filter algoritm, make more simple
-* Create new branch
-* Add react router
+* Change filter methods for route params
 * Write unit tests
 **/

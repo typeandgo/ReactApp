@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import {Link} from "react-router";
 import * as GameActions from "../actions/GameActions";
 import GameStore from "../stores/GameStore";
 
@@ -19,12 +20,12 @@ class FilterType extends Component {
   }
 
   filterByType(e) {
-    let byKind = e.target.attributes.getNamedItem('data-type').value;
-    GameActions.filterByType(byKind);
+    let value = e.target.attributes.getNamedItem('data-type').value;
+    GameActions.filterGame("type", value);
   }
 
   componentWillMount() {
-    GameStore.on("change", this.getTypes)
+    GameStore.on("change", this.getTypes);
   }
 
   componentWillUnmount() {
@@ -38,7 +39,7 @@ class FilterType extends Component {
     const TypeList = typeList.map((item, i) => {
       return (
         <li key={i}>
-          <a href="javascript:;" onClick={this.filterByType.bind(this)} data-type={item.type}>{item.type} (<span>{item.count}</span>)</a>
+          <Link to={"/filter/Type/" + item.type} onClick={this.filterByType.bind(this)} data-type={item.type}>{item.type} (<span>{item.count}</span>)</Link>
         </li>
       )
     });

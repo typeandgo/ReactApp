@@ -40,7 +40,7 @@ class List extends React.Component {
 
       <div className="content">
 
-        <Sort />
+        <Sort filterCategory={this.props.filterCategory} filterValue={this.props.filterValue} />
 
         <div className="game-list">
           <ul className="game-list__ul">
@@ -51,7 +51,7 @@ class List extends React.Component {
         </div>
 
         <Add />
-      
+
       </div>
     )
   }

@@ -23,17 +23,11 @@ export function voteGame(id, rating) {
   })
 }
 
-export function filterByType(byKind) {
+export function filterGame(category, value) {
   dispatcher.dispatch({
-    type: "FILTER_BY_TYPE",
-    byKind
-  })
-}
-
-export function filterByRating(byRating) {
-  dispatcher.dispatch({
-    type: "FILTER_BY_RATING",
-    byRating
+    type: "FILTER_GAME",
+    category,
+    value
   })
 }
 

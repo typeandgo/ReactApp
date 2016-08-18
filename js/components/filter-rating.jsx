@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import {Link} from "react-router";
 import * as GameActions from "../actions/GameActions";
 import GameStore from "../stores/GameStore";
 
@@ -19,8 +20,8 @@ class FilterRating extends Component {
   }
 
   filterByRating(e) {
-    let byRating = e.target.attributes.getNamedItem('data-rating').value;
-    GameActions.filterByRating(byRating);
+    let value = e.target.attributes.getNamedItem('data-rating').value;
+    GameActions.filterGame("rating", value);
   }
 
   componentWillMount() {
@@ -38,7 +39,7 @@ class FilterRating extends Component {
     const RatingList = ratingList.map((item, i) => {
       return (
         <li key={i}>
-          <a href="javascript:;" onClick={this.filterByRating.bind(this)} data-rating={item.rating}>{item.rating} Stars (<span>{item.count}</span>)</a>
+          <Link to={"/filter/Rating/" + item.rating} onClick={this.filterByRating.bind(this)} data-rating={item.rating}>{item.rating} Stars (<span>{item.count}</span>)</Link>
         </li>
       )
     });

@@ -1,9 +1,18 @@
 import React, {Component, PropTypes} from "react";
+import {Link} from "react-router";
 import FilterType from "../components/filter-type.jsx";
 import FilterRating from "../components/filter-rating.jsx";
 import GameStore from "../stores/GameStore";
 
 class Filter extends Component {
+
+  constructor(props) {
+    super();
+  }
+
+  componentWillMount() {
+    GameStore.filterGame(this.props.filterCategory, this.props.filterValue);
+  }
 
   filterAll() {
     GameStore.filterAll();
@@ -13,12 +22,12 @@ class Filter extends Component {
     return(
       <div className="aside">
 
-        <FilterType />
+        <FilterType filterValue={this.props.filterValue} />
 
-        <FilterRating />
+        <FilterRating filterValue={this.props.filterValue} />
 
         <div className="all filter-category">
-          <a href="javascript:;" onClick={this.filterAll.bind(this)} className="filter-title">All</a>
+          <Link to="/" onClick={this.filterAll.bind(this)} className="filter-title">All</Link>
         </div>
       </div>
     )
