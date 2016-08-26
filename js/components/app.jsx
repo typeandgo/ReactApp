@@ -10,14 +10,12 @@ class App extends React.Component {
     const {filterCategory, filterValue} = this.props.params;
 
     return (
-      <div className="container">
-            <div className="container">
+        <div className="container">
 
-              <Filter filterCategory={filterCategory} filterValue={filterValue} />
+          <Filter filterCategory={filterCategory} filterValue={filterValue} />
 
-              <List filterCategory={filterCategory} filterValue={filterValue} />
-            </div>
-      </div>
+          <List filterCategory={filterCategory} filterValue={filterValue} />
+        </div>    
     )
   }
 }

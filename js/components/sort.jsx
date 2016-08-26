@@ -12,7 +12,7 @@ class Sort extends React.Component {
 
   handleClick() {
     this.setState({sort: !this.state.sort});
-    let direction = this.state.sort ? "a-z" : "z-a";
+    let direction = this.state.sort ? "increase" : "decrease";
     GameActions.calcSortDirection(direction);
   }
 
@@ -28,7 +28,7 @@ class Sort extends React.Component {
       <div className="game-sort">
 
         {FilterInfo}
-        
+
         <span className="game-sort__right-text">
           Sort by: <a href="javascript:;" onClick={this.handleClick.bind(this)}>{text}</a>
         </span>

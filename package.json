@@ -4,8 +4,7 @@
   "description": "",
   "scripts": {
     "start": "webpack --watch",
-    "start-server": "node ./server.js",
-    "start-webpack-server": "webpack-dev-server --hot"
+    "start-server": "node ./server.js"
   },
   "author": "Engin Ozturk",
   "license": "ISC",
@@ -15,7 +14,6 @@
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-router": "^2.6.1",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^1.13.1"  
   }
 }

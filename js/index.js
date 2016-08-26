@@ -27122,12 +27122,8 @@
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "container" },
-	        _react2.default.createElement(
-	          "div",
-	          { className: "container" },
-	          _react2.default.createElement(_filter2.default, { filterCategory: filterCategory, filterValue: filterValue }),
-	          _react2.default.createElement(_list2.default, { filterCategory: filterCategory, filterValue: filterValue })
-	        )
+	        _react2.default.createElement(_filter2.default, { filterCategory: filterCategory, filterValue: filterValue }),
+	        _react2.default.createElement(_list2.default, { filterCategory: filterCategory, filterValue: filterValue })
 	      );
 	    }
 	  }]);
@@ -27352,6 +27348,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.GAME_ACTIONS = undefined;
 	exports.createGame = createGame;
 	exports.deleteGame = deleteGame;
 	exports.voteGame = voteGame;
@@ -27364,9 +27361,17 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var GAME_ACTIONS = exports.GAME_ACTIONS = {
+	  CREATE_GAME: "CREATE_GAME",
+	  DELETE_GAME: "DELETE_GAME",
+	  VOTE_GAME: "VOTE_GAME",
+	  FILTER_GAME: "FILTER_GAME",
+	  SORT_GAME: "SORT_GAME"
+	};
+
 	function createGame(title, kind) {
 	  _dispatcher2.default.dispatch({
-	    type: "CREATE_GAME",
+	    type: GAME_ACTIONS.CREATE_GAME,
 	    title: title,
 	    kind: kind
 	  });
@@ -27374,14 +27379,14 @@
 
 	function deleteGame(id) {
 	  _dispatcher2.default.dispatch({
-	    type: "DELETE_GAME",
+	    type: GAME_ACTIONS.DELETE_GAME,
 	    id: id
 	  });
 	}
 
 	function voteGame(id, rating) {
 	  _dispatcher2.default.dispatch({
-	    type: "VOTE_GAME",
+	    type: GAME_ACTIONS.VOTE_GAME,
 	    id: id,
 	    rating: rating
 	  });
@@ -27389,7 +27394,7 @@
 
 	function filterGame(category, value) {
 	  _dispatcher2.default.dispatch({
-	    type: "FILTER_GAME",
+	    type: GAME_ACTIONS.FILTER_GAME,
 	    category: category,
 	    value: value
 	  });
@@ -27397,7 +27402,7 @@
 
 	function calcSortDirection(direction) {
 	  _dispatcher2.default.dispatch({
-	    type: "SORT_GAME",
+	    type: GAME_ACTIONS.SORT_GAME,
 	    direction: direction
 	  });
 	}
@@ -27742,6 +27747,8 @@
 
 	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
+	var _GameActions = __webpack_require__(241);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27802,11 +27809,11 @@
 
 	    _this.ratingList = [];
 
-	    _this.sortDirection = "a-z";
+	    _this.sortDirection = "increase";
 
-	    _this.sortGame();
 	    _this.calcByType();
 	    _this.calcByRating();
+	    _this.sortGame();
 	    return _this;
 	  }
 
@@ -27825,7 +27832,7 @@
 	        this.filteredGameList = this.gameList;
 	        this.calcByType();
 	        this.calcByRating();
-	        //this.sortGame();
+	        this.sortGame();
 	        this.emit("change");
 	      }
 	    }
@@ -27886,12 +27893,10 @@
 	  }, {
 	    key: "filterByType",
 	    value: function filterByType(byKind) {
-	      //console.log("kind", byKind);
 	      this.filteredGameList = this.gameList.filter(function (item) {
 	        return item.type == byKind;
 	      });
 	      this.sortGame();
-	      this.emit("change");
 	    }
 	  }, {
 	    key: "getAllTypes",
@@ -27928,12 +27933,10 @@
 	  }, {
 	    key: "filterByRating",
 	    value: function filterByRating(byRating) {
-	      //console.log("rating", byRating);
 	      this.filteredGameList = this.gameList.filter(function (item) {
 	        return item.rating == byRating;
 	      });
 	      this.sortGame();
-	      this.emit("change");
 	    }
 	  }, {
 	    key: "getAllRatings",
@@ -27946,12 +27949,11 @@
 	  }, {
 	    key: "voteGame",
 	    value: function voteGame(id, rating) {
-	      if (typeof id != "undefined" && typeof rating != "undefined") {
+	      if (typeof id != 'undefined' && typeof rating != 'undefined') {
 	        var index = this.gameList.findIndex(function (item) {
 	          return item.id == id;
 	        });
 	        this.gameList[index].rating = rating;
-	        //console.log(id, rating);
 	        this.calcByRating();
 	        this.emit("change");
 	      }
@@ -27964,24 +27966,23 @@
 	    value: function filterAll() {
 	      this.filteredGameList = this.gameList;
 	      this.sortGame();
-	      this.emit("change");
 	    }
 
 	    /*------*/
 
 	  }, {
-	    key: "sortAtoZ",
-	    value: function sortAtoZ(listData) {
+	    key: "sortIncrease",
+	    value: function sortIncrease(listData) {
 	      return listData.sort(function (a, b) {
 	        return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
 	      });
 	    }
 	  }, {
-	    key: "sortZtoA",
-	    value: function sortZtoA(listData) {
+	    key: "sortDecrease",
+	    value: function sortDecrease(listData) {
 	      return listData.sort(function (a, b) {
 	        return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	      }); //by Rating
+	      });
 	    }
 	  }, {
 	    key: "calcSortDirection",
@@ -27994,10 +27995,10 @@
 	  }, {
 	    key: "sortGame",
 	    value: function sortGame() {
-	      if (this.sortDirection == "a-z") {
-	        this.filteredGameList = this.sortAtoZ(this.filteredGameList);
+	      if (this.sortDirection == "increase") {
+	        this.filteredGameList = this.sortIncrease(this.filteredGameList);
 	      } else {
-	        this.filteredGameList = this.sortZtoA(this.filteredGameList);
+	        this.filteredGameList = this.sortDecrease(this.filteredGameList);
 	      }
 	      this.emit("change");
 	    }
@@ -28008,23 +28009,23 @@
 	    key: "handleActions",
 	    value: function handleActions(action) {
 	      switch (action.type) {
-	        case "CREATE_GAME":
+	        case _GameActions.GAME_ACTIONS.CREATE_GAME:
 	          {
 	            this.createGame(action.title, action.kind);
 	          }
-	        case "DELETE_GAME":
+	        case _GameActions.GAME_ACTIONS.DELETE_GAME:
 	          {
 	            this.deleteGame(action.id);
 	          }
-	        case "VOTE_GAME":
+	        case _GameActions.GAME_ACTIONS.VOTE_GAME:
 	          {
 	            this.voteGame(action.id, action.rating);
 	          }
-	        case "FILTER_GAME":
+	        case _GameActions.GAME_ACTIONS.FILTER_GAME:
 	          {
 	            this.filterGame(action.category, action.value);
 	          }
-	        case "SORT_GAME":
+	        case _GameActions.GAME_ACTIONS.SORT_GAME:
 	          {
 	            this.calcSortDirection(action.direction);
 	          }
@@ -28042,6 +28043,7 @@
 	/*
 	* TODO:
 	* Change filter algoritm, make more simple
+	* Re-organize file system
 	* Write unit tests
 	**/
 
@@ -28799,7 +28801,7 @@
 	    key: "handleClick",
 	    value: function handleClick() {
 	      this.setState({ sort: !this.state.sort });
-	      var direction = this.state.sort ? "a-z" : "z-a";
+	      var direction = this.state.sort ? "increase" : "decrease";
 	      GameActions.calcSortDirection(direction);
 	    }
 	  }, {

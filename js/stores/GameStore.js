@@ -1,5 +1,6 @@
 import {EventEmitter} from "events";
 import dispatcher from "../dispatcher";
+import {GAME_ACTIONS} from "../actions/GameActions";
 
 class GameStore extends EventEmitter {
   constructor() {
@@ -56,11 +57,12 @@ class GameStore extends EventEmitter {
 
     this.ratingList = [];
 
-    this.sortDirection = "a-z";
+    this.sortDirection = "increase";
 
-    this.sortGame();
+
     this.calcByType();
     this.calcByRating();
+    this.sortGame();
   }
 
   createGame(title, kind) {
@@ -76,7 +78,7 @@ class GameStore extends EventEmitter {
       this.filteredGameList = this.gameList;
       this.calcByType();
       this.calcByRating();
-      //this.sortGame();
+      this.sortGame();
       this.emit("change");
     }
   }
@@ -127,12 +129,10 @@ class GameStore extends EventEmitter {
   }
 
   filterByType(byKind) {
-    //console.log("kind", byKind);
     this.filteredGameList = this.gameList.filter(function(item){
       return (item.type == byKind);
     });
     this.sortGame();
-    this.emit("change");
   }
 
   getAllTypes() {
@@ -164,12 +164,10 @@ class GameStore extends EventEmitter {
   }
 
   filterByRating(byRating) {
-    //console.log("rating", byRating);
     this.filteredGameList = this.gameList.filter(function(item){
       return (item.rating == byRating);
     });
     this.sortGame();
-    this.emit("change");
   }
 
   getAllRatings() {
@@ -179,10 +177,9 @@ class GameStore extends EventEmitter {
   /*------*/
 
   voteGame(id, rating) {
-    if(typeof id != "undefined" && typeof rating != "undefined"){
+    if(typeof id != 'undefined' && typeof rating != 'undefined'){
       let index = this.gameList.findIndex(item => item.id == id);
       this.gameList[index].rating = rating;
-      //console.log(id, rating);
       this.calcByRating();
       this.emit("change");
     }
@@ -193,17 +190,20 @@ class GameStore extends EventEmitter {
   filterAll() {
     this.filteredGameList = this.gameList;
     this.sortGame();
-    this.emit("change");
   }
 
   /*------*/
 
-  sortAtoZ(listData) {
-    return listData.sort(function(a,b) {return (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)});
+  sortIncrease(listData) {
+    return listData.sort(function(a,b) {
+      return (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
+    });
   }
 
-  sortZtoA(listData) {
-    return listData.sort(function(a,b) {return (b.rating > a.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)}); //by Rating
+  sortDecrease(listData) {
+    return listData.sort(function(a,b) {
+      return (b.rating > a.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
+    });
   }
 
   calcSortDirection(direction) {
@@ -214,10 +214,10 @@ class GameStore extends EventEmitter {
   }
 
   sortGame() {
-    if(this.sortDirection == "a-z"){
-      this.filteredGameList = this.sortAtoZ(this.filteredGameList);
-    }else{
-      this.filteredGameList = this.sortZtoA(this.filteredGameList);
+    if(this.sortDirection == "increase"){
+      this.filteredGameList = this.sortIncrease(this.filteredGameList);
+    }else {
+      this.filteredGameList = this.sortDecrease(this.filteredGameList);
     }
     this.emit("change");
   }
@@ -226,19 +226,19 @@ class GameStore extends EventEmitter {
 
   handleActions(action) {
     switch(action.type) {
-      case "CREATE_GAME": {
+      case GAME_ACTIONS.CREATE_GAME: {
         this.createGame(action.title, action.kind);
       }
-      case "DELETE_GAME": {
+      case GAME_ACTIONS.DELETE_GAME: {
         this.deleteGame(action.id);
       }
-      case "VOTE_GAME": {
+      case GAME_ACTIONS.VOTE_GAME: {
         this.voteGame(action.id, action.rating);
       }
-      case "FILTER_GAME": {
+      case GAME_ACTIONS.FILTER_GAME: {
         this.filterGame(action.category, action.value);
       }
-      case "SORT_GAME": {
+      case GAME_ACTIONS.SORT_GAME: {
         this.calcSortDirection(action.direction);
       }
     }
@@ -253,5 +253,6 @@ export default gameStore;
 /*
 * TODO:
 * Change filter algoritm, make more simple
+* Re-organize file system
 * Write unit tests
 **/

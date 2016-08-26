@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { Router, Route, hashHistory, browserHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 import App from "./components/app.jsx";
 
 ReactDom.render((
