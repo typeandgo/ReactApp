@@ -27407,7 +27407,18 @@
 	  }, {
 	    key: "getAllGames",
 	    value: function getAllGames() {
-	      return this.filteredGameList;
+	      switch (this.sortDirection) {
+	        case true:
+	          {
+	            return this.filteredGameList = this.sortIncrease();
+	            break;
+	          }
+	        case false:
+	          {
+	            return this.filteredGameList = this.sortDecrease();
+	            break;
+	          }
+	      }
 	    }
 	  }, {
 	    key: "filterGame",
@@ -27491,6 +27502,20 @@
 	      this.emit("change");
 	    }
 	  }, {
+	    key: "sortIncrease",
+	    value: function sortIncrease() {
+	      return this.filteredGameList.sort(function (a, b) {
+	        return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	      });
+	    }
+	  }, {
+	    key: "sortDecrease",
+	    value: function sortDecrease() {
+	      return this.filteredGameList.sort(function (a, b) {
+	        return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	      });
+	    }
+	  }, {
 	    key: "sortGame",
 	    value: function sortGame(direction) {
 	      this.sortDirection = direction;
@@ -27498,17 +27523,13 @@
 	      switch (direction) {
 	        case true:
 	          {
-	            this.filteredGameList.sort(function (a, b) {
-	              return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	            });
+	            this.filteredGameList = this.sortIncrease();
 	            this.emit('change');
 	            break;
 	          }
 	        case false:
 	          {
-	            this.filteredGameList.sort(function (a, b) {
-	              return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	            });
+	            this.filteredGameList = this.sortDecrease();
 	            this.emit('change');
 	            break;
 	          }
