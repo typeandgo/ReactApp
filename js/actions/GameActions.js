@@ -39,7 +39,7 @@ export function filterGame(category, value) {
   })
 }
 
-export function calcSortDirection(direction) {
+export function sortGame(direction) {
   dispatcher.dispatch({
     type: GAME_ACTIONS.SORT_GAME,
     direction

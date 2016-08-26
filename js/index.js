@@ -27090,7 +27090,7 @@
 
 	var _filter2 = _interopRequireDefault(_filter);
 
-	var _list = __webpack_require__(249);
+	var _list = __webpack_require__(247);
 
 	var _list2 = _interopRequireDefault(_list);
 
@@ -27151,17 +27151,15 @@
 
 	var _reactRouter = __webpack_require__(175);
 
-	var _filterType = __webpack_require__(240);
-
-	var _filterType2 = _interopRequireDefault(_filterType);
-
-	var _filterRating = __webpack_require__(248);
-
-	var _filterRating2 = _interopRequireDefault(_filterRating);
-
-	var _GameStore = __webpack_require__(246);
+	var _GameStore = __webpack_require__(240);
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
+
+	var _GameActions = __webpack_require__(246);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27174,36 +27172,124 @@
 	var Filter = function (_Component) {
 	  _inherits(Filter, _Component);
 
-	  function Filter(props) {
+	  function Filter() {
 	    _classCallCheck(this, Filter);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Filter).call(this));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Filter).call(this));
+
+	    _this.filterBy = function (e) {
+	      var category = e.target.attributes.getNamedItem('data-category').value;
+	      var value = e.target.attributes.getNamedItem('data-value').value;
+	      GameActions.filterGame(category, value);
+	    };
+
+	    _this.filterList = _this.filterList.bind(_this);
+	    _this.state = {
+	      typeList: _GameStore2.default.calcByType(),
+	      ratingList: _GameStore2.default.calcByRating()
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Filter, [{
 	    key: "componentWillMount",
 	    value: function componentWillMount() {
 	      _GameStore2.default.filterGame(this.props.filterCategory, this.props.filterValue);
+	      _GameStore2.default.on("change", this.filterList);
 	    }
 	  }, {
-	    key: "filterAll",
-	    value: function filterAll() {
-	      _GameStore2.default.filterAll();
+	    key: "componentWillUnmount",
+	    value: function componentWillUnmount() {
+	      _GameStore2.default.removeListener("change", this.filterList);
+	    }
+	  }, {
+	    key: "filterList",
+	    value: function filterList() {
+	      this.setState({
+	        typeList: _GameStore2.default.calcByType(),
+	        ratingList: _GameStore2.default.calcByRating()
+	      });
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
+	      var _this2 = this;
+
+	      var TypeList = this.state.typeList.map(function (item, i) {
+	        return _react2.default.createElement(
+	          "li",
+	          { key: i },
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: "/filter/Type/" + item.type, onClick: _this2.filterBy, "data-category": "type", "data-value": item.type },
+	            item.type,
+	            " (",
+	            _react2.default.createElement(
+	              "span",
+	              null,
+	              item.count
+	            ),
+	            ")"
+	          )
+	        );
+	      });
+
+	      var RatingList = this.state.ratingList.map(function (item, i) {
+	        return _react2.default.createElement(
+	          "li",
+	          { key: i },
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: "/filter/Rating/" + item.rating, onClick: _this2.filterBy, "data-category": "rating", "data-value": item.rating },
+	            item.rating,
+	            " Stars (",
+	            _react2.default.createElement(
+	              "span",
+	              null,
+	              item.count
+	            ),
+	            ")"
+	          )
+	        );
+	      });
+
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "aside" },
-	        _react2.default.createElement(_filterType2.default, { filterValue: this.props.filterValue }),
-	        _react2.default.createElement(_filterRating2.default, { filterValue: this.props.filterValue }),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "by-type filter-category" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "filter-title" },
+	            "By Type"
+	          ),
+	          _react2.default.createElement(
+	            "ul",
+	            null,
+	            TypeList
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "by-type filter-category" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "filter-title" },
+	            "By Rating"
+	          ),
+	          _react2.default.createElement(
+	            "ul",
+	            null,
+	            RatingList
+	          )
+	        ),
 	        _react2.default.createElement(
 	          "div",
 	          { className: "all filter-category" },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: "/", onClick: this.filterAll.bind(this), className: "filter-title" },
+	            { to: "/", onClick: this.filterBy, "data-category": "all", "data-value": "all", className: "filter-title" },
 	            "All"
 	          )
 	        )
@@ -27228,21 +27314,13 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
+	var _events = __webpack_require__(241);
 
-	var _react2 = _interopRequireDefault(_react);
+	var _dispatcher = __webpack_require__(242);
 
-	var _reactRouter = __webpack_require__(175);
+	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
-	var _GameActions = __webpack_require__(241);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
-	var _GameStore = __webpack_require__(246);
-
-	var _GameStore2 = _interopRequireDefault(_GameStore);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	var _GameActions = __webpack_require__(246);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27252,160 +27330,542 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var FilterType = function (_Component) {
-	  _inherits(FilterType, _Component);
+	var GameStore = function (_EventEmitter) {
+	  _inherits(GameStore, _EventEmitter);
 
-	  function FilterType() {
-	    _classCallCheck(this, FilterType);
+	  function GameStore() {
+	    _classCallCheck(this, GameStore);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FilterType).call(this));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GameStore).call(this));
 
-	    _this.getTypes = _this.getTypes.bind(_this);
-	    _this.state = {
-	      typeList: _GameStore2.default.getAllTypes()
-	    };
+	    _this.gameList = [{
+	      id: 1,
+	      title: "B Video Game Lorem Ipsum 1",
+	      img: "/img/mario.jpg",
+	      type: "Shooter",
+	      rating: 2
+	    }, {
+	      id: 2,
+	      title: "A Video Game Lorem Ipsum 2",
+	      img: "/img/worms.jpg",
+	      type: "Strategy",
+	      rating: 3
+	    }, {
+	      id: 3,
+	      title: "C Video Game Lorem Ipsum 3",
+	      img: "/img/bomberman.jpg",
+	      type: "Racing",
+	      rating: 4
+	    }, {
+	      id: 4,
+	      title: "D Video Game Lorem Ipsum 4",
+	      img: "/img/pikachu.png",
+	      type: "Action",
+	      rating: 1
+	    }, {
+	      id: 5,
+	      title: "E Video Game Lorem Ipsum 5",
+	      img: "/img/sonic.png",
+	      type: "Racing",
+	      rating: 5
+	    }, {
+	      id: 6,
+	      title: "F Video Game Lorem Ipsum 6",
+	      img: "/img/tombrider.jpg",
+	      type: "Racing",
+	      rating: 2
+	    }];
+
+	    _this.filteredGameList = _this.gameList;
+
+	    _this.sortDirection = true; // true: increase, false: decrease
 	    return _this;
 	  }
 
-	  _createClass(FilterType, [{
-	    key: "getTypes",
-	    value: function getTypes() {
-	      this.setState({
-	        typeList: _GameStore2.default.getAllTypes()
+	  _createClass(GameStore, [{
+	    key: "createGame",
+	    value: function createGame(title, kind) {
+	      this.gameList.push({
+	        id: Date.now(),
+	        title: title,
+	        img: "/img/mario.jpg",
+	        type: kind,
+	        rating: 1
 	      });
+	      this.filteredGameList = this.gameList;
+	      this.emit("change");
 	    }
 	  }, {
-	    key: "filterByType",
-	    value: function filterByType(e) {
-	      var value = e.target.attributes.getNamedItem('data-type').value;
-	      GameActions.filterGame("type", value);
+	    key: "deleteGame",
+	    value: function deleteGame(id) {
+	      this.gameList = this.gameList.filter(function (game) {
+	        return game.id != id;
+	      });
+	      this.filteredGameList = this.gameList;
+	      this.emit("change");
 	    }
 	  }, {
-	    key: "componentWillMount",
-	    value: function componentWillMount() {
-	      _GameStore2.default.on("change", this.getTypes);
+	    key: "getAllGames",
+	    value: function getAllGames() {
+	      return this.filteredGameList;
 	    }
 	  }, {
-	    key: "componentWillUnmount",
-	    value: function componentWillUnmount() {
-	      _GameStore2.default.removeListener("change", this.getTypes);
+	    key: "filterGame",
+	    value: function filterGame(category, value) {
+	      if (category) {
+	        switch (category.toLowerCase()) {
+	          case 'type':
+	            {
+	              this.filteredGameList = this.gameList.filter(function (item) {
+	                return item.type == value;
+	              });
+	              this.emit("change");
+	              break;
+	            }
+	          case 'rating':
+	            {
+	              this.filteredGameList = this.gameList.filter(function (item) {
+	                return item.rating == value;
+	              });
+	              this.emit("change");
+	              break;
+	            }
+	          case 'all':
+	            {
+	              this.filteredGameList = this.gameList;
+	              this.emit("change");
+	              break;
+	            }
+	        }
+	      }
 	    }
 	  }, {
-	    key: "render",
-	    value: function render() {
-	      var _this2 = this;
-
-	      var typeList = this.state.typeList;
-
-
-	      var TypeList = typeList.map(function (item, i) {
-	        return _react2.default.createElement(
-	          "li",
-	          { key: i },
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: "/filter/Type/" + item.type, onClick: _this2.filterByType.bind(_this2), "data-type": item.type },
-	            item.type,
-	            " (",
-	            _react2.default.createElement(
-	              "span",
-	              null,
-	              item.count
-	            ),
-	            ")"
-	          )
-	        );
+	    key: "calcByType",
+	    value: function calcByType() {
+	      this.typeList = [];
+	      var typeObj = {};
+	      this.gameList.map(function (item) {
+	        return item.type;
+	      }).map(function (a) {
+	        if (a in typeObj) typeObj[a]++;else typeObj[a] = 1;
 	      });
 
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "by-type filter-category" },
-	        _react2.default.createElement(
-	          "div",
-	          { className: "filter-title" },
-	          "By Type"
-	        ),
-	        _react2.default.createElement(
-	          "ul",
-	          null,
-	          TypeList
-	        )
-	      );
+	      for (var key in typeObj) {
+	        var item = {
+	          type: key,
+	          count: typeObj[key]
+	        };
+	        this.typeList.push(item);
+	      }
+
+	      return this.typeList;
+	    }
+	  }, {
+	    key: "calcByRating",
+	    value: function calcByRating() {
+	      this.ratingList = [];
+	      var ratingObj = {};
+	      this.gameList.map(function (item) {
+	        return item.rating;
+	      }).map(function (a) {
+	        if (a in ratingObj) ratingObj[a]++;else ratingObj[a] = 1;
+	      });
+
+	      for (var key in ratingObj) {
+	        var item = {
+	          rating: parseInt(key),
+	          count: ratingObj[key]
+	        };
+	        this.ratingList.push(item);
+	      }
+
+	      return this.ratingList.reverse();
+	    }
+	  }, {
+	    key: "voteGame",
+	    value: function voteGame(id, rating) {
+	      var index = this.gameList.findIndex(function (item) {
+	        return item.id == id;
+	      });
+	      this.gameList[index].rating = rating;
+	      this.emit("change");
+	    }
+	  }, {
+	    key: "sortGame",
+	    value: function sortGame(direction) {
+	      this.sortDirection = direction;
+
+	      switch (direction) {
+	        case true:
+	          {
+	            this.filteredGameList.sort(function (a, b) {
+	              return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	            });
+	            this.emit('change');
+	            break;
+	          }
+	        case false:
+	          {
+	            this.filteredGameList.sort(function (a, b) {
+	              return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	            });
+	            this.emit('change');
+	            break;
+	          }
+	      }
+	    }
+	  }, {
+	    key: "getSortDirection",
+	    value: function getSortDirection() {
+	      return this.sortDirection;
+	    }
+	  }, {
+	    key: "handleActions",
+	    value: function handleActions(action) {
+	      switch (action.type) {
+	        case _GameActions.GAME_ACTIONS.CREATE_GAME:
+	          {
+	            this.createGame(action.title, action.kind);
+	            break;
+	          }
+	        case _GameActions.GAME_ACTIONS.DELETE_GAME:
+	          {
+	            this.deleteGame(action.id);
+	            break;
+	          }
+	        case _GameActions.GAME_ACTIONS.VOTE_GAME:
+	          {
+	            this.voteGame(action.id, action.rating);
+	            break;
+	          }
+	        case _GameActions.GAME_ACTIONS.FILTER_GAME:
+	          {
+	            this.filterGame(action.category, action.value);
+	            break;
+	          }
+	        case _GameActions.GAME_ACTIONS.SORT_GAME:
+	          {
+	            this.sortGame(action.direction);
+	            break;
+	          }
+	      }
 	    }
 	  }]);
 
-	  return FilterType;
-	}(_react.Component);
+	  return GameStore;
+	}(_events.EventEmitter);
 
-	exports.default = FilterType;
+	var gameStore = new GameStore();
+	_dispatcher2.default.register(gameStore.handleActions.bind(gameStore));
+	exports.default = gameStore;
 
 /***/ },
 /* 241 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	"use strict";
+	// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.GAME_ACTIONS = undefined;
-	exports.createGame = createGame;
-	exports.deleteGame = deleteGame;
-	exports.voteGame = voteGame;
-	exports.filterGame = filterGame;
-	exports.calcSortDirection = calcSortDirection;
+	function EventEmitter() {
+	  this._events = this._events || {};
+	  this._maxListeners = this._maxListeners || undefined;
+	}
+	module.exports = EventEmitter;
 
-	var _dispatcher = __webpack_require__(242);
+	// Backwards-compat with node 0.10.x
+	EventEmitter.EventEmitter = EventEmitter;
 
-	var _dispatcher2 = _interopRequireDefault(_dispatcher);
+	EventEmitter.prototype._events = undefined;
+	EventEmitter.prototype._maxListeners = undefined;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	// By default EventEmitters will print a warning if more than 10 listeners are
+	// added to it. This is a useful default which helps finding memory leaks.
+	EventEmitter.defaultMaxListeners = 10;
 
-	var GAME_ACTIONS = exports.GAME_ACTIONS = {
-	  CREATE_GAME: "CREATE_GAME",
-	  DELETE_GAME: "DELETE_GAME",
-	  VOTE_GAME: "VOTE_GAME",
-	  FILTER_GAME: "FILTER_GAME",
-	  SORT_GAME: "SORT_GAME"
+	// Obviously not all Emitters should be limited to 10. This function allows
+	// that to be increased. Set to zero for unlimited.
+	EventEmitter.prototype.setMaxListeners = function(n) {
+	  if (!isNumber(n) || n < 0 || isNaN(n))
+	    throw TypeError('n must be a positive number');
+	  this._maxListeners = n;
+	  return this;
 	};
 
-	function createGame(title, kind) {
-	  _dispatcher2.default.dispatch({
-	    type: GAME_ACTIONS.CREATE_GAME,
-	    title: title,
-	    kind: kind
-	  });
+	EventEmitter.prototype.emit = function(type) {
+	  var er, handler, len, args, i, listeners;
+
+	  if (!this._events)
+	    this._events = {};
+
+	  // If there is no 'error' event listener then throw.
+	  if (type === 'error') {
+	    if (!this._events.error ||
+	        (isObject(this._events.error) && !this._events.error.length)) {
+	      er = arguments[1];
+	      if (er instanceof Error) {
+	        throw er; // Unhandled 'error' event
+	      } else {
+	        // At least give some kind of context to the user
+	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+	        err.context = er;
+	        throw err;
+	      }
+	    }
+	  }
+
+	  handler = this._events[type];
+
+	  if (isUndefined(handler))
+	    return false;
+
+	  if (isFunction(handler)) {
+	    switch (arguments.length) {
+	      // fast cases
+	      case 1:
+	        handler.call(this);
+	        break;
+	      case 2:
+	        handler.call(this, arguments[1]);
+	        break;
+	      case 3:
+	        handler.call(this, arguments[1], arguments[2]);
+	        break;
+	      // slower
+	      default:
+	        args = Array.prototype.slice.call(arguments, 1);
+	        handler.apply(this, args);
+	    }
+	  } else if (isObject(handler)) {
+	    args = Array.prototype.slice.call(arguments, 1);
+	    listeners = handler.slice();
+	    len = listeners.length;
+	    for (i = 0; i < len; i++)
+	      listeners[i].apply(this, args);
+	  }
+
+	  return true;
+	};
+
+	EventEmitter.prototype.addListener = function(type, listener) {
+	  var m;
+
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  if (!this._events)
+	    this._events = {};
+
+	  // To avoid recursion in the case that type === "newListener"! Before
+	  // adding it to the listeners, first emit "newListener".
+	  if (this._events.newListener)
+	    this.emit('newListener', type,
+	              isFunction(listener.listener) ?
+	              listener.listener : listener);
+
+	  if (!this._events[type])
+	    // Optimize the case of one listener. Don't need the extra array object.
+	    this._events[type] = listener;
+	  else if (isObject(this._events[type]))
+	    // If we've already got an array, just append.
+	    this._events[type].push(listener);
+	  else
+	    // Adding the second element, need to change to array.
+	    this._events[type] = [this._events[type], listener];
+
+	  // Check for listener leak
+	  if (isObject(this._events[type]) && !this._events[type].warned) {
+	    if (!isUndefined(this._maxListeners)) {
+	      m = this._maxListeners;
+	    } else {
+	      m = EventEmitter.defaultMaxListeners;
+	    }
+
+	    if (m && m > 0 && this._events[type].length > m) {
+	      this._events[type].warned = true;
+	      console.error('(node) warning: possible EventEmitter memory ' +
+	                    'leak detected. %d listeners added. ' +
+	                    'Use emitter.setMaxListeners() to increase limit.',
+	                    this._events[type].length);
+	      if (typeof console.trace === 'function') {
+	        // not supported in IE 10
+	        console.trace();
+	      }
+	    }
+	  }
+
+	  return this;
+	};
+
+	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+	EventEmitter.prototype.once = function(type, listener) {
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  var fired = false;
+
+	  function g() {
+	    this.removeListener(type, g);
+
+	    if (!fired) {
+	      fired = true;
+	      listener.apply(this, arguments);
+	    }
+	  }
+
+	  g.listener = listener;
+	  this.on(type, g);
+
+	  return this;
+	};
+
+	// emits a 'removeListener' event iff the listener was removed
+	EventEmitter.prototype.removeListener = function(type, listener) {
+	  var list, position, length, i;
+
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  if (!this._events || !this._events[type])
+	    return this;
+
+	  list = this._events[type];
+	  length = list.length;
+	  position = -1;
+
+	  if (list === listener ||
+	      (isFunction(list.listener) && list.listener === listener)) {
+	    delete this._events[type];
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+
+	  } else if (isObject(list)) {
+	    for (i = length; i-- > 0;) {
+	      if (list[i] === listener ||
+	          (list[i].listener && list[i].listener === listener)) {
+	        position = i;
+	        break;
+	      }
+	    }
+
+	    if (position < 0)
+	      return this;
+
+	    if (list.length === 1) {
+	      list.length = 0;
+	      delete this._events[type];
+	    } else {
+	      list.splice(position, 1);
+	    }
+
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	  }
+
+	  return this;
+	};
+
+	EventEmitter.prototype.removeAllListeners = function(type) {
+	  var key, listeners;
+
+	  if (!this._events)
+	    return this;
+
+	  // not listening for removeListener, no need to emit
+	  if (!this._events.removeListener) {
+	    if (arguments.length === 0)
+	      this._events = {};
+	    else if (this._events[type])
+	      delete this._events[type];
+	    return this;
+	  }
+
+	  // emit removeListener for all listeners on all events
+	  if (arguments.length === 0) {
+	    for (key in this._events) {
+	      if (key === 'removeListener') continue;
+	      this.removeAllListeners(key);
+	    }
+	    this.removeAllListeners('removeListener');
+	    this._events = {};
+	    return this;
+	  }
+
+	  listeners = this._events[type];
+
+	  if (isFunction(listeners)) {
+	    this.removeListener(type, listeners);
+	  } else if (listeners) {
+	    // LIFO order
+	    while (listeners.length)
+	      this.removeListener(type, listeners[listeners.length - 1]);
+	  }
+	  delete this._events[type];
+
+	  return this;
+	};
+
+	EventEmitter.prototype.listeners = function(type) {
+	  var ret;
+	  if (!this._events || !this._events[type])
+	    ret = [];
+	  else if (isFunction(this._events[type]))
+	    ret = [this._events[type]];
+	  else
+	    ret = this._events[type].slice();
+	  return ret;
+	};
+
+	EventEmitter.prototype.listenerCount = function(type) {
+	  if (this._events) {
+	    var evlistener = this._events[type];
+
+	    if (isFunction(evlistener))
+	      return 1;
+	    else if (evlistener)
+	      return evlistener.length;
+	  }
+	  return 0;
+	};
+
+	EventEmitter.listenerCount = function(emitter, type) {
+	  return emitter.listenerCount(type);
+	};
+
+	function isFunction(arg) {
+	  return typeof arg === 'function';
 	}
 
-	function deleteGame(id) {
-	  _dispatcher2.default.dispatch({
-	    type: GAME_ACTIONS.DELETE_GAME,
-	    id: id
-	  });
+	function isNumber(arg) {
+	  return typeof arg === 'number';
 	}
 
-	function voteGame(id, rating) {
-	  _dispatcher2.default.dispatch({
-	    type: GAME_ACTIONS.VOTE_GAME,
-	    id: id,
-	    rating: rating
-	  });
+	function isObject(arg) {
+	  return typeof arg === 'object' && arg !== null;
 	}
 
-	function filterGame(category, value) {
-	  _dispatcher2.default.dispatch({
-	    type: GAME_ACTIONS.FILTER_GAME,
-	    category: category,
-	    value: value
-	  });
+	function isUndefined(arg) {
+	  return arg === void 0;
 	}
 
-	function calcSortDirection(direction) {
-	  _dispatcher2.default.dispatch({
-	    type: GAME_ACTIONS.SORT_GAME,
-	    direction: direction
-	  });
-	}
 
 /***/ },
 /* 242 */
@@ -27738,748 +28198,67 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _events = __webpack_require__(247);
+	exports.GAME_ACTIONS = undefined;
+	exports.createGame = createGame;
+	exports.deleteGame = deleteGame;
+	exports.voteGame = voteGame;
+	exports.filterGame = filterGame;
+	exports.sortGame = sortGame;
 
 	var _dispatcher = __webpack_require__(242);
 
 	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
-	var _GameActions = __webpack_require__(241);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var GAME_ACTIONS = exports.GAME_ACTIONS = {
+	  CREATE_GAME: "CREATE_GAME",
+	  DELETE_GAME: "DELETE_GAME",
+	  VOTE_GAME: "VOTE_GAME",
+	  FILTER_GAME: "FILTER_GAME",
+	  SORT_GAME: "SORT_GAME"
+	};
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	function createGame(title, kind) {
+	  _dispatcher2.default.dispatch({
+	    type: GAME_ACTIONS.CREATE_GAME,
+	    title: title,
+	    kind: kind
+	  });
+	}
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function deleteGame(id) {
+	  _dispatcher2.default.dispatch({
+	    type: GAME_ACTIONS.DELETE_GAME,
+	    id: id
+	  });
+	}
 
-	var GameStore = function (_EventEmitter) {
-	  _inherits(GameStore, _EventEmitter);
+	function voteGame(id, rating) {
+	  _dispatcher2.default.dispatch({
+	    type: GAME_ACTIONS.VOTE_GAME,
+	    id: id,
+	    rating: rating
+	  });
+	}
 
-	  function GameStore() {
-	    _classCallCheck(this, GameStore);
+	function filterGame(category, value) {
+	  _dispatcher2.default.dispatch({
+	    type: GAME_ACTIONS.FILTER_GAME,
+	    category: category,
+	    value: value
+	  });
+	}
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GameStore).call(this));
-
-	    _this.gameList = [{
-	      id: 1,
-	      title: "B Video Game Lorem Ipsum 1",
-	      img: "/img/mario.jpg",
-	      type: "Shooter",
-	      rating: 2
-	    }, {
-	      id: 2,
-	      title: "A Video Game Lorem Ipsum 2",
-	      img: "/img/worms.jpg",
-	      type: "Strategy",
-	      rating: 3
-	    }, {
-	      id: 3,
-	      title: "C Video Game Lorem Ipsum 3",
-	      img: "/img/bomberman.jpg",
-	      type: "Racing",
-	      rating: 4
-	    }, {
-	      id: 4,
-	      title: "D Video Game Lorem Ipsum 4",
-	      img: "/img/pikachu.png",
-	      type: "Action",
-	      rating: 1
-	    }, {
-	      id: 5,
-	      title: "E Video Game Lorem Ipsum 5",
-	      img: "/img/sonic.png",
-	      type: "Racing",
-	      rating: 5
-	    }, {
-	      id: 6,
-	      title: "F Video Game Lorem Ipsum 6",
-	      img: "/img/tombrider.jpg",
-	      type: "Racing",
-	      rating: 2
-	    }];
-
-	    _this.filteredGameList = _this.gameList;
-
-	    _this.typeList = [];
-
-	    _this.ratingList = [];
-
-	    _this.sortDirection = "increase";
-
-	    _this.calcByType();
-	    _this.calcByRating();
-	    _this.sortGame();
-	    return _this;
-	  }
-
-	  _createClass(GameStore, [{
-	    key: "createGame",
-	    value: function createGame(title, kind) {
-	      if (title.length >= 1 && kind.length >= 1) {
-	        this.gameList.push({
-	          id: Date.now(),
-	          title: title,
-	          img: "img/mario.jpg",
-	          type: kind,
-	          rating: 1
-	        });
-
-	        this.filteredGameList = this.gameList;
-	        this.calcByType();
-	        this.calcByRating();
-	        this.sortGame();
-	        this.emit("change");
-	      }
-	    }
-	  }, {
-	    key: "deleteGame",
-	    value: function deleteGame(id) {
-	      this.gameList = this.gameList.filter(function (game) {
-	        return game.id != id;
-	      });
-	      this.filteredGameList = this.gameList;
-	      this.calcByType();
-	      this.calcByRating();
-	      this.emit("change");
-	    }
-	  }, {
-	    key: "getAllGames",
-	    value: function getAllGames() {
-	      return this.filteredGameList;
-	    }
-
-	    /*------*/
-
-	  }, {
-	    key: "filterGame",
-	    value: function filterGame(category, value) {
-	      if (category) {
-	        if (category.toLowerCase() == "type") {
-	          this.filterByType(value);
-	        } else if (category.toLowerCase() == "rating") {
-	          this.filterByRating(value);
-	        }
-	      }
-	    }
-
-	    /*------*/
-
-	  }, {
-	    key: "calcByType",
-	    value: function calcByType() {
-	      /* TODO: Make more simple */
-	      this.typeList = [];
-	      var typeObj = {};
-	      this.gameList.map(function (item) {
-	        return item.type;
-	      }).map(function (a) {
-	        if (a in typeObj) typeObj[a]++;else typeObj[a] = 1;
-	      });
-
-	      for (var key in typeObj) {
-	        var item = {
-	          type: key,
-	          count: typeObj[key]
-	        };
-	        this.typeList.push(item);
-	      }
-	      //console.log(this.typeList);
-	    }
-	  }, {
-	    key: "filterByType",
-	    value: function filterByType(byKind) {
-	      this.filteredGameList = this.gameList.filter(function (item) {
-	        return item.type == byKind;
-	      });
-	      this.sortGame();
-	    }
-	  }, {
-	    key: "getAllTypes",
-	    value: function getAllTypes() {
-	      return this.typeList;
-	    }
-
-	    /*------*/
-
-	  }, {
-	    key: "calcByRating",
-	    value: function calcByRating() {
-	      //console.log('Rating');
-	      /* TODO: Make more simple */
-	      this.ratingList = [];
-	      var ratingObj = {};
-	      this.gameList.map(function (item) {
-	        return item.rating;
-	      }).map(function (a) {
-	        if (a in ratingObj) ratingObj[a]++;else ratingObj[a] = 1;
-	      });
-
-	      for (var key in ratingObj) {
-	        var item = {
-	          rating: parseInt(key),
-	          count: ratingObj[key]
-	        };
-	        this.ratingList.push(item);
-	      }
-
-	      this.ratingList.reverse();
-	      //console.log(this.ratingList);
-	    }
-	  }, {
-	    key: "filterByRating",
-	    value: function filterByRating(byRating) {
-	      this.filteredGameList = this.gameList.filter(function (item) {
-	        return item.rating == byRating;
-	      });
-	      this.sortGame();
-	    }
-	  }, {
-	    key: "getAllRatings",
-	    value: function getAllRatings() {
-	      return this.ratingList;
-	    }
-
-	    /*------*/
-
-	  }, {
-	    key: "voteGame",
-	    value: function voteGame(id, rating) {
-	      if (typeof id != 'undefined' && typeof rating != 'undefined') {
-	        var index = this.gameList.findIndex(function (item) {
-	          return item.id == id;
-	        });
-	        this.gameList[index].rating = rating;
-	        this.calcByRating();
-	        this.emit("change");
-	      }
-	    }
-
-	    /*------*/
-
-	  }, {
-	    key: "filterAll",
-	    value: function filterAll() {
-	      this.filteredGameList = this.gameList;
-	      this.sortGame();
-	    }
-
-	    /*------*/
-
-	  }, {
-	    key: "sortIncrease",
-	    value: function sortIncrease(listData) {
-	      return listData.sort(function (a, b) {
-	        return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	      });
-	    }
-	  }, {
-	    key: "sortDecrease",
-	    value: function sortDecrease(listData) {
-	      return listData.sort(function (a, b) {
-	        return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	      });
-	    }
-	  }, {
-	    key: "calcSortDirection",
-	    value: function calcSortDirection(direction) {
-	      if (typeof direction != "undefined") {
-	        this.sortDirection = direction;
-	        this.sortGame();
-	      }
-	    }
-	  }, {
-	    key: "sortGame",
-	    value: function sortGame() {
-	      if (this.sortDirection == "increase") {
-	        this.filteredGameList = this.sortIncrease(this.filteredGameList);
-	      } else {
-	        this.filteredGameList = this.sortDecrease(this.filteredGameList);
-	      }
-	      this.emit("change");
-	    }
-
-	    /*------*/
-
-	  }, {
-	    key: "handleActions",
-	    value: function handleActions(action) {
-	      switch (action.type) {
-	        case _GameActions.GAME_ACTIONS.CREATE_GAME:
-	          {
-	            this.createGame(action.title, action.kind);
-	          }
-	        case _GameActions.GAME_ACTIONS.DELETE_GAME:
-	          {
-	            this.deleteGame(action.id);
-	          }
-	        case _GameActions.GAME_ACTIONS.VOTE_GAME:
-	          {
-	            this.voteGame(action.id, action.rating);
-	          }
-	        case _GameActions.GAME_ACTIONS.FILTER_GAME:
-	          {
-	            this.filterGame(action.category, action.value);
-	          }
-	        case _GameActions.GAME_ACTIONS.SORT_GAME:
-	          {
-	            this.calcSortDirection(action.direction);
-	          }
-	      }
-	    }
-	  }]);
-
-	  return GameStore;
-	}(_events.EventEmitter);
-
-	var gameStore = new GameStore();
-	_dispatcher2.default.register(gameStore.handleActions.bind(gameStore));
-	exports.default = gameStore;
-
-	/*
-	* TODO:
-	* Change filter algoritm, make more simple
-	* Re-organize file system
-	* Write unit tests
-	**/
+	function sortGame(direction) {
+	  _dispatcher2.default.dispatch({
+	    type: GAME_ACTIONS.SORT_GAME,
+	    direction: direction
+	  });
+	}
 
 /***/ },
 /* 247 */
-/***/ function(module, exports) {
-
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
-
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
-
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
-
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
-
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
-
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      } else {
-	        // At least give some kind of context to the user
-	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-	        err.context = er;
-	        throw err;
-	      }
-	    }
-	  }
-
-	  handler = this._events[type];
-
-	  if (isUndefined(handler))
-	    return false;
-
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        args = Array.prototype.slice.call(arguments, 1);
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    args = Array.prototype.slice.call(arguments, 1);
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
-
-	  return true;
-	};
-
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events)
-	    this._events = {};
-
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  var fired = false;
-
-	  function g() {
-	    this.removeListener(type, g);
-
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-
-	  g.listener = listener;
-	  this.on(type, g);
-
-	  return this;
-	};
-
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-
-	  if (!this._events || !this._events[type])
-	    return this;
-
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-
-	    if (position < 0)
-	      return this;
-
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-
-	  return this;
-	};
-
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-
-	  if (!this._events)
-	    return this;
-
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-
-	  listeners = this._events[type];
-
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else if (listeners) {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-
-	  return this;
-	};
-
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-
-	EventEmitter.prototype.listenerCount = function(type) {
-	  if (this._events) {
-	    var evlistener = this._events[type];
-
-	    if (isFunction(evlistener))
-	      return 1;
-	    else if (evlistener)
-	      return evlistener.length;
-	  }
-	  return 0;
-	};
-
-	EventEmitter.listenerCount = function(emitter, type) {
-	  return emitter.listenerCount(type);
-	};
-
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
-
-/***/ },
-/* 248 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(175);
-
-	var _GameActions = __webpack_require__(241);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
-	var _GameStore = __webpack_require__(246);
-
-	var _GameStore2 = _interopRequireDefault(_GameStore);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var FilterRating = function (_Component) {
-	  _inherits(FilterRating, _Component);
-
-	  function FilterRating() {
-	    _classCallCheck(this, FilterRating);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FilterRating).call(this));
-
-	    _this.getRatings = _this.getRatings.bind(_this);
-	    _this.state = {
-	      ratingList: _GameStore2.default.getAllRatings()
-	    };
-	    return _this;
-	  }
-
-	  _createClass(FilterRating, [{
-	    key: "getRatings",
-	    value: function getRatings() {
-	      this.setState({
-	        ratingList: _GameStore2.default.getAllRatings()
-	      });
-	    }
-	  }, {
-	    key: "filterByRating",
-	    value: function filterByRating(e) {
-	      var value = e.target.attributes.getNamedItem('data-rating').value;
-	      GameActions.filterGame("rating", value);
-	    }
-	  }, {
-	    key: "componentWillMount",
-	    value: function componentWillMount() {
-	      _GameStore2.default.on("change", this.getRatings);
-	    }
-	  }, {
-	    key: "componentWillUnmount",
-	    value: function componentWillUnmount() {
-	      _GameStore2.default.removeListener("change", this.getRatings);
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      var _this2 = this;
-
-	      var ratingList = this.state.ratingList;
-
-
-	      var RatingList = ratingList.map(function (item, i) {
-	        return _react2.default.createElement(
-	          "li",
-	          { key: i },
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: "/filter/Rating/" + item.rating, onClick: _this2.filterByRating.bind(_this2), "data-rating": item.rating },
-	            item.rating,
-	            " Stars (",
-	            _react2.default.createElement(
-	              "span",
-	              null,
-	              item.count
-	            ),
-	            ")"
-	          )
-	        );
-	      });
-
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "by-type filter-category" },
-	        _react2.default.createElement(
-	          "div",
-	          { className: "filter-title" },
-	          "By Rating"
-	        ),
-	        _react2.default.createElement(
-	          "ul",
-	          null,
-	          RatingList
-	        )
-	      );
-	    }
-	  }]);
-
-	  return FilterRating;
-	}(_react.Component);
-
-	exports.default = FilterRating;
-
-/***/ },
-/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28496,19 +28275,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _item = __webpack_require__(250);
+	var _item = __webpack_require__(248);
 
 	var _item2 = _interopRequireDefault(_item);
 
-	var _sort = __webpack_require__(252);
+	var _sort = __webpack_require__(250);
 
 	var _sort2 = _interopRequireDefault(_sort);
 
-	var _add = __webpack_require__(253);
+	var _add = __webpack_require__(251);
 
 	var _add2 = _interopRequireDefault(_add);
 
-	var _GameStore = __webpack_require__(246);
+	var _GameStore = __webpack_require__(240);
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
@@ -28586,7 +28365,7 @@
 	exports.default = List;
 
 /***/ },
-/* 250 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28601,13 +28380,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _rating = __webpack_require__(251);
+	var _rating = __webpack_require__(249);
 
 	var _rating2 = _interopRequireDefault(_rating);
 
-	var _GameActions = __webpack_require__(241);
+	var _GameActions = __webpack_require__(246);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
+
+	var _GameStore = __webpack_require__(240);
+
+	var _GameStore2 = _interopRequireDefault(_GameStore);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -28623,18 +28406,23 @@
 	  _inherits(Item, _React$Component);
 
 	  function Item() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
 	    _classCallCheck(this, Item);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Item).apply(this, arguments));
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Item)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.deleteGame = function () {
+	      var id = _this.props.id;
+	      GameActions.deleteGame(id);
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Item, [{
-	    key: "deleteGame",
-	    value: function deleteGame() {
-	      var id = this.props.id;
-	      GameActions.deleteGame(id);
-	    }
-	  }, {
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -28655,7 +28443,7 @@
 	        _react2.default.createElement(_rating2.default, { className: this.props.rating, gameId: this.props.id }),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", onClick: this.deleteGame.bind(this), className: "game-remove" },
+	          { href: "javascript:;", onClick: this.deleteGame, className: "game-remove" },
 	          "x"
 	        )
 	      );
@@ -28668,7 +28456,7 @@
 	exports.default = Item;
 
 /***/ },
-/* 251 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28683,9 +28471,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(241);
+	var _GameActions = __webpack_require__(246);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
+
+	var _GameStore = __webpack_require__(240);
+
+	var _GameStore2 = _interopRequireDefault(_GameStore);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -28701,19 +28493,24 @@
 	  _inherits(Rating, _React$Component);
 
 	  function Rating() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
 	    _classCallCheck(this, Rating);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Rating).apply(this, arguments));
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Rating)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.voteGame = function (e) {
+	      var rating = e.target.innerHTML;
+	      var id = _this.props.gameId;
+	      GameActions.voteGame(id, rating);
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Rating, [{
-	    key: "voteGame",
-	    value: function voteGame(e) {
-	      var rating = e.target.innerHTML;
-	      var id = this.props.gameId;
-	      GameActions.voteGame(id, rating);
-	    }
-	  }, {
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -28721,27 +28518,27 @@
 	        { className: "game-rating rate-" + this.props.className },
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-1", onClick: this.voteGame.bind(this) },
+	          { href: "javascript:;", className: "star star-1", onClick: this.voteGame },
 	          "1"
 	        ),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-2", onClick: this.voteGame.bind(this) },
+	          { href: "javascript:;", className: "star star-2", onClick: this.voteGame },
 	          "2"
 	        ),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-3", onClick: this.voteGame.bind(this) },
+	          { href: "javascript:;", className: "star star-3", onClick: this.voteGame },
 	          "3"
 	        ),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-4", onClick: this.voteGame.bind(this) },
+	          { href: "javascript:;", className: "star star-4", onClick: this.voteGame },
 	          "4"
 	        ),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-5", onClick: this.voteGame.bind(this) },
+	          { href: "javascript:;", className: "star star-5", onClick: this.voteGame },
 	          "5"
 	        )
 	      );
@@ -28754,7 +28551,7 @@
 	exports.default = Rating;
 
 /***/ },
-/* 252 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28769,9 +28566,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(241);
+	var _GameActions = __webpack_require__(246);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
+
+	var _GameStore = __webpack_require__(240);
+
+	var _GameStore2 = _interopRequireDefault(_GameStore);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -28791,24 +28592,40 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Sort).call(this));
 
+	    _this.sortGame = function () {
+	      GameActions.sortGame(!_this.state.sort);
+	      //GameStore.sortGame(!this.state.sort);
+	    };
+
+	    _this.getSortDirection = _this.getSortDirection.bind(_this);
 	    _this.state = {
-	      sort: false
+	      sort: _GameStore2.default.getSortDirection()
 	    };
 	    return _this;
 	  }
 
 	  _createClass(Sort, [{
-	    key: "handleClick",
-	    value: function handleClick() {
-	      this.setState({ sort: !this.state.sort });
-	      var direction = this.state.sort ? "increase" : "decrease";
-	      GameActions.calcSortDirection(direction);
+	    key: "getSortDirection",
+	    value: function getSortDirection() {
+	      this.setState({
+	        sort: _GameStore2.default.getSortDirection()
+	      });
+	    }
+	  }, {
+	    key: "componentWillMount",
+	    value: function componentWillMount() {
+	      _GameStore2.default.on("change", this.getSortDirection);
+	    }
+	  }, {
+	    key: "componentWillUnmount",
+	    value: function componentWillUnmount() {
+	      _GameStore2.default.removeListener("change", this.getSortDirection);
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
 
-	      var text = this.state.sort ? "decrease" : "increase";
+	      var text = this.state.sort ? "increase" : "decrease";
 
 	      var FilterInfo = this.props.filterCategory ? _react2.default.createElement(
 	        "span",
@@ -28829,7 +28646,7 @@
 	          "Sort by: ",
 	          _react2.default.createElement(
 	            "a",
-	            { href: "javascript:;", onClick: this.handleClick.bind(this) },
+	            { href: "javascript:;", onClick: this.sortGame },
 	            text
 	          )
 	        )
@@ -28843,7 +28660,7 @@
 	exports.default = Sort;
 
 /***/ },
-/* 253 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28862,9 +28679,13 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _GameActions = __webpack_require__(241);
+	var _GameActions = __webpack_require__(246);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
+
+	var _GameStore = __webpack_require__(240);
+
+	var _GameStore2 = _interopRequireDefault(_GameStore);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -28880,20 +28701,28 @@
 	  _inherits(Add, _React$Component);
 
 	  function Add() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
 	    _classCallCheck(this, Add);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Add).apply(this, arguments));
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Add)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.createGame = function () {
+	      var title = _reactDom2.default.findDOMNode(_this.refs.gameTitle).value;
+	      var kind = _reactDom2.default.findDOMNode(_this.refs.gameType).value;
+
+	      if (title.length >= 1 && kind.length >= 1) {
+	        GameActions.createGame(title, kind);
+	        _this.clearInputs();
+	      }
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Add, [{
-	    key: "createGame",
-	    value: function createGame() {
-	      var title = _reactDom2.default.findDOMNode(this.refs.gameTitle).value;
-	      var kind = _reactDom2.default.findDOMNode(this.refs.gameType).value;
-	      GameActions.createGame(title, kind);
-	      this.clearInputs();
-	    }
-	  }, {
 	    key: "clearInputs",
 	    value: function clearInputs() {
 	      _reactDom2.default.findDOMNode(this.refs.gameTitle).value = "";
@@ -28919,7 +28748,7 @@
 	        _react2.default.createElement("input", { ref: "gameType", type: "text", className: "game-add__input" }),
 	        _react2.default.createElement(
 	          "button",
-	          { className: "game-add__button", onClick: this.createGame.bind(this) },
+	          { className: "game-add__button", onClick: this.createGame },
 	          "Create"
 	        )
 	      );

@@ -53,41 +53,24 @@ class GameStore extends EventEmitter {
 
     this.filteredGameList = this.gameList;
 
-    this.typeList = [];
-
-    this.ratingList = [];
-
-    this.sortDirection = "increase";
-
-
-    this.calcByType();
-    this.calcByRating();
-    this.sortGame();
+    this.sortDirection = true; // true: increase, false: decrease
   }
 
   createGame(title, kind) {
-    if(title.length >= 1 && kind.length >= 1) {
-      this.gameList.push({
-        id: Date.now(),
-        title: title,
-        img: "img/mario.jpg",
-        type: kind,
-        rating: 1
-      });
-
-      this.filteredGameList = this.gameList;
-      this.calcByType();
-      this.calcByRating();
-      this.sortGame();
-      this.emit("change");
-    }
+    this.gameList.push({
+      id: Date.now(),
+      title: title,
+      img: "/img/mario.jpg",
+      type: kind,
+      rating: 1
+    });
+    this.filteredGameList = this.gameList;
+    this.emit("change");
   }
 
   deleteGame(id) {
     this.gameList = this.gameList.filter(game => game.id != id);
     this.filteredGameList = this.gameList;
-    this.calcByType();
-    this.calcByRating();
     this.emit("change");
   }
 
@@ -95,22 +78,33 @@ class GameStore extends EventEmitter {
     return this.filteredGameList;
   }
 
-  /*------*/
-
   filterGame(category, value){
-    if(category){
-      if(category.toLowerCase() == "type") {
-        this.filterByType(value);
-      }else if(category.toLowerCase() == "rating") {
-        this.filterByRating(value);
+    if(category) {
+      switch(category.toLowerCase()) {
+        case 'type': {
+          this.filteredGameList = this.gameList.filter(function(item){
+            return (item.type == value);
+          });
+          this.emit("change");
+          break;
+        }
+        case 'rating': {
+          this.filteredGameList = this.gameList.filter(function(item){
+            return (item.rating == value);
+          });
+          this.emit("change");
+          break;
+        }
+        case 'all': {
+          this.filteredGameList = this.gameList;
+          this.emit("change");
+          break;
+        }
       }
     }
   }
 
-  /*------*/
-
   calcByType() {
-    /* TODO: Make more simple */
     this.typeList = [];
     let typeObj = {};
     this.gameList.map(item => item.type).map( function (a) {
@@ -125,25 +119,11 @@ class GameStore extends EventEmitter {
       };
       this.typeList.push(item);
     }
-    //console.log(this.typeList);
-  }
 
-  filterByType(byKind) {
-    this.filteredGameList = this.gameList.filter(function(item){
-      return (item.type == byKind);
-    });
-    this.sortGame();
-  }
-
-  getAllTypes() {
     return this.typeList;
   }
 
-  /*------*/
-
   calcByRating() {
-    //console.log('Rating');
-    /* TODO: Make more simple */
     this.ratingList = [];
     let ratingObj = {};
     this.gameList.map(item => item.rating).map( function (a) {
@@ -159,87 +139,61 @@ class GameStore extends EventEmitter {
       this.ratingList.push(item);
     }
 
-    this.ratingList.reverse();
-    //console.log(this.ratingList);
+    return this.ratingList.reverse();
   }
-
-  filterByRating(byRating) {
-    this.filteredGameList = this.gameList.filter(function(item){
-      return (item.rating == byRating);
-    });
-    this.sortGame();
-  }
-
-  getAllRatings() {
-    return this.ratingList;
-  }
-
-  /*------*/
 
   voteGame(id, rating) {
-    if(typeof id != 'undefined' && typeof rating != 'undefined'){
-      let index = this.gameList.findIndex(item => item.id == id);
-      this.gameList[index].rating = rating;
-      this.calcByRating();
-      this.emit("change");
-    }
-  }
-
-  /*------*/
-
-  filterAll() {
-    this.filteredGameList = this.gameList;
-    this.sortGame();
-  }
-
-  /*------*/
-
-  sortIncrease(listData) {
-    return listData.sort(function(a,b) {
-      return (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
-    });
-  }
-
-  sortDecrease(listData) {
-    return listData.sort(function(a,b) {
-      return (b.rating > a.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
-    });
-  }
-
-  calcSortDirection(direction) {
-    if(typeof direction != "undefined"){
-      this.sortDirection = direction;
-      this.sortGame();
-    }
-  }
-
-  sortGame() {
-    if(this.sortDirection == "increase"){
-      this.filteredGameList = this.sortIncrease(this.filteredGameList);
-    }else {
-      this.filteredGameList = this.sortDecrease(this.filteredGameList);
-    }
+    let index = this.gameList.findIndex(item => item.id == id);
+    this.gameList[index].rating = rating;
     this.emit("change");
   }
 
-  /*------*/
+  sortGame(direction) {
+    this.sortDirection = direction;
+
+    switch(direction) {
+      case true: {
+        this.filteredGameList.sort(function(a,b) {
+          return (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
+        });
+        this.emit('change');
+        break;
+      }
+      case false: {
+        this.filteredGameList.sort(function(a,b) {
+          return (b.rating > a.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
+        });
+        this.emit('change');
+        break;
+      }
+    }
+  }
+
+  getSortDirection() {
+    return this.sortDirection;
+  }
 
   handleActions(action) {
     switch(action.type) {
       case GAME_ACTIONS.CREATE_GAME: {
         this.createGame(action.title, action.kind);
+        break;
       }
       case GAME_ACTIONS.DELETE_GAME: {
         this.deleteGame(action.id);
+        break;
       }
       case GAME_ACTIONS.VOTE_GAME: {
         this.voteGame(action.id, action.rating);
+        break;
       }
       case GAME_ACTIONS.FILTER_GAME: {
         this.filterGame(action.category, action.value);
+        break;
       }
       case GAME_ACTIONS.SORT_GAME: {
-        this.calcSortDirection(action.direction);
+        this.sortGame(action.direction);
+        break;
       }
     }
   }
@@ -248,11 +202,3 @@ class GameStore extends EventEmitter {
 const gameStore = new GameStore;
 dispatcher.register(gameStore.handleActions.bind(gameStore));
 export default gameStore;
-
-
-/*
-* TODO:
-* Change filter algoritm, make more simple
-* Re-organize file system
-* Write unit tests
-**/

@@ -14,7 +14,7 @@ class List extends React.Component {
     }
   }
 
-  getGames() {
+  getGames() {  
     this.setState({
       gameList: GameStore.getAllGames()
     })
