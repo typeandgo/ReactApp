@@ -9,8 +9,8 @@ class Filter extends Component {
     super();
     this.filterList = this.filterList.bind(this);
     this.state = {
-      typeList: GameStore.calcByType(),
-      ratingList: GameStore.calcByRating()
+      typeList: GameStore.getByType(),
+      ratingList: GameStore.getByRating()
     }
   }
 
@@ -25,8 +25,8 @@ class Filter extends Component {
 
   filterList() {
     this.setState({
-      typeList: GameStore.calcByType(),
-      ratingList: GameStore.calcByRating()
+      typeList: GameStore.getByType(),
+      ratingList: GameStore.getByRating()
     })
   }
 
@@ -41,8 +41,8 @@ class Filter extends Component {
     const TypeList = this.state.typeList.map((item, i) => {
       return (
         <li key={i}>
-          <Link to={"/filter/Type/" + item.type} onClick={this.filterBy} data-category="type" data-value={item.type}>
-            {item.type} (<span>{item.count}</span>)
+          <Link to={"/filter/Type/" + item.key} onClick={this.filterBy} data-category="type" data-value={item.key}>
+            {item.key} (<span>{item.value}</span>)
           </Link>
         </li>
       )
@@ -51,8 +51,8 @@ class Filter extends Component {
     const RatingList = this.state.ratingList.map((item, i) => {
       return (
         <li key={i}>
-          <Link to={"/filter/Rating/" + item.rating} onClick={this.filterBy} data-category="rating" data-value={item.rating}>
-            {item.rating} Stars (<span>{item.count}</span>)
+          <Link to={"/filter/Rating/" + item.key} onClick={this.filterBy} data-category="rating" data-value={item.key}>
+            {item.key} Stars (<span>{item.value}</span>)
           </Link>
         </li>
       )

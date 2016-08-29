@@ -27185,8 +27185,8 @@
 
 	    _this.filterList = _this.filterList.bind(_this);
 	    _this.state = {
-	      typeList: _GameStore2.default.calcByType(),
-	      ratingList: _GameStore2.default.calcByRating()
+	      typeList: _GameStore2.default.getByType(),
+	      ratingList: _GameStore2.default.getByRating()
 	    };
 	    return _this;
 	  }
@@ -27206,8 +27206,8 @@
 	    key: "filterList",
 	    value: function filterList() {
 	      this.setState({
-	        typeList: _GameStore2.default.calcByType(),
-	        ratingList: _GameStore2.default.calcByRating()
+	        typeList: _GameStore2.default.getByType(),
+	        ratingList: _GameStore2.default.getByRating()
 	      });
 	    }
 	  }, {
@@ -27221,13 +27221,13 @@
 	          { key: i },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: "/filter/Type/" + item.type, onClick: _this2.filterBy, "data-category": "type", "data-value": item.type },
-	            item.type,
+	            { to: "/filter/Type/" + item.key, onClick: _this2.filterBy, "data-category": "type", "data-value": item.key },
+	            item.key,
 	            " (",
 	            _react2.default.createElement(
 	              "span",
 	              null,
-	              item.count
+	              item.value
 	            ),
 	            ")"
 	          )
@@ -27240,13 +27240,13 @@
 	          { key: i },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: "/filter/Rating/" + item.rating, onClick: _this2.filterBy, "data-category": "rating", "data-value": item.rating },
-	            item.rating,
+	            { to: "/filter/Rating/" + item.key, onClick: _this2.filterBy, "data-category": "rating", "data-value": item.key },
+	            item.key,
 	            " Stars (",
 	            _react2.default.createElement(
 	              "span",
 	              null,
-	              item.count
+	              item.value
 	            ),
 	            ")"
 	          )
@@ -27451,46 +27451,42 @@
 	      }
 	    }
 	  }, {
-	    key: "calcByType",
-	    value: function calcByType() {
-	      this.typeList = [];
-	      var typeObj = {};
+	    key: "getByType",
+	    value: function getByType() {
+	      var categoryList = [];
+	      var counts = {};
+
 	      this.gameList.map(function (item) {
-	        return item.type;
+	        return item['type'];
 	      }).map(function (a) {
-	        if (a in typeObj) typeObj[a]++;else typeObj[a] = 1;
+	        a in counts ? counts[a]++ : counts[a] = 1;
 	      });
 
-	      for (var key in typeObj) {
-	        var item = {
-	          type: key,
-	          count: typeObj[key]
-	        };
-	        this.typeList.push(item);
+	      for (var key in counts) {
+	        var item = { key: key, value: counts[key] };
+	        categoryList.push(item);
 	      }
 
-	      return this.typeList;
+	      return categoryList;
 	    }
 	  }, {
-	    key: "calcByRating",
-	    value: function calcByRating() {
-	      this.ratingList = [];
-	      var ratingObj = {};
+	    key: "getByRating",
+	    value: function getByRating() {
+	      var categoryList = [];
+	      var counts = {};
+
 	      this.gameList.map(function (item) {
-	        return item.rating;
+	        return item['rating'];
 	      }).map(function (a) {
-	        if (a in ratingObj) ratingObj[a]++;else ratingObj[a] = 1;
+	        a in counts ? counts[a]++ : counts[a] = 1;
 	      });
 
-	      for (var key in ratingObj) {
-	        var item = {
-	          rating: parseInt(key),
-	          count: ratingObj[key]
-	        };
-	        this.ratingList.push(item);
+	      for (var key in counts) {
+	        var item = { key: key, value: counts[key] };
+	        categoryList.push(item);
 	      }
 
-	      return this.ratingList.reverse();
+	      return categoryList.reverse();
 	    }
 	  }, {
 	    key: "voteGame",
@@ -28615,7 +28611,6 @@
 
 	    _this.sortGame = function () {
 	      GameActions.sortGame(!_this.state.sort);
-	      //GameStore.sortGame(!this.state.sort);
 	    };
 
 	    _this.getSortDirection = _this.getSortDirection.bind(_this);
@@ -28626,13 +28621,6 @@
 	  }
 
 	  _createClass(Sort, [{
-	    key: "getSortDirection",
-	    value: function getSortDirection() {
-	      this.setState({
-	        sort: _GameStore2.default.getSortDirection()
-	      });
-	    }
-	  }, {
 	    key: "componentWillMount",
 	    value: function componentWillMount() {
 	      _GameStore2.default.on("change", this.getSortDirection);
@@ -28641,6 +28629,13 @@
 	    key: "componentWillUnmount",
 	    value: function componentWillUnmount() {
 	      _GameStore2.default.removeListener("change", this.getSortDirection);
+	    }
+	  }, {
+	    key: "getSortDirection",
+	    value: function getSortDirection() {
+	      this.setState({
+	        sort: _GameStore2.default.getSortDirection()
+	      });
 	    }
 	  }, {
 	    key: "render",

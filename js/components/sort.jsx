@@ -12,12 +12,6 @@ class Sort extends React.Component {
     }
   }
 
-  getSortDirection() {
-    this.setState({
-      sort: GameStore.getSortDirection()
-    })
-  }
-
   componentWillMount() {
     GameStore.on("change", this.getSortDirection);
   }
@@ -26,9 +20,14 @@ class Sort extends React.Component {
     GameStore.removeListener("change", this.getSortDirection);
   }
 
-  sortGame = () => {    
+  getSortDirection() {
+    this.setState({
+      sort: GameStore.getSortDirection()
+    })
+  }
+
+  sortGame = () => {
     GameActions.sortGame(!this.state.sort);
-    //GameStore.sortGame(!this.state.sort);
   }
 
   render() {

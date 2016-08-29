@@ -113,42 +113,36 @@ class GameStore extends EventEmitter {
     }
   }
 
-  calcByType() {
-    this.typeList = [];
-    let typeObj = {};
-    this.gameList.map(item => item.type).map( function (a) {
-      if (a in typeObj) typeObj[a] ++;
-      else typeObj[a] = 1;
+  getByType() {
+    let categoryList = [];
+    let counts = {};
+
+    this.gameList.map(item => item['type']).map( function (a) {
+      (a in counts) ? counts[a] ++ : counts[a] = 1;
     });
 
-    for(let key in typeObj) {
-      let item = {
-        type: key,
-        count: typeObj[key]
-      };
-      this.typeList.push(item);
+    for(let key in counts) {
+      let item = { key: key, value: counts[key]};
+      categoryList.push(item);
     }
 
-    return this.typeList;
+    return categoryList;
   }
 
-  calcByRating() {
-    this.ratingList = [];
-    let ratingObj = {};
-    this.gameList.map(item => item.rating).map( function (a) {
-      if (a in ratingObj) ratingObj[a] ++;
-      else ratingObj[a] = 1;
+  getByRating() {
+    let categoryList = [];
+    let counts = {};
+
+    this.gameList.map(item => item['rating']).map( function (a) {
+      (a in counts) ? counts[a] ++ : counts[a] = 1;
     });
 
-    for(let key in ratingObj) {
-      let item = {
-        rating: parseInt(key),
-        count: ratingObj[key]
-      };
-      this.ratingList.push(item);
+    for(let key in counts) {
+      let item = { key: key, value: counts[key]};
+      categoryList.push(item);
     }
 
-    return this.ratingList.reverse();
+    return categoryList.reverse();
   }
 
   voteGame(id, rating) {
