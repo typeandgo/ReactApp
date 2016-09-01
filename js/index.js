@@ -27220,24 +27220,17 @@
 	  _inherits(Filter, _Component);
 
 	  function Filter() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
 	    _classCallCheck(this, Filter);
 
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Filter)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.filterBy = function (e) {
-	      var category = e.target.attributes.getNamedItem('data-category').value;
-	      var value = e.target.attributes.getNamedItem('data-value').value;
-	      GameActions.filterGame(category, value);
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Filter).apply(this, arguments));
 	  }
 
 	  _createClass(Filter, [{
+	    key: "filterBy",
+	    value: function filterBy(category, value) {
+	      GameActions.filterGame(category, value);
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      var _this2 = this;
@@ -27253,7 +27246,9 @@
 	          { key: i },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: "/filter/Type/" + item.key, onClick: _this2.filterBy, "data-category": "type", "data-value": item.key },
+	            { to: "/filter/Type/" + item.key, onClick: function onClick() {
+	                return _this2.filterBy('type', item.key);
+	              }, activeClassName: "active" },
 	            item.key,
 	            " (",
 	            _react2.default.createElement(
@@ -27272,7 +27267,9 @@
 	          { key: i },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: "/filter/Rating/" + item.key, onClick: _this2.filterBy, "data-category": "rating", "data-value": item.key },
+	            { to: "/filter/Rating/" + item.key, onClick: function onClick() {
+	                return _this2.filterBy('rating', item.key);
+	              }, activeClassName: "active" },
 	            item.key,
 	            " Stars (",
 	            _react2.default.createElement(
@@ -27321,7 +27318,9 @@
 	          { className: "all filter-category" },
 	          _react2.default.createElement(
 	            _reactRouter.Link,
-	            { to: "/", onClick: this.filterBy, "data-category": "all", "data-value": "all", className: "filter-title" },
+	            { to: "/", onClick: function onClick() {
+	                return _this2.filterBy('all', null);
+	              }, className: "filter-title", activeClassName: "active" },
 	            "All"
 	          )
 	        )
@@ -28452,44 +28451,50 @@
 	  _inherits(Item, _React$Component);
 
 	  function Item() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
 	    _classCallCheck(this, Item);
 
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Item)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.deleteGame = function () {
-	      var id = _this.props.id;
-	      GameActions.deleteGame(id);
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Item).apply(this, arguments));
 	  }
 
 	  _createClass(Item, [{
+	    key: "deleteGame",
+	    value: function deleteGame(id) {
+	      GameActions.deleteGame(id);
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
+	      var _this2 = this;
+
+	      var _props = this.props;
+	      var id = _props.id;
+	      var title = _props.title;
+	      var img = _props.img;
+	      var type = _props.type;
+	      var rating = _props.rating;
+
+
 	      return _react2.default.createElement(
 	        "li",
-	        { className: "game-list__li", id: this.props.id },
-	        _react2.default.createElement("img", { className: "game-image", src: this.props.img }),
+	        { className: "game-list__li", id: id },
+	        _react2.default.createElement("img", { className: "game-image", src: img }),
 	        _react2.default.createElement(
 	          "span",
 	          { className: "game-name" },
-	          this.props.title,
+	          title,
 	          " | ",
 	          _react2.default.createElement(
 	            "span",
 	            { className: "game-type" },
-	            this.props.type
+	            type
 	          )
 	        ),
-	        _react2.default.createElement(_rating2.default, { className: this.props.rating, gameId: this.props.id }),
+	        _react2.default.createElement(_rating2.default, { className: rating, gameId: id }),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", onClick: this.deleteGame.bind(this), className: "game-remove" },
+	          { href: "javascript:;", onClick: function onClick() {
+	              return _this2.deleteGame(id);
+	            }, className: "game-remove" },
 	          "x"
 	        )
 	      );
@@ -28539,52 +28544,58 @@
 	  _inherits(Rating, _React$Component);
 
 	  function Rating() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
 	    _classCallCheck(this, Rating);
 
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Rating)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.voteGame = function (e) {
-	      var rating = e.target.innerHTML;
-	      var id = _this.props.gameId;
-	      GameActions.voteGame(id, rating);
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Rating).apply(this, arguments));
 	  }
 
 	  _createClass(Rating, [{
+	    key: "voteGame",
+	    value: function voteGame(rating) {
+	      var id = this.props.gameId;
+	      GameActions.voteGame(id, rating);
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
 	        "span",
 	        { className: "game-rating rate-" + this.props.className },
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-1", onClick: this.voteGame },
+	          { href: "javascript:;", className: "star star-1", onClick: function onClick() {
+	              return _this2.voteGame(1);
+	            } },
 	          "1"
 	        ),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-2", onClick: this.voteGame },
+	          { href: "javascript:;", className: "star star-2", onClick: function onClick() {
+	              return _this2.voteGame(2);
+	            } },
 	          "2"
 	        ),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-3", onClick: this.voteGame },
+	          { href: "javascript:;", className: "star star-3", onClick: function onClick() {
+	              return _this2.voteGame(3);
+	            } },
 	          "3"
 	        ),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-4", onClick: this.voteGame },
+	          { href: "javascript:;", className: "star star-4", onClick: function onClick() {
+	              return _this2.voteGame(4);
+	            } },
 	          "4"
 	        ),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", className: "star star-5", onClick: this.voteGame },
+	          { href: "javascript:;", className: "star star-5", onClick: function onClick() {
+	              return _this2.voteGame(5);
+	            } },
 	          "5"
 	        )
 	      );
@@ -28746,28 +28757,23 @@
 	  _inherits(Add, _React$Component);
 
 	  function Add() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
 	    _classCallCheck(this, Add);
 
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Add)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.createGame = function () {
-	      var title = _reactDom2.default.findDOMNode(_this.refs.gameTitle).value;
-	      var kind = _reactDom2.default.findDOMNode(_this.refs.gameType).value;
-
-	      if (title.length >= 1 && kind.length >= 1) {
-	        GameActions.createGame(title, kind);
-	        _this.clearInputs();
-	      }
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Add).apply(this, arguments));
 	  }
 
 	  _createClass(Add, [{
+	    key: "createGame",
+	    value: function createGame() {
+	      var title = _reactDom2.default.findDOMNode(this.refs.gameTitle).value;
+	      var kind = _reactDom2.default.findDOMNode(this.refs.gameType).value;
+
+	      if (title.length >= 1 && kind.length >= 1) {
+	        GameActions.createGame(title, kind);
+	        this.clearInputs();
+	      }
+	    }
+	  }, {
 	    key: "clearInputs",
 	    value: function clearInputs() {
 	      _reactDom2.default.findDOMNode(this.refs.gameTitle).value = "";
@@ -28776,6 +28782,8 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "game-add" },
@@ -28793,7 +28801,9 @@
 	        _react2.default.createElement("input", { ref: "gameType", type: "text", className: "game-add__input" }),
 	        _react2.default.createElement(
 	          "button",
-	          { className: "game-add__button", onClick: this.createGame },
+	          { className: "game-add__button", onClick: function onClick() {
+	              return _this2.createGame();
+	            } },
 	          "Create"
 	        )
 	      );

@@ -5,7 +5,7 @@ import GameStore from "../stores/GameStore";
 
 class Add extends React.Component {
 
-  createGame = () => {
+  createGame() {
     let title = ReactDOM.findDOMNode(this.refs.gameTitle).value;
     let kind = ReactDOM.findDOMNode(this.refs.gameType).value;
 
@@ -27,7 +27,7 @@ class Add extends React.Component {
         <input ref="gameTitle" type="text" className="game-add__input" />
         <label className="game-add__label">Type</label>
         <input ref="gameType" type="text" className="game-add__input" />
-        <button className="game-add__button" onClick={this.createGame}>Create</button>
+        <button className="game-add__button" onClick={() => this.createGame()}>Create</button>
       </div>
     )
   }

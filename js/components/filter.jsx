@@ -4,9 +4,7 @@ import * as GameActions from "../actions/GameActions";
 
 class Filter extends Component {
 
-  filterBy = (e) => {
-    let category = e.target.attributes.getNamedItem('data-category').value;
-    let value = e.target.attributes.getNamedItem('data-value').value;
+  filterBy(category, value) {
     GameActions.filterGame(category, value);
   }
 
@@ -16,7 +14,7 @@ class Filter extends Component {
     const TypeList = typeList.map((item, i) => {
       return (
         <li key={i}>
-          <Link to={"/filter/Type/" + item.key} onClick={this.filterBy} data-category="type" data-value={item.key}>
+          <Link to={"/filter/Type/" + item.key} onClick={() => this.filterBy('type', item.key)} activeClassName="active">
             {item.key} (<span>{item.value}</span>)
           </Link>
         </li>
@@ -26,7 +24,7 @@ class Filter extends Component {
     const RatingList = ratingList.map((item, i) => {
       return (
         <li key={i}>
-          <Link to={"/filter/Rating/" + item.key} onClick={this.filterBy} data-category="rating" data-value={item.key}>
+          <Link to={"/filter/Rating/" + item.key} onClick={() => this.filterBy('rating', item.key)} activeClassName="active">
             {item.key} Stars (<span>{item.value}</span>)
           </Link>
         </li>
@@ -55,7 +53,7 @@ class Filter extends Component {
         </div>
 
         <div className="all filter-category">
-          <Link to="/" onClick={this.filterBy} data-category="all" data-value="all" className="filter-title">All</Link>
+          <Link to="/" onClick={() => this.filterBy('all', null)} className="filter-title" activeClassName="active">All</Link>
         </div>
       </div>
     )

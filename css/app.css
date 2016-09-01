@@ -1,10 +1,11 @@
 .container {
-  width: 1000px;
+  width: 877px;
   margin: 20px auto;
+  font-size: 14px;
 }
 
 .aside {
-  width: 223px;
+  width: 200px;
   float: left;
   padding: 10px;
   border: 1px solid #888888;
@@ -13,7 +14,7 @@
 }
 
 .content{
-  width: 750px;
+  width: 650px;
   float: right;
 }
 
@@ -21,12 +22,33 @@
 
 }
 
+.filter-category ul{
+  margin: 10px 10px 10px 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.filter-category ul li a, .filter-title a{
+  color: #333333;
+  text-decoration: none;
+}
+
+.filter-category ul li a.active{
+  color: #ff0000;
+}
+
 .filter-title {
+  color: #333333;
+  text-decoration: none;
   display: block;
   padding: 10px;
   border: 1px solid #888888;
   margin: 0 0 5px 0;
   background: #a3be8c;
+}
+
+.filter-title.active {
+  color: #ff0000;
 }
 
 .game-sort {
