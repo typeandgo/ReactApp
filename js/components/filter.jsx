@@ -1,34 +1,8 @@
 import React, {Component, PropTypes} from "react";
 import {Link} from "react-router";
-import GameStore from "../stores/GameStore";
 import * as GameActions from "../actions/GameActions";
 
 class Filter extends Component {
-
-  constructor() {
-    super();
-    this.filterList = this.filterList.bind(this);
-    this.state = {
-      typeList: GameStore.getByType(),
-      ratingList: GameStore.getByRating()
-    }
-  }
-
-  componentWillMount() {
-    GameStore.filterGame(this.props.filterCategory, this.props.filterValue);
-    GameStore.on("change", this.filterList);
-  }
-
-  componentWillUnmount() {
-    GameStore.removeListener("change", this.filterList);
-  }
-
-  filterList() {
-    this.setState({
-      typeList: GameStore.getByType(),
-      ratingList: GameStore.getByRating()
-    })
-  }
 
   filterBy = (e) => {
     let category = e.target.attributes.getNamedItem('data-category').value;
@@ -37,8 +11,9 @@ class Filter extends Component {
   }
 
   render() {
+    const {typeList, ratingList} = this.props
 
-    const TypeList = this.state.typeList.map((item, i) => {
+    const TypeList = typeList.map((item, i) => {
       return (
         <li key={i}>
           <Link to={"/filter/Type/" + item.key} onClick={this.filterBy} data-category="type" data-value={item.key}>
@@ -48,7 +23,7 @@ class Filter extends Component {
       )
     });
 
-    const RatingList = this.state.ratingList.map((item, i) => {
+    const RatingList = ratingList.map((item, i) => {
       return (
         <li key={i}>
           <Link to={"/filter/Rating/" + item.key} onClick={this.filterBy} data-category="rating" data-value={item.key}>

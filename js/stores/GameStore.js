@@ -50,10 +50,8 @@ class GameStore extends EventEmitter {
         rating: 2
       }
     ];
-
     this.filteredGameList = this.gameList;
-
-    this.sortDirection = true; // true: increase, false: decrease
+    this.sortDirection = true;
   }
 
   createGame(title, kind) {
@@ -64,24 +62,25 @@ class GameStore extends EventEmitter {
       type: kind,
       rating: 1
     });
-    this.filteredGameList = this.gameList;
     this.emit("change");
   }
 
   deleteGame(id) {
     this.gameList = this.gameList.filter(game => game.id != id);
-    this.filteredGameList = this.gameList;
+    this.filteredGameList = this.filteredGameList.filter(game => game.id != id);
     this.emit("change");
   }
 
   getAllGames() {
+    let data = (this.filteredGameList.length > 0) ? this.filteredGameList : this.gameList;
+
     switch(this.sortDirection) {
       case true: {
-        return this.filteredGameList = this.sortIncrease();
+        return data = this.sortIncrease(data);
         break;
       }
       case false: {
-        return this.filteredGameList = this.sortDecrease();
+        return data = this.sortDecrease(data);
         break;
       }
     }
@@ -110,6 +109,9 @@ class GameStore extends EventEmitter {
           break;
         }
       }
+    }else {
+      this.filteredGameList = this.gameList;
+      this.emit("change");
     }
   }
 
@@ -126,7 +128,7 @@ class GameStore extends EventEmitter {
       categoryList.push(item);
     }
 
-    return categoryList;
+    return this.sortAtoZ(categoryList);
   }
 
   getByRating() {
@@ -151,15 +153,21 @@ class GameStore extends EventEmitter {
     this.emit("change");
   }
 
-  sortIncrease() {
-    return this.filteredGameList.sort(function(a,b) {
+  sortIncrease(data) {
+    return data.sort(function(a,b) {
       return (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
     });
   }
 
-  sortDecrease() {
-    return this.filteredGameList.sort(function(a,b) {
+  sortDecrease(data) {
+    return data.sort(function(a,b) {
       return (b.rating > a.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
+    });
+  }
+
+  sortAtoZ(data) {
+    return data.sort(function(a,b) {
+      return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0)
     });
   }
 
@@ -168,12 +176,12 @@ class GameStore extends EventEmitter {
 
     switch(direction) {
       case true: {
-        this.filteredGameList = this.sortIncrease();
+        this.gameList = this.sortIncrease(this.gameList);
         this.emit('change');
         break;
       }
       case false: {
-        this.filteredGameList = this.sortDecrease();
+        this.gameList = this.sortDecrease(this.gameList);
         this.emit('change');
         break;
       }

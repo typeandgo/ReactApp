@@ -27086,6 +27086,14 @@
 
 	var _reactRouter = __webpack_require__(175);
 
+	var _GameStore = __webpack_require__(240);
+
+	var _GameStore2 = _interopRequireDefault(_GameStore);
+
+	var _GameActions = __webpack_require__(246);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
 	var _filter = __webpack_require__(239);
 
 	var _filter2 = _interopRequireDefault(_filter);
@@ -27093,6 +27101,8 @@
 	var _list = __webpack_require__(247);
 
 	var _list2 = _interopRequireDefault(_list);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27108,22 +27118,63 @@
 	  function App() {
 	    _classCallCheck(this, App);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(App).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this));
+
+	    _this.getGames = _this.getGames.bind(_this);
+	    _this.state = {
+	      gameList: _GameStore2.default.getAllGames(),
+	      typeList: _GameStore2.default.getByType(),
+	      ratingList: _GameStore2.default.getByRating()
+	    };
+	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: "componentWillMount",
+	    value: function componentWillMount() {
+	      GameActions.filterGame(this.props.filterCategory, this.props.filterValue);
+	      _GameStore2.default.on("change", this.getGames);
+	    }
+	  }, {
+	    key: "componentWillUnmount",
+	    value: function componentWillUnmount() {
+	      _GameStore2.default.removeListener("change", this.getGames);
+	    }
+	  }, {
+	    key: "getGames",
+	    value: function getGames() {
+	      this.setState({
+	        gameList: _GameStore2.default.getAllGames(),
+	        typeList: _GameStore2.default.getByType(),
+	        ratingList: _GameStore2.default.getByRating()
+	      });
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      var _props$params = this.props.params;
 	      var filterCategory = _props$params.filterCategory;
 	      var filterValue = _props$params.filterValue;
+	      var _state = this.state;
+	      var gameList = _state.gameList;
+	      var typeList = _state.typeList;
+	      var ratingList = _state.ratingList;
 
 
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "container" },
-	        _react2.default.createElement(_filter2.default, { filterCategory: filterCategory, filterValue: filterValue }),
-	        _react2.default.createElement(_list2.default, { filterCategory: filterCategory, filterValue: filterValue })
+	        _react2.default.createElement(_filter2.default, {
+	          typeList: typeList,
+	          ratingList: ratingList,
+	          filterCategory: filterCategory,
+	          filterValue: filterValue
+	        }),
+	        _react2.default.createElement(_list2.default, {
+	          gameList: gameList,
+	          filterCategory: filterCategory,
+	          filterValue: filterValue
+	        })
 	      );
 	    }
 	  }]);
@@ -27151,10 +27202,6 @@
 
 	var _reactRouter = __webpack_require__(175);
 
-	var _GameStore = __webpack_require__(240);
-
-	var _GameStore2 = _interopRequireDefault(_GameStore);
-
 	var _GameActions = __webpack_require__(246);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
@@ -27173,49 +27220,34 @@
 	  _inherits(Filter, _Component);
 
 	  function Filter() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
 	    _classCallCheck(this, Filter);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Filter).call(this));
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
 
-	    _this.filterBy = function (e) {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Filter)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.filterBy = function (e) {
 	      var category = e.target.attributes.getNamedItem('data-category').value;
 	      var value = e.target.attributes.getNamedItem('data-value').value;
 	      GameActions.filterGame(category, value);
-	    };
-
-	    _this.filterList = _this.filterList.bind(_this);
-	    _this.state = {
-	      typeList: _GameStore2.default.getByType(),
-	      ratingList: _GameStore2.default.getByRating()
-	    };
-	    return _this;
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Filter, [{
-	    key: "componentWillMount",
-	    value: function componentWillMount() {
-	      _GameStore2.default.filterGame(this.props.filterCategory, this.props.filterValue);
-	      _GameStore2.default.on("change", this.filterList);
-	    }
-	  }, {
-	    key: "componentWillUnmount",
-	    value: function componentWillUnmount() {
-	      _GameStore2.default.removeListener("change", this.filterList);
-	    }
-	  }, {
-	    key: "filterList",
-	    value: function filterList() {
-	      this.setState({
-	        typeList: _GameStore2.default.getByType(),
-	        ratingList: _GameStore2.default.getByRating()
-	      });
-	    }
-	  }, {
 	    key: "render",
 	    value: function render() {
 	      var _this2 = this;
 
-	      var TypeList = this.state.typeList.map(function (item, i) {
+	      var _props = this.props;
+	      var typeList = _props.typeList;
+	      var ratingList = _props.ratingList;
+
+
+	      var TypeList = typeList.map(function (item, i) {
 	        return _react2.default.createElement(
 	          "li",
 	          { key: i },
@@ -27234,7 +27266,7 @@
 	        );
 	      });
 
-	      var RatingList = this.state.ratingList.map(function (item, i) {
+	      var RatingList = ratingList.map(function (item, i) {
 	        return _react2.default.createElement(
 	          "li",
 	          { key: i },
@@ -27375,10 +27407,8 @@
 	      type: "Racing",
 	      rating: 2
 	    }];
-
 	    _this.filteredGameList = _this.gameList;
-
-	    _this.sortDirection = true; // true: increase, false: decrease
+	    _this.sortDirection = true;
 	    return _this;
 	  }
 
@@ -27392,7 +27422,6 @@
 	        type: kind,
 	        rating: 1
 	      });
-	      this.filteredGameList = this.gameList;
 	      this.emit("change");
 	    }
 	  }, {
@@ -27401,21 +27430,25 @@
 	      this.gameList = this.gameList.filter(function (game) {
 	        return game.id != id;
 	      });
-	      this.filteredGameList = this.gameList;
+	      this.filteredGameList = this.filteredGameList.filter(function (game) {
+	        return game.id != id;
+	      });
 	      this.emit("change");
 	    }
 	  }, {
 	    key: "getAllGames",
 	    value: function getAllGames() {
+	      var data = this.filteredGameList.length > 0 ? this.filteredGameList : this.gameList;
+
 	      switch (this.sortDirection) {
 	        case true:
 	          {
-	            return this.filteredGameList = this.sortIncrease();
+	            return data = this.sortIncrease(data);
 	            break;
 	          }
 	        case false:
 	          {
-	            return this.filteredGameList = this.sortDecrease();
+	            return data = this.sortDecrease(data);
 	            break;
 	          }
 	      }
@@ -27448,6 +27481,9 @@
 	              break;
 	            }
 	        }
+	      } else {
+	        this.filteredGameList = this.gameList;
+	        this.emit("change");
 	      }
 	    }
 	  }, {
@@ -27467,7 +27503,7 @@
 	        categoryList.push(item);
 	      }
 
-	      return categoryList;
+	      return this.sortAtoZ(categoryList);
 	    }
 	  }, {
 	    key: "getByRating",
@@ -27499,16 +27535,23 @@
 	    }
 	  }, {
 	    key: "sortIncrease",
-	    value: function sortIncrease() {
-	      return this.filteredGameList.sort(function (a, b) {
+	    value: function sortIncrease(data) {
+	      return data.sort(function (a, b) {
 	        return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
 	      });
 	    }
 	  }, {
 	    key: "sortDecrease",
-	    value: function sortDecrease() {
-	      return this.filteredGameList.sort(function (a, b) {
+	    value: function sortDecrease(data) {
+	      return data.sort(function (a, b) {
 	        return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	      });
+	    }
+	  }, {
+	    key: "sortAtoZ",
+	    value: function sortAtoZ(data) {
+	      return data.sort(function (a, b) {
+	        return a.key > b.key ? 1 : b.key > a.key ? -1 : 0;
 	      });
 	    }
 	  }, {
@@ -27519,13 +27562,13 @@
 	      switch (direction) {
 	        case true:
 	          {
-	            this.filteredGameList = this.sortIncrease();
+	            this.gameList = this.sortIncrease(this.gameList);
 	            this.emit('change');
 	            break;
 	          }
 	        case false:
 	          {
-	            this.filteredGameList = this.sortDecrease();
+	            this.gameList = this.sortDecrease(this.gameList);
 	            this.emit('change');
 	            break;
 	          }
@@ -28292,6 +28335,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _GameActions = __webpack_require__(246);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
 	var _item = __webpack_require__(248);
 
 	var _item2 = _interopRequireDefault(_item);
@@ -28304,9 +28351,7 @@
 
 	var _add2 = _interopRequireDefault(_add);
 
-	var _GameStore = __webpack_require__(240);
-
-	var _GameStore2 = _interopRequireDefault(_GameStore);
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28322,37 +28367,21 @@
 	  function List() {
 	    _classCallCheck(this, List);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(List).call(this));
-
-	    _this.getGames = _this.getGames.bind(_this);
-	    _this.state = {
-	      gameList: _GameStore2.default.getAllGames()
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(List).apply(this, arguments));
 	  }
 
 	  _createClass(List, [{
-	    key: "getGames",
-	    value: function getGames() {
-	      this.setState({
-	        gameList: _GameStore2.default.getAllGames()
-	      });
-	    }
-	  }, {
 	    key: "componentWillMount",
 	    value: function componentWillMount() {
-	      _GameStore2.default.on("change", this.getGames);
-	    }
-	  }, {
-	    key: "componentWillUnmount",
-	    value: function componentWillUnmount() {
-	      _GameStore2.default.removeListener("change", this.getGames);
+	      GameActions.filterGame(this.props.filterCategory, this.props.filterValue);
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      var gameList = this.state.gameList;
-
+	      var _props = this.props;
+	      var gameList = _props.gameList;
+	      var filterCategory = _props.filterCategory;
+	      var filterValue = _props.filterValue;
 
 	      var GameList = gameList.map(function (item, i) {
 	        return _react2.default.createElement(_item2.default, _extends({ key: i }, item));
@@ -28361,7 +28390,7 @@
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "content" },
-	        _react2.default.createElement(_sort2.default, { filterCategory: this.props.filterCategory, filterValue: this.props.filterValue }),
+	        _react2.default.createElement(_sort2.default, { filterCategory: filterCategory, filterValue: filterValue }),
 	        _react2.default.createElement(
 	          "div",
 	          { className: "game-list" },
@@ -28460,7 +28489,7 @@
 	        _react2.default.createElement(_rating2.default, { className: this.props.rating, gameId: this.props.id }),
 	        _react2.default.createElement(
 	          "a",
-	          { href: "javascript:;", onClick: this.deleteGame, className: "game-remove" },
+	          { href: "javascript:;", onClick: this.deleteGame.bind(this), className: "game-remove" },
 	          "x"
 	        )
 	      );
