@@ -26,7 +26,7 @@ class Sort extends React.Component {
     })
   }
 
-  sortGame = () => {
+  sortGame() {
     GameActions.sortGame(!this.state.sort);
   }
 
@@ -44,7 +44,7 @@ class Sort extends React.Component {
         { FilterInfo }
 
         <span className="game-sort__right-text">
-          Sort by: <a href="javascript:;" onClick={this.sortGame}>{text}</a>
+          Sort by: <a href="javascript:;" onClick={() => this.sortGame()}>{text}</a>
         </span>
       </div>
     )

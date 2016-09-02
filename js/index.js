@@ -27371,40 +27371,46 @@
 
 	    _this.gameList = [{
 	      id: 1,
-	      title: "B Video Game Lorem Ipsum 1",
+	      title: "Super Mario",
 	      img: "/img/mario.jpg",
 	      type: "Shooter",
 	      rating: 2
 	    }, {
 	      id: 2,
-	      title: "A Video Game Lorem Ipsum 2",
+	      title: "Worms",
 	      img: "/img/worms.jpg",
 	      type: "Strategy",
 	      rating: 3
 	    }, {
 	      id: 3,
-	      title: "C Video Game Lorem Ipsum 3",
+	      title: "Bomberman",
 	      img: "/img/bomberman.jpg",
 	      type: "Racing",
 	      rating: 4
 	    }, {
 	      id: 4,
-	      title: "D Video Game Lorem Ipsum 4",
+	      title: "Pokemon",
 	      img: "/img/pikachu.png",
 	      type: "Action",
 	      rating: 1
 	    }, {
 	      id: 5,
-	      title: "E Video Game Lorem Ipsum 5",
+	      title: "Sonic",
 	      img: "/img/sonic.png",
 	      type: "Racing",
 	      rating: 5
 	    }, {
 	      id: 6,
-	      title: "F Video Game Lorem Ipsum 6",
-	      img: "/img/tombrider.jpg",
+	      title: "Space Invader",
+	      img: "/img/space-invader.png",
 	      type: "Racing",
 	      rating: 2
+	    }, {
+	      id: 7,
+	      title: "Street Fighter",
+	      img: "/img/street-fighter.png",
+	      type: "Action",
+	      rating: 4
 	    }];
 	    _this.filteredGameList = _this.gameList;
 	    _this.sortDirection = true;
@@ -28568,35 +28574,35 @@
 	          { href: "javascript:;", className: "star star-1", onClick: function onClick() {
 	              return _this2.voteGame(1);
 	            } },
-	          "1"
+	          "☆"
 	        ),
 	        _react2.default.createElement(
 	          "a",
 	          { href: "javascript:;", className: "star star-2", onClick: function onClick() {
 	              return _this2.voteGame(2);
 	            } },
-	          "2"
+	          "☆"
 	        ),
 	        _react2.default.createElement(
 	          "a",
 	          { href: "javascript:;", className: "star star-3", onClick: function onClick() {
 	              return _this2.voteGame(3);
 	            } },
-	          "3"
+	          "☆"
 	        ),
 	        _react2.default.createElement(
 	          "a",
 	          { href: "javascript:;", className: "star star-4", onClick: function onClick() {
 	              return _this2.voteGame(4);
 	            } },
-	          "4"
+	          "☆"
 	        ),
 	        _react2.default.createElement(
 	          "a",
 	          { href: "javascript:;", className: "star star-5", onClick: function onClick() {
 	              return _this2.voteGame(5);
 	            } },
-	          "5"
+	          "☆"
 	        )
 	      );
 	    }
@@ -28649,10 +28655,6 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Sort).call(this));
 
-	    _this.sortGame = function () {
-	      GameActions.sortGame(!_this.state.sort);
-	    };
-
 	    _this.getSortDirection = _this.getSortDirection.bind(_this);
 	    _this.state = {
 	      sort: _GameStore2.default.getSortDirection()
@@ -28678,8 +28680,14 @@
 	      });
 	    }
 	  }, {
+	    key: "sortGame",
+	    value: function sortGame() {
+	      GameActions.sortGame(!this.state.sort);
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
+	      var _this2 = this;
 
 	      var text = this.state.sort ? "increase" : "decrease";
 
@@ -28702,7 +28710,9 @@
 	          "Sort by: ",
 	          _react2.default.createElement(
 	            "a",
-	            { href: "javascript:;", onClick: this.sortGame },
+	            { href: "javascript:;", onClick: function onClick() {
+	                return _this2.sortGame();
+	              } },
 	            text
 	          )
 	        )
