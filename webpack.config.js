@@ -8,9 +8,10 @@ var config = {
         filename: 'index.js',
     },
 
-    devServer: {
-        inline: true,
-        port: 7000
+    externals: {
+      'cheerio': 'window',
+      'react/lib/ExecutionEnvironment': true,
+      'react/lib/ReactContext': true,
     },
 
     module: {
