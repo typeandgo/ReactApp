@@ -57,8 +57,8 @@ class GameStore extends EventEmitter {
         rating: 4
       }
     ];
-    this.filteredGameList = this.gameList;
-    this.sortDirection = true;
+    this.filteredGameList = this.sortIncrease(this.gameList);
+    this.sortDirection = true;  
   }
 
   createGame(title, kind) {
@@ -79,46 +79,34 @@ class GameStore extends EventEmitter {
   }
 
   getAllGames() {
-    let data = (this.filteredGameList.length > 0) ? this.filteredGameList : this.gameList;
-
-    switch(this.sortDirection) {
-      case true: {
-        return data = this.sortIncrease(data);
-        break;
-      }
-      case false: {
-        return data = this.sortDecrease(data);
-        break;
-      }
-    }
+    return this.filteredGameList;
   }
 
   filterGame(category, value){
     if(category) {
-      switch(category.toLowerCase()) {
+      const fiterBy = category.toLowerCase();
+
+      switch(fiterBy) {
         case 'type': {
           this.filteredGameList = this.gameList.filter(function(item){
             return (item.type == value);
           });
-          this.emit("change");
+          this.sortGame(this.sortDirection);
           break;
         }
         case 'rating': {
           this.filteredGameList = this.gameList.filter(function(item){
             return (item.rating == value);
           });
-          this.emit("change");
+          this.sortGame(this.sortDirection);
           break;
         }
         case 'all': {
           this.filteredGameList = this.gameList;
-          this.emit("change");
+          this.sortGame(this.sortDirection);
           break;
         }
       }
-    }else {
-      this.filteredGameList = this.gameList;
-      this.emit("change");
     }
   }
 
@@ -183,12 +171,12 @@ class GameStore extends EventEmitter {
 
     switch(direction) {
       case true: {
-        this.gameList = this.sortIncrease(this.gameList);
+        this.filteredGameList = this.sortIncrease(this.filteredGameList);
         this.emit('change');
         break;
       }
       case false: {
-        this.gameList = this.sortDecrease(this.gameList);
+        this.filteredGameList = this.sortDecrease(this.filteredGameList);
         this.emit('change');
         break;
       }

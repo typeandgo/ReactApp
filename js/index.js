@@ -27086,15 +27086,15 @@
 
 	var _reactRouter = __webpack_require__(175);
 
-	var _GameStore = __webpack_require__(240);
+	var _GameStore = __webpack_require__(239);
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
-	var _GameActions = __webpack_require__(246);
+	var _GameActions = __webpack_require__(245);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _filter = __webpack_require__(239);
+	var _filter = __webpack_require__(246);
 
 	var _filter2 = _interopRequireDefault(_filter);
 
@@ -27196,162 +27196,13 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(1);
+	var _events = __webpack_require__(240);
 
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(175);
-
-	var _GameActions = __webpack_require__(246);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Filter = function (_Component) {
-	  _inherits(Filter, _Component);
-
-	  function Filter() {
-	    _classCallCheck(this, Filter);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Filter).apply(this, arguments));
-	  }
-
-	  _createClass(Filter, [{
-	    key: "filterBy",
-	    value: function filterBy(category, value) {
-	      GameActions.filterGame(category, value);
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      var _this2 = this;
-
-	      var _props = this.props;
-	      var typeList = _props.typeList;
-	      var ratingList = _props.ratingList;
-
-
-	      var TypeList = typeList.map(function (item, i) {
-	        return _react2.default.createElement(
-	          "li",
-	          { key: i },
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: "/filter/Type/" + item.key, onClick: function onClick() {
-	                return _this2.filterBy('type', item.key);
-	              }, activeClassName: "active" },
-	            item.key,
-	            " (",
-	            _react2.default.createElement(
-	              "span",
-	              null,
-	              item.value
-	            ),
-	            ")"
-	          )
-	        );
-	      });
-
-	      var RatingList = ratingList.map(function (item, i) {
-	        return _react2.default.createElement(
-	          "li",
-	          { key: i },
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: "/filter/Rating/" + item.key, onClick: function onClick() {
-	                return _this2.filterBy('rating', item.key);
-	              }, activeClassName: "active" },
-	            item.key,
-	            " Stars (",
-	            _react2.default.createElement(
-	              "span",
-	              null,
-	              item.value
-	            ),
-	            ")"
-	          )
-	        );
-	      });
-
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "aside" },
-	        _react2.default.createElement(
-	          "div",
-	          { className: "by-type filter-category" },
-	          _react2.default.createElement(
-	            "div",
-	            { className: "filter-title" },
-	            "By Type"
-	          ),
-	          _react2.default.createElement(
-	            "ul",
-	            null,
-	            TypeList
-	          )
-	        ),
-	        _react2.default.createElement(
-	          "div",
-	          { className: "by-type filter-category" },
-	          _react2.default.createElement(
-	            "div",
-	            { className: "filter-title" },
-	            "By Rating"
-	          ),
-	          _react2.default.createElement(
-	            "ul",
-	            null,
-	            RatingList
-	          )
-	        ),
-	        _react2.default.createElement(
-	          "div",
-	          { className: "all filter-category" },
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: "/", onClick: function onClick() {
-	                return _this2.filterBy('all', null);
-	              }, className: "filter-title", activeClassName: "active" },
-	            "All"
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Filter;
-	}(_react.Component);
-
-	exports.default = Filter;
-
-/***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _events = __webpack_require__(241);
-
-	var _dispatcher = __webpack_require__(242);
+	var _dispatcher = __webpack_require__(241);
 
 	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
-	var _GameActions = __webpack_require__(246);
+	var _GameActions = __webpack_require__(245);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27412,7 +27263,7 @@
 	      type: "Action",
 	      rating: 4
 	    }];
-	    _this.filteredGameList = _this.gameList;
+	    _this.filteredGameList = _this.sortIncrease(_this.gameList);
 	    _this.sortDirection = true;
 	    return _this;
 	  }
@@ -27443,32 +27294,21 @@
 	  }, {
 	    key: "getAllGames",
 	    value: function getAllGames() {
-	      var data = this.filteredGameList.length > 0 ? this.filteredGameList : this.gameList;
-
-	      switch (this.sortDirection) {
-	        case true:
-	          {
-	            return data = this.sortIncrease(data);
-	            break;
-	          }
-	        case false:
-	          {
-	            return data = this.sortDecrease(data);
-	            break;
-	          }
-	      }
+	      return this.filteredGameList;
 	    }
 	  }, {
 	    key: "filterGame",
 	    value: function filterGame(category, value) {
 	      if (category) {
-	        switch (category.toLowerCase()) {
+	        var fiterBy = category.toLowerCase();
+
+	        switch (fiterBy) {
 	          case 'type':
 	            {
 	              this.filteredGameList = this.gameList.filter(function (item) {
 	                return item.type == value;
 	              });
-	              this.emit("change");
+	              this.sortGame(this.sortDirection);
 	              break;
 	            }
 	          case 'rating':
@@ -27476,19 +27316,16 @@
 	              this.filteredGameList = this.gameList.filter(function (item) {
 	                return item.rating == value;
 	              });
-	              this.emit("change");
+	              this.sortGame(this.sortDirection);
 	              break;
 	            }
 	          case 'all':
 	            {
 	              this.filteredGameList = this.gameList;
-	              this.emit("change");
+	              this.sortGame(this.sortDirection);
 	              break;
 	            }
 	        }
-	      } else {
-	        this.filteredGameList = this.gameList;
-	        this.emit("change");
 	      }
 	    }
 	  }, {
@@ -27567,13 +27404,13 @@
 	      switch (direction) {
 	        case true:
 	          {
-	            this.gameList = this.sortIncrease(this.gameList);
+	            this.filteredGameList = this.sortIncrease(this.filteredGameList);
 	            this.emit('change');
 	            break;
 	          }
 	        case false:
 	          {
-	            this.gameList = this.sortDecrease(this.gameList);
+	            this.filteredGameList = this.sortDecrease(this.filteredGameList);
 	            this.emit('change');
 	            break;
 	          }
@@ -27625,7 +27462,7 @@
 	exports.default = gameStore;
 
 /***/ },
-/* 241 */
+/* 240 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -27933,7 +27770,7 @@
 
 
 /***/ },
-/* 242 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27942,12 +27779,12 @@
 	  value: true
 	});
 
-	var _flux = __webpack_require__(243);
+	var _flux = __webpack_require__(242);
 
 	exports.default = new _flux.Dispatcher();
 
 /***/ },
-/* 243 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27959,11 +27796,11 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 
-	module.exports.Dispatcher = __webpack_require__(244);
+	module.exports.Dispatcher = __webpack_require__(243);
 
 
 /***/ },
-/* 244 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -27985,7 +27822,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var invariant = __webpack_require__(245);
+	var invariant = __webpack_require__(244);
 
 	var _prefix = 'ID_';
 
@@ -28200,7 +28037,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 245 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28255,7 +28092,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 246 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28270,7 +28107,7 @@
 	exports.filterGame = filterGame;
 	exports.sortGame = sortGame;
 
-	var _dispatcher = __webpack_require__(242);
+	var _dispatcher = __webpack_require__(241);
 
 	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
@@ -28323,6 +28160,155 @@
 	}
 
 /***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(175);
+
+	var _GameActions = __webpack_require__(245);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Filter = function (_Component) {
+	  _inherits(Filter, _Component);
+
+	  function Filter() {
+	    _classCallCheck(this, Filter);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Filter).apply(this, arguments));
+	  }
+
+	  _createClass(Filter, [{
+	    key: "filterBy",
+	    value: function filterBy(category, value) {
+	      GameActions.filterGame(category, value);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _this2 = this;
+
+	      var _props = this.props;
+	      var typeList = _props.typeList;
+	      var ratingList = _props.ratingList;
+
+
+	      var TypeList = typeList.map(function (item, i) {
+	        return _react2.default.createElement(
+	          "li",
+	          { key: i },
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: "/filter/Type/" + item.key, onClick: function onClick() {
+	                return _this2.filterBy('type', item.key);
+	              }, activeClassName: "active" },
+	            item.key,
+	            " (",
+	            _react2.default.createElement(
+	              "span",
+	              null,
+	              item.value
+	            ),
+	            ")"
+	          )
+	        );
+	      });
+
+	      var RatingList = ratingList.map(function (item, i) {
+	        return _react2.default.createElement(
+	          "li",
+	          { key: i },
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: "/filter/Rating/" + item.key, onClick: function onClick() {
+	                return _this2.filterBy('rating', item.key);
+	              }, activeClassName: "active" },
+	            item.key,
+	            " Stars (",
+	            _react2.default.createElement(
+	              "span",
+	              null,
+	              item.value
+	            ),
+	            ")"
+	          )
+	        );
+	      });
+
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "aside" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "by-type filter-category" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "filter-title" },
+	            "By Type"
+	          ),
+	          _react2.default.createElement(
+	            "ul",
+	            null,
+	            TypeList
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "by-type filter-category" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "filter-title" },
+	            "By Rating"
+	          ),
+	          _react2.default.createElement(
+	            "ul",
+	            null,
+	            RatingList
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "all filter-category" },
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: "/", onClick: function onClick() {
+	                return _this2.filterBy('all', null);
+	              }, className: "filter-title", activeClassName: "active" },
+	            "All"
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Filter;
+	}(_react.Component);
+
+	exports.default = Filter;
+
+/***/ },
 /* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28340,7 +28326,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(246);
+	var _GameActions = __webpack_require__(245);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
@@ -28435,11 +28421,11 @@
 
 	var _rating2 = _interopRequireDefault(_rating);
 
-	var _GameActions = __webpack_require__(246);
+	var _GameActions = __webpack_require__(245);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _GameStore = __webpack_require__(240);
+	var _GameStore = __webpack_require__(239);
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
@@ -28528,11 +28514,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(246);
+	var _GameActions = __webpack_require__(245);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _GameStore = __webpack_require__(240);
+	var _GameStore = __webpack_require__(239);
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
@@ -28629,11 +28615,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(246);
+	var _GameActions = __webpack_require__(245);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _GameStore = __webpack_require__(240);
+	var _GameStore = __webpack_require__(239);
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
@@ -28745,11 +28731,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _GameActions = __webpack_require__(246);
+	var _GameActions = __webpack_require__(245);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _GameStore = __webpack_require__(240);
+	var _GameStore = __webpack_require__(239);
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
