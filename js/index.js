@@ -27132,7 +27132,6 @@
 	  _createClass(App, [{
 	    key: "componentWillMount",
 	    value: function componentWillMount() {
-	      GameActions.filterGame(this.props.filterCategory, this.props.filterValue);
 	      _GameStore2.default.on("change", this.getGames);
 	    }
 	  }, {

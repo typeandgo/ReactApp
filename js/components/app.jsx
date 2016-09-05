@@ -18,8 +18,7 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount() {
-    GameActions.filterGame(this.props.filterCategory, this.props.filterValue);
+  componentWillMount() {    
     GameStore.on("change", this.getGames);
   }
 
