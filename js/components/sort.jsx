@@ -1,8 +1,8 @@
-import React from "react";
+import React, {Component, PropTypes} from "react";
 import * as GameActions from "../actions/GameActions";
 import GameStore from "../stores/GameStore";
 
-class Sort extends React.Component {
+export default class Sort extends React.Component {
 
   constructor() {
     super();
@@ -36,7 +36,7 @@ class Sort extends React.Component {
 
     let FilterInfo = (this.props.filterCategory) ? (
       <span className="game-sort__left-text">Filter by: {this.props.filterCategory} / {this.props.filterValue}</span>
-    ) : "";
+    ) : <span className="game-sort__left-text">Filter by: All</span>;
 
     return(
       <div className="game-sort">
@@ -51,4 +51,7 @@ class Sort extends React.Component {
   }
 }
 
-export default Sort;
+Sort.propTypes = {
+  filterCategory: PropTypes.string,
+  filterValue: PropTypes.any
+}

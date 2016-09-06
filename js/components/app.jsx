@@ -1,12 +1,11 @@
-import React from "react";
+import React, {Component, PropTypes} from "react";
 import {Link} from "react-router";
 import GameStore from "../stores/GameStore";
-import * as GameActions from "../actions/GameActions";
 import Filter from "../components/filter.jsx";
 import List from "../components/list.jsx";
 
 
-class App extends React.Component {
+export default class App extends React.Component {
 
   constructor() {
     super();
@@ -18,7 +17,7 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount() {    
+  componentWillMount() {
     GameStore.on("change", this.getGames);
   }
 
@@ -58,4 +57,7 @@ class App extends React.Component {
   }
 }
 
-export default App;
+App.propTypes = {
+  filterCategory: PropTypes.string,
+  filterValue: PropTypes.any
+}

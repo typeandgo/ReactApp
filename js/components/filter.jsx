@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {Link} from "react-router";
 import * as GameActions from "../actions/GameActions";
 
-class Filter extends Component {
+export default class Filter extends Component {
 
   filterBy(category, value) {
     GameActions.filterGame(category, value);
@@ -60,4 +60,7 @@ class Filter extends Component {
   }
 }
 
-export default Filter;
+Filter.propTypes = {
+  typeList: PropTypes.array.isRequired,
+  ratingList: PropTypes.array.isRequired
+}

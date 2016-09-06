@@ -1,9 +1,8 @@
-import React from "react";
+import React, {Component, PropTypes} from "react";
 import Rating from "../components/rating.jsx";
 import * as GameActions from "../actions/GameActions";
-import GameStore from "../stores/GameStore";
 
-class Item extends React.Component {
+export default class Item extends React.Component {
 
   deleteGame(id) {
     GameActions.deleteGame(id);
@@ -23,4 +22,10 @@ class Item extends React.Component {
   }
 }
 
-export default Item;
+Item.propTypes = {
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired
+}

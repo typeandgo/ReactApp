@@ -1,8 +1,7 @@
-import React from "react";
+import React, {Component, PropTypes} from "react";
 import * as GameActions from "../actions/GameActions";
-import GameStore from "../stores/GameStore";
 
-class Rating extends React.Component {
+export default class Rating extends React.Component {
 
   voteGame(rating) {
     const id = this.props.gameId;
@@ -22,4 +21,7 @@ class Rating extends React.Component {
   }
 }
 
-export default Rating;
+Rating.propTypes = {
+  id: PropTypes.number,
+  className: PropTypes.number
+}

@@ -1,9 +1,8 @@
-import React from "react";
+import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import * as GameActions from "../actions/GameActions";
-import GameStore from "../stores/GameStore";
 
-class Add extends React.Component {
+export default class Add extends React.Component {
 
   createGame() {
     let title = ReactDOM.findDOMNode(this.refs.gameTitle).value;
@@ -32,5 +31,3 @@ class Add extends React.Component {
     )
   }
 }
-
-export default Add;

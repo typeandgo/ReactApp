@@ -27035,10 +27035,6 @@
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
-	var _GameActions = __webpack_require__(242);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
 	var _filter = __webpack_require__(243);
 
 	var _filter2 = _interopRequireDefault(_filter);
@@ -27046,8 +27042,6 @@
 	var _list = __webpack_require__(244);
 
 	var _list2 = _interopRequireDefault(_list);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -27143,6 +27137,12 @@
 	}(_react2["default"].Component);
 
 	exports["default"] = App;
+
+
+	App.propTypes = {
+	  filterCategory: _react.PropTypes.string,
+	  filterValue: _react.PropTypes.any
+	};
 
 /***/ },
 /* 236 */
@@ -28340,6 +28340,12 @@
 
 	exports["default"] = Filter;
 
+
+	Filter.propTypes = {
+	  typeList: _react.PropTypes.array.isRequired,
+	  ratingList: _react.PropTypes.array.isRequired
+	};
+
 /***/ },
 /* 244 */
 /***/ function(module, exports, __webpack_require__) {
@@ -28441,6 +28447,13 @@
 
 	exports["default"] = List;
 
+
+	List.propTypes = {
+	  gameList: _react.PropTypes.array.isRequired,
+	  filterCategory: _react.PropTypes.string,
+	  filterValue: _react.PropTypes.any
+	};
+
 /***/ },
 /* 245 */
 /***/ function(module, exports, __webpack_require__) {
@@ -28464,10 +28477,6 @@
 	var _GameActions = __webpack_require__(242);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
-
-	var _GameStore = __webpack_require__(236);
-
-	var _GameStore2 = _interopRequireDefault(_GameStore);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
@@ -28550,6 +28559,15 @@
 
 	exports["default"] = Item;
 
+
+	Item.propTypes = {
+	  id: _react.PropTypes.number.isRequired,
+	  title: _react.PropTypes.string.isRequired,
+	  img: _react.PropTypes.string.isRequired,
+	  type: _react.PropTypes.string.isRequired,
+	  rating: _react.PropTypes.number.isRequired
+	};
+
 /***/ },
 /* 246 */
 /***/ function(module, exports, __webpack_require__) {
@@ -28569,10 +28587,6 @@
 	var _GameActions = __webpack_require__(242);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
-
-	var _GameStore = __webpack_require__(236);
-
-	var _GameStore2 = _interopRequireDefault(_GameStore);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
@@ -28679,6 +28693,12 @@
 
 	exports["default"] = Rating;
 
+
+	Rating.propTypes = {
+	  id: _react.PropTypes.number,
+	  className: _react.PropTypes.number
+	};
+
 /***/ },
 /* 247 */
 /***/ function(module, exports, __webpack_require__) {
@@ -28781,7 +28801,11 @@
 	          this.props.filterCategory,
 	          " / ",
 	          this.props.filterValue
-	        ) : "";
+	        ) : _react2["default"].createElement(
+	          "span",
+	          { className: "game-sort__left-text" },
+	          "Filter by: All"
+	        );
 
 	        return _react2["default"].createElement(
 	          "div",
@@ -28815,6 +28839,12 @@
 
 	exports["default"] = Sort;
 
+
+	Sort.propTypes = {
+	  filterCategory: _react.PropTypes.string,
+	  filterValue: _react.PropTypes.any
+	};
+
 /***/ },
 /* 248 */
 /***/ function(module, exports, __webpack_require__) {
@@ -28838,10 +28868,6 @@
 	var _GameActions = __webpack_require__(242);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
-
-	var _GameStore = __webpack_require__(236);
-
-	var _GameStore2 = _interopRequireDefault(_GameStore);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 

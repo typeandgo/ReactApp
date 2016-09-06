@@ -18,5 +18,4 @@ describe("<Add />", () => {
     let wrapper = shallow(<Add />);
     expect(wrapper.find('button')).to.have.length(1);
   });
-
 });
