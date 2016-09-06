@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {Link} from "react-router";
 import * as GameActions from "../actions/GameActions";
+import * as Helpers from "../helpers/toTitleCase";
 
 export default class Filter extends Component {
 
@@ -15,7 +16,7 @@ export default class Filter extends Component {
       return (
         <li key={i}>
           <Link to={"/filter/Type/" + item.key} onClick={() => this.filterBy('type', item.key)} activeClassName="active">
-            {item.key} (<span>{item.value}</span>)
+            {Helpers.toTitleCase(item.key)} (<span>{item.value}</span>)
           </Link>
         </li>
       )

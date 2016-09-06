@@ -27039,7 +27039,7 @@
 
 	var _filter2 = _interopRequireDefault(_filter);
 
-	var _list = __webpack_require__(244);
+	var _list = __webpack_require__(245);
 
 	var _list2 = _interopRequireDefault(_list);
 
@@ -27184,47 +27184,49 @@
 	      id: 1,
 	      title: "Super Mario",
 	      img: "/img/mario.jpg",
-	      type: "Shooter",
+	      type: "shooter",
 	      rating: 2
 	    }, {
 	      id: 2,
 	      title: "Worms",
 	      img: "/img/worms.jpg",
-	      type: "Strategy",
+	      type: "strategy",
 	      rating: 3
 	    }, {
 	      id: 3,
 	      title: "Bomberman",
 	      img: "/img/bomberman.jpg",
-	      type: "Racing",
+	      type: "racing",
 	      rating: 4
 	    }, {
 	      id: 4,
 	      title: "Pokemon",
 	      img: "/img/pikachu.png",
-	      type: "Action",
+	      type: "action",
 	      rating: 1
 	    }, {
 	      id: 5,
 	      title: "Sonic",
 	      img: "/img/sonic.png",
-	      type: "Racing",
+	      type: "racing",
 	      rating: 5
 	    }, {
 	      id: 6,
 	      title: "Space Invader",
 	      img: "/img/space-invader.png",
-	      type: "Racing",
+	      type: "racing",
 	      rating: 2
 	    }, {
 	      id: 7,
 	      title: "Street Fighter",
 	      img: "/img/street-fighter.png",
-	      type: "Action",
+	      type: "action",
 	      rating: 4
 	    }];
 	    _this.filteredGameList = _this.sortIncrease(_this.gameList);
 	    _this.sortDirection = true;
+	    _this.filterCategory = 'all';
+	    _this.filterValue = null;
 	    return _this;
 	  }
 
@@ -27239,7 +27241,7 @@
 	          type: kind,
 	          rating: 1
 	        });
-	        this.emit("change");
+	        this.filterGame(this.filterCategory, this.filterValue);
 	      }
 
 	      return createGame;
@@ -27274,6 +27276,8 @@
 	      function filterGame(category, value) {
 	        if (category) {
 	          var fiterBy = category.toLowerCase();
+	          this.filterCategory = fiterBy;
+	          this.filterValue = value;
 
 	          switch (fiterBy) {
 	            case 'type':
@@ -28193,6 +28197,10 @@
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
+	var _toTitleCase = __webpack_require__(244);
+
+	var Helpers = _interopRequireWildcard(_toTitleCase);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -28245,7 +28253,7 @@
 
 	                  return onClick;
 	                }(), activeClassName: "active" },
-	              item.key,
+	              Helpers.toTitleCase(item.key),
 	              " (",
 	              _react2["default"].createElement(
 	                "span",
@@ -28348,6 +28356,22 @@
 
 /***/ },
 /* 244 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.toTitleCase = toTitleCase;
+	function toTitleCase(str) {
+	    return str.replace(/\w\S*/g, function (txt) {
+	        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+	    });
+	}
+
+/***/ },
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28368,15 +28392,15 @@
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _item = __webpack_require__(245);
+	var _item = __webpack_require__(246);
 
 	var _item2 = _interopRequireDefault(_item);
 
-	var _sort = __webpack_require__(247);
+	var _sort = __webpack_require__(248);
 
 	var _sort2 = _interopRequireDefault(_sort);
 
-	var _add = __webpack_require__(248);
+	var _add = __webpack_require__(249);
 
 	var _add2 = _interopRequireDefault(_add);
 
@@ -28455,7 +28479,7 @@
 	};
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28470,13 +28494,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _rating = __webpack_require__(246);
+	var _rating = __webpack_require__(247);
 
 	var _rating2 = _interopRequireDefault(_rating);
 
 	var _GameActions = __webpack_require__(242);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
+
+	var _toTitleCase = __webpack_require__(244);
+
+	var Helpers = _interopRequireWildcard(_toTitleCase);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
@@ -28532,7 +28560,7 @@
 	            _react2["default"].createElement(
 	              "span",
 	              { className: "game-type" },
-	              type
+	              Helpers.toTitleCase(type)
 	            )
 	          ),
 	          _react2["default"].createElement(_rating2["default"], { className: rating, gameId: id }),
@@ -28569,7 +28597,7 @@
 	};
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28700,7 +28728,7 @@
 	};
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28846,7 +28874,7 @@
 	};
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28891,9 +28919,10 @@
 	  _createClass(Add, [{
 	    key: "createGame",
 	    value: function () {
-	      function createGame() {
+	      function createGame(e) {
+	        e.preventDefault();
 	        var title = _reactDom2["default"].findDOMNode(this.refs.gameTitle).value;
-	        var kind = _reactDom2["default"].findDOMNode(this.refs.gameType).value;
+	        var kind = _reactDom2["default"].findDOMNode(this.refs.gameType).value.toLowerCase();
 
 	        if (title.length >= 1 && kind.length >= 1) {
 	          GameActions.createGame(title, kind);
@@ -28923,27 +28952,31 @@
 	          "div",
 	          { className: "game-add" },
 	          _react2["default"].createElement(
-	            "label",
-	            { className: "game-add__label" },
-	            "Title"
-	          ),
-	          _react2["default"].createElement("input", { ref: "gameTitle", type: "text", className: "game-add__input" }),
-	          _react2["default"].createElement(
-	            "label",
-	            { className: "game-add__label" },
-	            "Type"
-	          ),
-	          _react2["default"].createElement("input", { ref: "gameType", type: "text", className: "game-add__input" }),
-	          _react2["default"].createElement(
-	            "button",
-	            { className: "game-add__button", onClick: function () {
-	                function onClick() {
-	                  return _this2.createGame();
+	            "form",
+	            { onSubmit: function () {
+	                function onSubmit(e) {
+	                  return _this2.createGame(e);
 	                }
 
-	                return onClick;
+	                return onSubmit;
 	              }() },
-	            "Create"
+	            _react2["default"].createElement(
+	              "label",
+	              { className: "game-add__label" },
+	              "Title"
+	            ),
+	            _react2["default"].createElement("input", { ref: "gameTitle", type: "text", className: "game-add__input" }),
+	            _react2["default"].createElement(
+	              "label",
+	              { className: "game-add__label" },
+	              "Type"
+	            ),
+	            _react2["default"].createElement("input", { ref: "gameType", type: "text", className: "game-add__input" }),
+	            _react2["default"].createElement(
+	              "button",
+	              { className: "game-add__button", type: "submit" },
+	              "Create"
+	            )
 	          )
 	        );
 	      }

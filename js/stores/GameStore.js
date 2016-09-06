@@ -11,54 +11,56 @@ class GameStore extends EventEmitter {
         id: 1,
         title: "Super Mario",
         img: "/img/mario.jpg",
-        type: "Shooter",
+        type: "shooter",
         rating: 2
       },
       {
         id: 2,
         title: "Worms",
         img: "/img/worms.jpg",
-        type: "Strategy",
+        type: "strategy",
         rating: 3
       },
       {
         id: 3,
         title: "Bomberman",
         img: "/img/bomberman.jpg",
-        type: "Racing",
+        type: "racing",
         rating: 4
       },
       {
         id: 4,
         title: "Pokemon",
         img: "/img/pikachu.png",
-        type: "Action",
+        type: "action",
         rating: 1
       },
       {
         id: 5,
         title: "Sonic",
         img: "/img/sonic.png",
-        type: "Racing",
+        type: "racing",
         rating: 5
       },
       {
         id: 6,
         title: "Space Invader",
         img: "/img/space-invader.png",
-        type: "Racing",
+        type: "racing",
         rating: 2
       },
       {
         id: 7,
         title: "Street Fighter",
         img: "/img/street-fighter.png",
-        type: "Action",
+        type: "action",
         rating: 4
       }
     ];
     this.filteredGameList = this.sortIncrease(this.gameList);
-    this.sortDirection = true;  
+    this.sortDirection = true;
+    this.filterCategory = 'all';
+    this.filterValue = null;
   }
 
   createGame(title, kind) {
@@ -69,7 +71,7 @@ class GameStore extends EventEmitter {
       type: kind,
       rating: 1
     });
-    this.emit("change");
+    this.filterGame(this.filterCategory, this.filterValue);
   }
 
   deleteGame(id) {
@@ -85,6 +87,8 @@ class GameStore extends EventEmitter {
   filterGame(category, value){
     if(category) {
       const fiterBy = category.toLowerCase();
+      this.filterCategory = fiterBy;
+      this.filterValue = value;
 
       switch(fiterBy) {
         case 'type': {

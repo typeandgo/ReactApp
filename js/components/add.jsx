@@ -4,9 +4,10 @@ import * as GameActions from "../actions/GameActions";
 
 export default class Add extends React.Component {
 
-  createGame() {
+  createGame(e) {
+    e.preventDefault();
     let title = ReactDOM.findDOMNode(this.refs.gameTitle).value;
-    let kind = ReactDOM.findDOMNode(this.refs.gameType).value;
+    let kind = ReactDOM.findDOMNode(this.refs.gameType).value.toLowerCase();
 
     if(title.length >= 1 && kind.length >= 1){
       GameActions.createGame(title, kind);
@@ -22,11 +23,13 @@ export default class Add extends React.Component {
   render() {
     return(
       <div className="game-add">
-        <label className="game-add__label">Title</label>
-        <input ref="gameTitle" type="text" className="game-add__input" />
-        <label className="game-add__label">Type</label>
-        <input ref="gameType" type="text" className="game-add__input" />
-        <button className="game-add__button" onClick={() => this.createGame()}>Create</button>
+          <form onSubmit={(e) => this.createGame(e)}>
+            <label className="game-add__label">Title</label>
+            <input ref="gameTitle" type="text" className="game-add__input" />
+            <label className="game-add__label">Type</label>
+            <input ref="gameType" type="text" className="game-add__input" />
+            <button className="game-add__button" type="submit">Create</button>
+          </form>
       </div>
     )
   }
