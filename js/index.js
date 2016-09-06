@@ -27039,7 +27039,7 @@
 
 	var _filter2 = _interopRequireDefault(_filter);
 
-	var _list = __webpack_require__(245);
+	var _list = __webpack_require__(247);
 
 	var _list2 = _interopRequireDefault(_list);
 
@@ -28197,9 +28197,13 @@
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _toTitleCase = __webpack_require__(244);
+	var _filterType = __webpack_require__(244);
 
-	var Helpers = _interopRequireWildcard(_toTitleCase);
+	var _filterType2 = _interopRequireDefault(_filterType);
+
+	var _filterRating = __webpack_require__(246);
+
+	var _filterRating2 = _interopRequireDefault(_filterRating);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
@@ -28235,92 +28239,11 @@
 	      function render() {
 	        var _this2 = this;
 
-	        var _props = this.props;
-	        var typeList = _props.typeList;
-	        var ratingList = _props.ratingList;
-
-
-	        var TypeList = typeList.map(function (item, i) {
-	          return _react2["default"].createElement(
-	            "li",
-	            { key: i },
-	            _react2["default"].createElement(
-	              _reactRouter.Link,
-	              { to: "/filter/Type/" + item.key, onClick: function () {
-	                  function onClick() {
-	                    return _this2.filterBy('type', item.key);
-	                  }
-
-	                  return onClick;
-	                }(), activeClassName: "active" },
-	              Helpers.toTitleCase(item.key),
-	              " (",
-	              _react2["default"].createElement(
-	                "span",
-	                null,
-	                item.value
-	              ),
-	              ")"
-	            )
-	          );
-	        });
-
-	        var RatingList = ratingList.map(function (item, i) {
-	          return _react2["default"].createElement(
-	            "li",
-	            { key: i },
-	            _react2["default"].createElement(
-	              _reactRouter.Link,
-	              { to: "/filter/Rating/" + item.key, onClick: function () {
-	                  function onClick() {
-	                    return _this2.filterBy('rating', item.key);
-	                  }
-
-	                  return onClick;
-	                }(), activeClassName: "active" },
-	              item.key,
-	              " Stars (",
-	              _react2["default"].createElement(
-	                "span",
-	                null,
-	                item.value
-	              ),
-	              ")"
-	            )
-	          );
-	        });
-
 	        return _react2["default"].createElement(
 	          "div",
 	          { className: "aside" },
-	          _react2["default"].createElement(
-	            "div",
-	            { className: "by-type filter-category" },
-	            _react2["default"].createElement(
-	              "div",
-	              { className: "filter-title" },
-	              "By Type"
-	            ),
-	            _react2["default"].createElement(
-	              "ul",
-	              null,
-	              TypeList
-	            )
-	          ),
-	          _react2["default"].createElement(
-	            "div",
-	            { className: "by-type filter-category" },
-	            _react2["default"].createElement(
-	              "div",
-	              { className: "filter-title" },
-	              "By Rating"
-	            ),
-	            _react2["default"].createElement(
-	              "ul",
-	              null,
-	              RatingList
-	            )
-	          ),
+	          _react2["default"].createElement(_filterType2["default"], { typeList: this.props.typeList, filterBy: this.filterBy }),
+	          _react2["default"].createElement(_filterRating2["default"], { ratingList: this.props.ratingList, filterBy: this.filterBy }),
 	          _react2["default"].createElement(
 	            "div",
 	            { className: "all filter-category" },
@@ -28356,6 +28279,112 @@
 
 /***/ },
 /* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(172);
+
+	var _GameActions = __webpack_require__(242);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
+	var _toTitleCase = __webpack_require__(245);
+
+	var Helpers = _interopRequireWildcard(_toTitleCase);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var FilterType = function (_Component) {
+	  _inherits(FilterType, _Component);
+
+	  function FilterType() {
+	    _classCallCheck(this, FilterType);
+
+	    return _possibleConstructorReturn(this, (FilterType.__proto__ || Object.getPrototypeOf(FilterType)).apply(this, arguments));
+	  }
+
+	  _createClass(FilterType, [{
+	    key: "render",
+	    value: function () {
+	      function render() {
+	        var _this2 = this;
+
+	        var TypeList = this.props.typeList.map(function (item, i) {
+	          return _react2["default"].createElement(
+	            "li",
+	            { key: i },
+	            _react2["default"].createElement(
+	              _reactRouter.Link,
+	              { to: "/filter/Type/" + item.key, onClick: function () {
+	                  function onClick() {
+	                    return _this2.props.filterBy('type', item.key);
+	                  }
+
+	                  return onClick;
+	                }(), activeClassName: "active" },
+	              Helpers.toTitleCase(item.key),
+	              " (",
+	              _react2["default"].createElement(
+	                "span",
+	                null,
+	                item.value
+	              ),
+	              ")"
+	            )
+	          );
+	        });
+
+	        return _react2["default"].createElement(
+	          "div",
+	          { className: "by-type filter-category" },
+	          _react2["default"].createElement(
+	            "div",
+	            { className: "filter-title" },
+	            "By Type"
+	          ),
+	          _react2["default"].createElement(
+	            "ul",
+	            null,
+	            TypeList
+	          )
+	        );
+	      }
+
+	      return render;
+	    }()
+	  }]);
+
+	  return FilterType;
+	}(_react.Component);
+
+	exports["default"] = FilterType;
+
+
+	FilterType.propTypes = {
+	  typeList: _react.PropTypes.array.isRequired
+	};
+
+/***/ },
+/* 245 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28371,7 +28400,113 @@
 	}
 
 /***/ },
-/* 245 */
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(172);
+
+	var _GameActions = __webpack_require__(242);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
+	var _toTitleCase = __webpack_require__(245);
+
+	var Helpers = _interopRequireWildcard(_toTitleCase);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var FilterRating = function (_Component) {
+	  _inherits(FilterRating, _Component);
+
+	  function FilterRating() {
+	    _classCallCheck(this, FilterRating);
+
+	    return _possibleConstructorReturn(this, (FilterRating.__proto__ || Object.getPrototypeOf(FilterRating)).apply(this, arguments));
+	  }
+
+	  _createClass(FilterRating, [{
+	    key: "render",
+	    value: function () {
+	      function render() {
+	        var _this2 = this;
+
+	        var RatingList = this.props.ratingList.map(function (item, i) {
+	          return _react2["default"].createElement(
+	            "li",
+	            { key: i },
+	            _react2["default"].createElement(
+	              _reactRouter.Link,
+	              { to: "/filter/Rating/" + item.key, onClick: function () {
+	                  function onClick() {
+	                    return _this2.props.filterBy('rating', item.key);
+	                  }
+
+	                  return onClick;
+	                }(), activeClassName: "active" },
+	              item.key,
+	              " Stars (",
+	              _react2["default"].createElement(
+	                "span",
+	                null,
+	                item.value
+	              ),
+	              ")"
+	            )
+	          );
+	        });
+
+	        return _react2["default"].createElement(
+	          "div",
+	          { className: "by-type filter-category" },
+	          _react2["default"].createElement(
+	            "div",
+	            { className: "filter-title" },
+	            "By Rating"
+	          ),
+	          _react2["default"].createElement(
+	            "ul",
+	            null,
+	            RatingList
+	          )
+	        );
+	      }
+
+	      return render;
+	    }()
+	  }]);
+
+	  return FilterRating;
+	}(_react.Component);
+
+	exports["default"] = FilterRating;
+
+
+	FilterRating.propTypes = {
+	  ratingList: _react.PropTypes.array.isRequired
+	};
+
+/***/ },
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28392,15 +28527,15 @@
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _item = __webpack_require__(246);
+	var _item = __webpack_require__(248);
 
 	var _item2 = _interopRequireDefault(_item);
 
-	var _sort = __webpack_require__(248);
+	var _sort = __webpack_require__(250);
 
 	var _sort2 = _interopRequireDefault(_sort);
 
-	var _add = __webpack_require__(249);
+	var _add = __webpack_require__(251);
 
 	var _add2 = _interopRequireDefault(_add);
 
@@ -28479,7 +28614,7 @@
 	};
 
 /***/ },
-/* 246 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28494,7 +28629,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _rating = __webpack_require__(247);
+	var _rating = __webpack_require__(249);
 
 	var _rating2 = _interopRequireDefault(_rating);
 
@@ -28502,7 +28637,7 @@
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _toTitleCase = __webpack_require__(244);
+	var _toTitleCase = __webpack_require__(245);
 
 	var Helpers = _interopRequireWildcard(_toTitleCase);
 
@@ -28597,7 +28732,7 @@
 	};
 
 /***/ },
-/* 247 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28728,7 +28863,7 @@
 	};
 
 /***/ },
-/* 248 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28874,7 +29009,7 @@
 	};
 
 /***/ },
-/* 249 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
