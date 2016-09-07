@@ -6,10 +6,18 @@ import Filter from "../components/filter";
 import List from "../components/list";
 
 describe("<App />", () => {
-  it.skip("Should created without explosion", () => {
+  it("Should created without explosion", () => {
     const wrapper = shallow(
-      <App filterCategory={"all"} />
+      <App params={{filterCategory: "all"}}/>
     );
     expect(wrapper.find('.container')).to.have.length(1);
+  });
+
+  it("Should have <Filter/> and <List/> components", () => {
+    const wrapper = shallow(
+      <App params={{filterCategory: "all"}} />
+    );
+    expect(wrapper.find('Filter')).to.have.length(1);
+    expect(wrapper.find('List')).to.have.length(1);
   });
 });

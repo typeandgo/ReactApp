@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import {Link} from "react-router";
 import GameStore from "../stores/GameStore";
+import * as GameActions from "../actions/GameActions";
 import Filter from "../components/filter.jsx";
 import List from "../components/list.jsx";
 
@@ -19,6 +20,8 @@ export default class App extends React.Component {
 
   componentWillMount() {
     GameStore.on("change", this.getGames);
+    const {filterCategory, filterValue} = this.props.params;
+    GameActions.filterGame(filterCategory, filterValue);
   }
 
   componentWillUnmount() {
@@ -30,7 +33,7 @@ export default class App extends React.Component {
       gameList: GameStore.getAllGames(),
       typeList: GameStore.getByType(),
       ratingList: GameStore.getByRating()
-    })
+    })    
   }
 
   render() {

@@ -1,16 +1,10 @@
 import React, {Component, PropTypes} from "react";
-import * as GameActions from "../actions/GameActions";
 import Item from "../components/item.jsx"
 import Sort from "../components/sort.jsx";
 import Add from "../components/add.jsx";
 
 export default class List extends React.Component {
-
-  componentWillMount() {
-    GameActions.filterGame(this.props.filterCategory, this.props.filterValue);
-  }
-
-  render() {
+  render() {  
     const {gameList, filterCategory, filterValue} = this.props;
     const GameList = gameList.map((item, i) => {
       return <Item key={i} {...item} />

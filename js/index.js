@@ -27035,6 +27035,10 @@
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
+	var _GameActions = __webpack_require__(242);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
 	var _filter = __webpack_require__(243);
 
 	var _filter2 = _interopRequireDefault(_filter);
@@ -27042,6 +27046,8 @@
 	var _list = __webpack_require__(247);
 
 	var _list2 = _interopRequireDefault(_list);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -27073,6 +27079,11 @@
 	    value: function () {
 	      function componentWillMount() {
 	        _GameStore2["default"].on("change", this.getGames);
+	        var _props$params = this.props.params;
+	        var filterCategory = _props$params.filterCategory;
+	        var filterValue = _props$params.filterValue;
+
+	        GameActions.filterGame(filterCategory, filterValue);
 	      }
 
 	      return componentWillMount;
@@ -27103,9 +27114,9 @@
 	    key: "render",
 	    value: function () {
 	      function render() {
-	        var _props$params = this.props.params;
-	        var filterCategory = _props$params.filterCategory;
-	        var filterValue = _props$params.filterValue;
+	        var _props$params2 = this.props.params;
+	        var filterCategory = _props$params2.filterCategory;
+	        var filterValue = _props$params2.filterValue;
 	        var _state = this.state;
 	        var gameList = _state.gameList;
 	        var typeList = _state.typeList;
@@ -28295,10 +28306,6 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _GameActions = __webpack_require__(242);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
 	var _toTitleCase = __webpack_require__(245);
 
 	var Helpers = _interopRequireWildcard(_toTitleCase);
@@ -28417,10 +28424,6 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _GameActions = __webpack_require__(242);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
 	var _toTitleCase = __webpack_require__(245);
 
 	var Helpers = _interopRequireWildcard(_toTitleCase);
@@ -28477,7 +28480,7 @@
 
 	        return _react2["default"].createElement(
 	          "div",
-	          { className: "by-type filter-category" },
+	          { className: "by-rating filter-category" },
 	          _react2["default"].createElement(
 	            "div",
 	            { className: "filter-title" },
@@ -28523,10 +28526,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(242);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
 	var _item = __webpack_require__(248);
 
 	var _item2 = _interopRequireDefault(_item);
@@ -28538,8 +28537,6 @@
 	var _add = __webpack_require__(251);
 
 	var _add2 = _interopRequireDefault(_add);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -28559,15 +28556,6 @@
 	  }
 
 	  _createClass(List, [{
-	    key: "componentWillMount",
-	    value: function () {
-	      function componentWillMount() {
-	        GameActions.filterGame(this.props.filterCategory, this.props.filterValue);
-	      }
-
-	      return componentWillMount;
-	    }()
-	  }, {
 	    key: "render",
 	    value: function () {
 	      function render() {
