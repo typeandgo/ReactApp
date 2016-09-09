@@ -28394,13 +28394,15 @@
 /* 245 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	exports.toTitleCase = toTitleCase;
-	function toTitleCase(str) {
+	function toTitleCase() {
+	    var str = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+
 	    return str.replace(/\w\S*/g, function (txt) {
 	        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 	    });
@@ -28564,6 +28566,7 @@
 	        var filterCategory = _props.filterCategory;
 	        var filterValue = _props.filterValue;
 
+
 	        var GameList = gameList.map(function (item, i) {
 	          return _react2["default"].createElement(_item2["default"], _extends({ key: i }, item));
 	        });
@@ -28686,7 +28689,7 @@
 	              Helpers.toTitleCase(type)
 	            )
 	          ),
-	          _react2["default"].createElement(_rating2["default"], { className: rating, gameId: id }),
+	          _react2["default"].createElement(_rating2["default"], { rating: rating, gameId: id }),
 	          _react2["default"].createElement(
 	            "a",
 	            { href: "javascript:;", onClick: function () {
@@ -28776,7 +28779,7 @@
 
 	        return _react2["default"].createElement(
 	          "span",
-	          { className: "game-rating rate-" + this.props.className },
+	          { className: "game-rating rate-" + this.props.rating },
 	          _react2["default"].createElement(
 	            "a",
 	            { href: "javascript:;", className: "star star-1", onClick: function () {
@@ -28846,8 +28849,8 @@
 
 
 	Rating.propTypes = {
-	  id: _react.PropTypes.number,
-	  className: _react.PropTypes.number
+	  gameId: _react.PropTypes.number,
+	  rating: _react.PropTypes.number
 	};
 
 /***/ },

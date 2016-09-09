@@ -10,7 +10,7 @@ export default class Rating extends React.Component {
 
   render() {
     return(
-      <span className={"game-rating rate-" + this.props.className}>
+      <span className={"game-rating rate-" + this.props.rating}>
         <a href="javascript:;" className="star star-1" onClick={() => this.voteGame(1)}>☆</a>
         <a href="javascript:;" className="star star-2" onClick={() => this.voteGame(2)}>☆</a>
         <a href="javascript:;" className="star star-3" onClick={() => this.voteGame(3)}>☆</a>
@@ -22,6 +22,6 @@ export default class Rating extends React.Component {
 }
 
 Rating.propTypes = {
-  id: PropTypes.number,
-  className: PropTypes.number
+  gameId: PropTypes.number,
+  rating: PropTypes.number
 }

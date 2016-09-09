@@ -9,12 +9,12 @@ describe("<Add />", () => {
     expect(wrapper.find('.game-add')).to.have.length(1);
   });
 
-  it("Should have 2 inputs for the `title` and `type`", () => {
+  it("Should have `title` and `type` inputs", () => {
     let wrapper = shallow(<Add />);
     expect(wrapper.find('input')).to.have.length(2);
   });
 
-  it("Should have a button", () => {
+  it("Should have `Create` button", () => {
     let wrapper = shallow(<Add />);
     expect(wrapper.find('button')).to.have.length(1);
   });

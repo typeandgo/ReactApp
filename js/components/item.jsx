@@ -16,7 +16,7 @@ export default class Item extends React.Component {
       <li className="game-list__li" id={id}>
         <img className="game-image" src={img} />
         <span className="game-name">{title} | <span className="game-type">{Helpers.toTitleCase(type)}</span></span>
-        <Rating className={rating} gameId={id} />
+        <Rating rating={rating} gameId={id} />
         <a href="javascript:;" onClick={() => this.deleteGame(id)} className="game-remove">x</a>
       </li>
     )

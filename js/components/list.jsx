@@ -6,6 +6,7 @@ import Add from "../components/add.jsx";
 export default class List extends React.Component {
   render() {  
     const {gameList, filterCategory, filterValue} = this.props;
+
     const GameList = gameList.map((item, i) => {
       return <Item key={i} {...item} />
     });

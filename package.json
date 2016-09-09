@@ -6,7 +6,7 @@
     "start": "webpack --watch",
     "start-server": "node ./server.js",
     "test": "mocha -w js/test/browser.js js/**/*.spec.js",
-    "debug": "iron-node node_modules/mocha/bin/_mocha"
+    "debug": "iron-node node_modules/mocha/bin/_mocha -w js/test/browser.js js/**/*.spec.js"
   },
   "author": "Engin Ozturk",
   "license": "ISC",
@@ -30,6 +30,8 @@
     "iron-node": "^3.0.11",
     "jsdom": "^9.5.0",
     "mocha": "^3.0.2",
-    "react-addons-test-utils": "^15.3.1"
+    "proxyquire": "^1.7.10",
+    "react-addons-test-utils": "^15.3.1",
+    "sinon": "^1.17.5"
   }
 }
