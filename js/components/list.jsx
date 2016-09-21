@@ -4,7 +4,7 @@ import Sort from "../components/sort.jsx";
 import Add from "../components/add.jsx";
 
 export default class List extends React.Component {
-  render() {  
+  render() {
     const {gameList, filterCategory, filterValue} = this.props;
 
     const GameList = gameList.map((item, i) => {

@@ -8,20 +8,8 @@ import List from "../components/list";
 describe("<App />", () => {
   const params = {
     filterCategory: 'a',
-    filterValue:1
+    filterValue: 1
   };
-  const typeList = [
-    {
-      key: 'a',
-      value: 1
-    }
-  ];
-  const ratingList = [
-    {
-      key: 'a',
-      value: 1
-    }
-  ];
 
   it("Should created without explosion", () => {
     const wrapper = shallow(<App params={params} />);
