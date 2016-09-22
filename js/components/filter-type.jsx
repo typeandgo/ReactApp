@@ -3,6 +3,7 @@ import {Link} from "react-router";
 import * as Helpers from "../helpers/toTitleCase";
 
 export default class FilterType extends Component {
+
   render() {
 
     const TypeList = this.props.typeList.map((item, i) => {

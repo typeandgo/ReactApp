@@ -3,6 +3,7 @@ import {Link} from "react-router";
 import * as Helpers from "../helpers/toTitleCase";
 
 export default class FilterRating extends Component {
+
   render() {
 
     const RatingList = this.props.ratingList.map((item, i) => {

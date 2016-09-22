@@ -1,41 +1,21 @@
 import React, {Component, PropTypes} from "react";
+import {Container} from 'flux/utils';
 import * as GameActions from "../actions/GameActions";
-import GameStore from "../stores/GameStore";
 
-export default class Sort extends React.Component {
+export default class Sort extends Component {
 
-  constructor() {
-    super();
-    this.getSortDirection = this.getSortDirection.bind(this);
-    this.state = {
-      sort: GameStore.getSortDirection()
-    }
-  }
-
-  componentWillMount() {
-    GameStore.on("change", this.getSortDirection);
-  }
-
-  componentWillUnmount() {
-    GameStore.removeListener("change", this.getSortDirection);
-  }
-
-  getSortDirection() {
-    this.setState({
-      sort: GameStore.getSortDirection()
-    })
-  }
-
-  sortGame() {
-    GameActions.sortGame(!this.state.sort);
+  sortGame = (sortDirection) => {
+    GameActions.sortGame(!sortDirection);
   }
 
   render() {
 
-    const text = this.state.sort ? "increase" : "decrease";
+    const {sortDirection, filterCategory, filterValue} = this.props
+
+    const text = sortDirection ? "increase" : "decrease";
 
     let FilterInfo = (this.props.filterCategory) ? (
-      <span className="game-sort__left-text">Filter by: {this.props.filterCategory} / {this.props.filterValue}</span>
+      <span className="game-sort__left-text">Filter by: {filterCategory} / {filterValue}</span>
     ) : <span className="game-sort__left-text">Filter by: All</span>;
 
     return(
@@ -44,7 +24,7 @@ export default class Sort extends React.Component {
         { FilterInfo }
 
         <span className="game-sort__right-text">
-          Sort by: <a href="javascript:;" onClick={() => this.sortGame()}>{text}</a>
+          Sort by: <a href="javascript:;" onClick={() => this.sortGame(sortDirection)}>{text}</a>
         </span>
       </div>
     )
@@ -53,5 +33,6 @@ export default class Sort extends React.Component {
 
 Sort.propTypes = {
   filterCategory: PropTypes.string,
-  filterValue: PropTypes.any
+  filterValue: PropTypes.any,
+  sortDirection: PropTypes.bool
 }

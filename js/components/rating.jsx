@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from "react";
 import * as GameActions from "../actions/GameActions";
 
-export default class Rating extends React.Component {
+export default class Rating extends Component {
 
-  voteGame(rating) {
-    const id = this.props.gameId;
+  voteGame = (rating) => {
+    const id = this.props.gameId;    
     GameActions.voteGame(id, rating);
   }
 

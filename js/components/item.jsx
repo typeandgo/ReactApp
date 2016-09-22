@@ -3,15 +3,15 @@ import Rating from "../components/rating.jsx";
 import * as GameActions from "../actions/GameActions";
 import * as Helpers from "../helpers/toTitleCase";
 
-export default class Item extends React.Component {
+export default class Item extends Component {
 
-  deleteGame(id) {
+  deleteGame = (id) => {
     GameActions.deleteGame(id);
   }
 
   render() {
     const {id, title, img, type, rating} = this.props;
-
+    
     return(
       <li className="game-list__li" id={id}>
         <img className="game-image" src={img} />

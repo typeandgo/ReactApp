@@ -6,7 +6,7 @@ import FilterRating from "../components/filter-rating.jsx";
 
 export default class Filter extends Component {
 
-  filterBy(category, value) {
+  filterBy = (category, value) => {
     GameActions.filterGame(category, value);
   }
 

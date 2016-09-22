@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import {Container} from 'flux/utils';
 import {Link} from "react-router";
 import GameStore from "../stores/GameStore";
 import * as GameActions from "../actions/GameActions";
@@ -6,39 +7,29 @@ import Filter from "../components/filter.jsx";
 import List from "../components/list.jsx";
 
 
-export default class App extends React.Component {
+class App extends Component {
 
-  constructor() {
-    super();
-    this.getGames = this.getGames.bind(this);
-    this.state = {
+  static getStores() {
+    return [GameStore];
+  }
+
+  static calculateState(prevState) {
+    return {
       gameList: GameStore.getAllGames(),
       typeList: GameStore.getByType(),
-      ratingList: GameStore.getByRating()
-    }
+      ratingList: GameStore.getByRating(),
+      sortDirection: GameStore.getSortDirection()
+    };
   }
 
   componentWillMount() {
-    GameStore.on("change", this.getGames);
     const {filterCategory, filterValue} = this.props.params;
     GameActions.filterGame(filterCategory, filterValue);
   }
 
-  componentWillUnmount() {
-    GameStore.removeListener("change", this.getGames);
-  }
-
-  getGames() {
-    this.setState({
-      gameList: GameStore.getAllGames(),
-      typeList: GameStore.getByType(),
-      ratingList: GameStore.getByRating()
-    })    
-  }
-
   render() {
     const {filterCategory, filterValue} = this.props.params;
-    const {gameList, typeList, ratingList} = this.state;
+    const {gameList, typeList, ratingList, sortDirection} = this.state;
 
     return (
         <div className="container">
@@ -54,11 +45,15 @@ export default class App extends React.Component {
             gameList={gameList}
             filterCategory={filterCategory}
             filterValue={filterValue}
+            sortDirection={sortDirection}
           />
         </div>
     )
   }
 }
+
+const appContainer = Container.create(App);
+export default appContainer;
 
 App.propTypes = {
   filterCategory: PropTypes.string,

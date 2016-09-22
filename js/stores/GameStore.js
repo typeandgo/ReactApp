@@ -1,124 +1,98 @@
-import {EventEmitter} from "events";
+import {ReduceStore} from "flux/utils";
+import {Map, List} from "immutable";
 import dispatcher from "../dispatcher";
 import {GAME_ACTIONS} from "../actions/GameActions";
 
-class GameStore extends EventEmitter {
-  constructor() {
-    super();
+class GameStore extends ReduceStore {
 
-    this.gameList = [
-      {
-        id: 1,
-        title: "Super Mario",
-        img: "/img/mario.jpg",
-        type: "shooter",
-        rating: 2
-      },
-      {
-        id: 2,
-        title: "Worms",
-        img: "/img/worms.jpg",
-        type: "strategy",
-        rating: 3
-      },
-      {
-        id: 3,
-        title: "Bomberman",
-        img: "/img/bomberman.jpg",
-        type: "racing",
-        rating: 4
-      },
-      {
-        id: 4,
-        title: "Pokemon",
-        img: "/img/pikachu.png",
-        type: "action",
-        rating: 1
-      },
-      {
-        id: 5,
-        title: "Sonic",
-        img: "/img/sonic.png",
-        type: "racing",
-        rating: 5
-      },
-      {
-        id: 6,
-        title: "Space Invader",
-        img: "/img/space-invader.png",
-        type: "racing",
-        rating: 2
-      },
-      {
-        id: 7,
-        title: "Street Fighter",
-        img: "/img/street-fighter.png",
-        type: "action",
-        rating: 4
-      }
-    ];
-    this.filteredGameList = this.sortIncrease(this.gameList);
-    this.sortDirection = true;
-    this.filterCategory = 'all';
-    this.filterValue = null;
-  }
-
-  createGame(title, kind) {
-    this.gameList.push({
-      id: Date.now(),
-      title: title,
-      img: "/img/mario.jpg",
-      type: kind,
-      rating: 1
-    });
-    this.filterGame(this.filterCategory, this.filterValue);
-  }
-
-  deleteGame(id) {
-    this.gameList = this.gameList.filter(game => game.id != id);
-    this.filteredGameList = this.filteredGameList.filter(game => game.id != id);
-    this.emit("change");
+  getInitialState() {
+    return new Map({
+      gameList: [
+        {
+          id: 1,
+          title: "Super Mario",
+          img: "/img/mario.jpg",
+          type: "shooter",
+          rating: 2
+        },
+        {
+          id: 2,
+          title: "Worms",
+          img: "/img/worms.jpg",
+          type: "strategy",
+          rating: 3
+        },
+        {
+          id: 3,
+          title: "Bomberman",
+          img: "/img/bomberman.jpg",
+          type: "racing",
+          rating: 4
+        },
+        {
+          id: 4,
+          title: "Pokemon",
+          img: "/img/pikachu.png",
+          type: "action",
+          rating: 1
+        },
+        {
+          id: 5,
+          title: "Sonic",
+          img: "/img/sonic.png",
+          type: "racing",
+          rating: 5
+        },
+        {
+          id: 6,
+          title: "Space Invader",
+          img: "/img/space-invader.png",
+          type: "racing",
+          rating: 2
+        },
+        {
+          id: 7,
+          title: "Street Fighter",
+          img: "/img/street-fighter.png",
+          type: "action",
+          rating: 4
+        }
+      ],
+      filteredGameList: [],
+      sortDirection: true,
+      filterCategory: 'all',
+      filterValue: null
+    })
   }
 
   getAllGames() {
-    return this.filteredGameList;
+    return this.getState().get('gameList');
   }
 
-  filterGame(category, value){
-    if(category) {
-      const fiterBy = category.toLowerCase();
-      this.filterCategory = fiterBy;
-      this.filterValue = value;
+  createGame(state, {title, kind} = {action}) {
+    return state.update('gameList', (gameList) => {
+      return gameList.concat({
+        id: Date.now(),
+        title: title,
+        img: "/img/mario.jpg",
+        type: kind,
+        rating: 1
+      })
+    })
+  }
 
-      switch(fiterBy) {
-        case 'type': {
-          this.filteredGameList = this.gameList.filter(function(item){
-            return (item.type == value);
-          });
-          this.sortGame(this.sortDirection);
-          break;
-        }
-        case 'rating': {
-          this.filteredGameList = this.gameList.filter(function(item){
-            return (item.rating == value);
-          });
-          this.sortGame(this.sortDirection);
-          break;
-        }
-        case 'all': {
-          this.filteredGameList = this.gameList;
-          this.sortGame(this.sortDirection);
-          break;
-        }
-      }
-    }
+  deleteGame(state, {id} = {action}) {
+    return state.update('gameList', (gameList) => {
+      return gameList.filter(game => game.id != id)
+    })
   }
 
   getByType() {
     let categoryList = [];
     let counts = {};
+    const gameList = this.getState().get('gameList');
 
-    this.gameList.map(item => item['type']).map( function (a) {
+    gameList.map(item => item['type']).map( function (a) {
       (a in counts) ? counts[a] ++ : counts[a] = 1;
     });
 
@@ -133,8 +107,9 @@ class GameStore extends EventEmitter {
   getByRating() {
     let categoryList = [];
     let counts = {};
+    const gameList = this.getState().get('gameList');
 
-    this.gameList.map(item => item['rating']).map( function (a) {
+    gameList.map(item => item['rating']).map( function (a) {
       (a in counts) ? counts[a] ++ : counts[a] = 1;
     });
 
@@ -146,10 +121,49 @@ class GameStore extends EventEmitter {
     return categoryList.reverse();
   }
 
-  voteGame(id, rating) {
-    let index = this.gameList.findIndex(item => item.id == id);
-    this.gameList[index].rating = rating;
-    this.emit("change");
+  filterGame(state, {category, value} = {action}){
+    if(category){
+      //console.log('filterGame - category', category);
+      const filterBy = category.toLowerCase();
+
+      return state.update('gameList', (gameList) => {
+        switch(filterBy) {
+          case 'type': {
+            return gameList.filter(function(item){
+              return (item.type == value);
+            });
+          }
+          case 'rating': {
+            return gameList.filter(function(item){
+              return (item.rating == value);
+            });
+          }
+          case 'all': {
+            return gameList;
+          }
+        }
+      }).update('filterCategory', (filterCategory) => {
+        return filterBy;
+      }).update('filterValue', (filterValue) => {
+        return value;
+      })
+
+    }else{
+      return state.update('gameList', (gameList) => {
+        return gameList;
+      })
+    }
+  }
+
+  voteGame(state, {id, rating} = {action}) {
+    return state.update('gameList', (gameList) => {
+      return gameList.map((item) => {
+        if(item.id == id){
+          item.rating = rating;
+        }
+        return item;
+      })
+    })
   }
 
   sortIncrease(data) {
@@ -170,53 +184,46 @@ class GameStore extends EventEmitter {
     });
   }
 
-  sortGame(direction) {
-    this.sortDirection = direction;
-
-    switch(direction) {
-      case true: {
-        this.filteredGameList = this.sortIncrease(this.filteredGameList);
-        this.emit('change');
-        break;
+  sortGame(state, {direction} = {action}) {
+    return state.update('sortDirection', (sortDirection) => {
+      direction = !this.getState().get('sortDirection');
+      return direction;
+    }).update('gameList', (gameList) => {
+      switch(direction) {
+        case true: {
+          return gameList = this.sortIncrease(gameList);
+        }
+        case false: {
+          return gameList = this.sortDecrease(gameList);
+        }
       }
-      case false: {
-        this.filteredGameList = this.sortDecrease(this.filteredGameList);
-        this.emit('change');
-        break;
-      }
-    }
+    })
   }
 
   getSortDirection() {
-    return this.sortDirection;
+    return this.getState().get('sortDirection');
   }
 
-  handleActions(action) {
+  reduce(state, action) {
     switch(action.type) {
       case GAME_ACTIONS.CREATE_GAME: {
-        this.createGame(action.title, action.kind);
-        break;
+        return this.createGame(state, action);
       }
       case GAME_ACTIONS.DELETE_GAME: {
-        this.deleteGame(action.id);
-        break;
+        return this.deleteGame(state, action);
       }
       case GAME_ACTIONS.VOTE_GAME: {
-        this.voteGame(action.id, action.rating);
-        break;
+        return this.voteGame(state, action);
       }
       case GAME_ACTIONS.FILTER_GAME: {
-        this.filterGame(action.category, action.value);
-        break;
+        return this.filterGame(state, action);
       }
       case GAME_ACTIONS.SORT_GAME: {
-        this.sortGame(action.direction);
-        break;
+        return this.sortGame(state, action);
       }
     }
   }
 }
 
-const gameStore = new GameStore;
-dispatcher.register(gameStore.handleActions.bind(gameStore));
+const gameStore = new GameStore(dispatcher);
 export default gameStore;

@@ -2,9 +2,9 @@ import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import * as GameActions from "../actions/GameActions";
 
-export default class Add extends React.Component {
+export default class Add extends Component {
 
-  createGame(e) {
+  createGame = (e) => {
     e.preventDefault();
     let title = ReactDOM.findDOMNode(this.refs.gameTitle).value;
     let kind = ReactDOM.findDOMNode(this.refs.gameType).value.toLowerCase();
@@ -15,7 +15,7 @@ export default class Add extends React.Component {
     }
   }
 
-  clearInputs() {
+  clearInputs = () => {
     ReactDOM.findDOMNode(this.refs.gameTitle).value = "";
     ReactDOM.findDOMNode(this.refs.gameType).value = "";
   }
