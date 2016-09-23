@@ -39,7 +39,14 @@ class App extends Component {
     // Simulate real-time data loading
     setTimeout(function(){
       const {filterCategory, filterValue} = this.props.params;
-      GameActions.loadGames(filterCategory, filterValue);
+
+      GameStore.loadExternalSource().then(response => {
+        if(!response){
+          alert('Data can not read!');
+        }
+        GameActions.loadGames(response, filterCategory, filterValue);
+      });
+
     }.bind(this),1000)
   }
 

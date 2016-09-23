@@ -27113,7 +27113,13 @@
 	          var filterCategory = _props$params.filterCategory;
 	          var filterValue = _props$params.filterValue;
 
-	          GameActions.loadGames(filterCategory, filterValue);
+
+	          _GameStore2["default"].loadExternalSource().then(function (response) {
+	            if (!response) {
+	              alert('Data can not read!');
+	            }
+	            GameActions.loadGames(response, filterCategory, filterValue);
+	          });
 	        }.bind(this), 1000);
 	      }
 
@@ -33703,49 +33709,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var GAME_LIST = [{
-	  id: 1,
-	  title: "Super Mario",
-	  img: "/img/mario.jpg",
-	  type: "shooter",
-	  rating: 2
-	}, {
-	  id: 2,
-	  title: "Worms",
-	  img: "/img/worms.jpg",
-	  type: "strategy",
-	  rating: 3
-	}, {
-	  id: 3,
-	  title: "Bomberman",
-	  img: "/img/bomberman.jpg",
-	  type: "racing",
-	  rating: 4
-	}, {
-	  id: 4,
-	  title: "Pokemon",
-	  img: "/img/pikachu.png",
-	  type: "action",
-	  rating: 1
-	}, {
-	  id: 5,
-	  title: "Sonic",
-	  img: "/img/sonic.png",
-	  type: "racing",
-	  rating: 5
-	}, {
-	  id: 6,
-	  title: "Space Invader",
-	  img: "/img/space-invader.png",
-	  type: "racing",
-	  rating: 2
-	}, {
-	  id: 7,
-	  title: "Street Fighter",
-	  img: "/img/street-fighter.png",
-	  type: "action",
-	  rating: 4
-	}];
+	var GAME_LIST = void 0;
 
 	var GameStore = function (_ReduceStore) {
 	  _inherits(GameStore, _ReduceStore);
@@ -33768,7 +33732,6 @@
 	      function getInitialState() {
 	        return new _immutable.Map({
 	          gameList: [],
-	          filteredGameList: [],
 	          sortDirection: true,
 	          filterCategory: 'all',
 	          filterValue: null,
@@ -33777,32 +33740,6 @@
 	      }
 
 	      return getInitialState;
-	    }()
-	  }, {
-	    key: "loadGames",
-	    value: function () {
-	      function loadGames(state) {
-	        var _this2 = this;
-
-	        var _ref = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
-
-	        var category = _ref.category;
-	        var value = _ref.value;
-
-	        return state.update('gameList', function (gameList) {
-	          return _this2.sortIncrease(GAME_LIST);
-	        }).update('filterCategory', function (filterCategory) {
-	          return !!category ? category : 'all';
-	        }).update('filterValue', function (filterValue) {
-	          return !!value ? value : null;
-	        }).update('filteredGameList', function (filteredGameList) {
-	          return _this2.sortIncrease(_this2.getGameList());
-	        }).update('loading', function (loading) {
-	          return false;
-	        });
-	      }
-
-	      return loadGames;
 	    }()
 
 	    /*******************************
@@ -33912,6 +33849,44 @@
 	    *******************************/
 
 	  }, {
+	    key: "loadGames",
+	    value: function () {
+	      function loadGames(state) {
+	        var _this2 = this;
+
+	        var _ref = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
+
+	        var category = _ref.category;
+	        var value = _ref.value;
+	        var gameList = _ref.gameList;
+
+	        return state.update('gameList', function (gameData) {
+	          return _this2.sortDecrease(gameList || []);
+	        }).update('filterCategory', function (filterCategory) {
+	          return !!category ? category : 'all';
+	        }).update('filterValue', function (filterValue) {
+	          return !!value ? value : null;
+	        }).update('loading', function (loading) {
+	          return false;
+	        });
+	      }
+
+	      return loadGames;
+	    }()
+	  }, {
+	    key: "loadExternalSource",
+	    value: function () {
+	      function loadExternalSource() {
+	        return _axios2["default"].get('http://localhost:7000/js/data/data.json').then(function (response) {
+	          return response.data.gameList;
+	        })["catch"](function (error) {
+	          console.log('Ajax error: ', error);
+	        });
+	      }
+
+	      return loadExternalSource;
+	    }()
+	  }, {
 	    key: "createGame",
 	    value: function () {
 	      function createGame(state) {
@@ -33984,17 +33959,6 @@
 	        return state.update('sortDirection', function (sortDirection) {
 	          direction = !_this3.getState().get('sortDirection');
 	          return direction;
-	        }).update('filteredGameList', function (filteredGameList) {
-	          switch (direction) {
-	            case true:
-	              {
-	                return filteredGameList = _this3.sortIncrease(filteredGameList);
-	              }
-	            case false:
-	              {
-	                return filteredGameList = _this3.sortDecrease(filteredGameList);
-	              }
-	          }
 	        }).update('gameList', function (gameList) {
 	          switch (direction) {
 	            case true:
@@ -34015,8 +33979,6 @@
 	    key: "filterGame",
 	    value: function () {
 	      function filterGame(state) {
-	        var _this4 = this;
-
 	        var _ref6 = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
 
 	        var category = _ref6.category;
@@ -34026,30 +33988,8 @@
 	          var _ret = function () {
 	            //console.log('filterGame - category', category);
 	            var filterBy = category.toLowerCase();
-
 	            return {
-	              v: state.update('filteredGameList', function (filteredGameList) {
-	                var gameList = _this4.getState().get('gameList');
-
-	                switch (filterBy) {
-	                  case 'type':
-	                    {
-	                      return gameList.filter(function (item) {
-	                        return item.type == value;
-	                      });
-	                    }
-	                  case 'rating':
-	                    {
-	                      return gameList.filter(function (item) {
-	                        return item.rating == value;
-	                      });
-	                    }
-	                  case 'all':
-	                    {
-	                      return gameList;
-	                    }
-	                }
-	              }).update('filterCategory', function (filterCategory) {
+	              v: state.update('filterCategory', function (filterCategory) {
 	                return filterBy;
 	              }).update('filterValue', function (filterValue) {
 	                return value;
@@ -35797,9 +35737,10 @@
 	  SORT_GAME: "SORT_GAME"
 	};
 
-	function loadGames(category, value) {
+	function loadGames(gameList, category, value) {
 	  _dispatcher2["default"].dispatch({
 	    type: GAME_ACTIONS.LOAD_GAMES,
+	    gameList: gameList,
 	    category: category,
 	    value: value
 	  });

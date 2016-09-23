@@ -9,11 +9,12 @@ export const GAME_ACTIONS = {
   SORT_GAME: "SORT_GAME"
 }
 
-export function loadGames(category, value) {
+export function loadGames(gameList, category, value) {
   dispatcher.dispatch({
     type: GAME_ACTIONS.LOAD_GAMES,
+    gameList,
     category,
-    value
+    value    
   })
 }
 

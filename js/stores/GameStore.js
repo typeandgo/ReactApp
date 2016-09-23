@@ -4,57 +4,7 @@ import axios from "axios";
 import dispatcher from "../dispatcher";
 import {GAME_ACTIONS} from "../actions/GameActions";
 
-const GAME_LIST = [
-  {
-    id: 1,
-    title: "Super Mario",
-    img: "/img/mario.jpg",
-    type: "shooter",
-    rating: 2
-  },
-  {
-    id: 2,
-    title: "Worms",
-    img: "/img/worms.jpg",
-    type: "strategy",
-    rating: 3
-  },
-  {
-    id: 3,
-    title: "Bomberman",
-    img: "/img/bomberman.jpg",
-    type: "racing",
-    rating: 4
-  },
-  {
-    id: 4,
-    title: "Pokemon",
-    img: "/img/pikachu.png",
-    type: "action",
-    rating: 1
-  },
-  {
-    id: 5,
-    title: "Sonic",
-    img: "/img/sonic.png",
-    type: "racing",
-    rating: 5
-  },
-  {
-    id: 6,
-    title: "Space Invader",
-    img: "/img/space-invader.png",
-    type: "racing",
-    rating: 2
-  },
-  {
-    id: 7,
-    title: "Street Fighter",
-    img: "/img/street-fighter.png",
-    type: "action",
-    rating: 4
-  }
-];
+let GAME_LIST;
 
 class GameStore extends ReduceStore {
 
@@ -65,29 +15,10 @@ class GameStore extends ReduceStore {
   getInitialState() {
     return new Map({
       gameList: [],
-      filteredGameList: [],
       sortDirection: true,
       filterCategory: 'all',
       filterValue: null,
       loading: true
-    })
-  }
-
-  loadGames(state, {category, value} = {action}) {
-    return state.update('gameList', (gameList) => {
-      return this.sortIncrease(GAME_LIST);
-    })
-    .update('filterCategory', (filterCategory) => {
-      return !!category ? category : 'all';
-    })
-    .update('filterValue', (filterValue) => {
-      return !!value ? value : null;
-    })
-    .update('filteredGameList', (filteredGameList) => {
-      return this.sortIncrease(this.getGameList());
-    })
-    .update('loading', (loading) => {
-      return false;
     })
   }
 
@@ -164,6 +95,31 @@ class GameStore extends ReduceStore {
   ** Updaters ********************
   *******************************/
 
+  loadGames(state, {category, value, gameList} = {action}) {
+    return state.update('gameList', (gameData) => {
+      return this.sortDecrease(gameList || []);
+    })
+    .update('filterCategory', (filterCategory) => {
+      return !!category ? category : 'all';
+    })
+    .update('filterValue', (filterValue) => {
+      return !!value ? value : null;
+    })
+    .update('loading', (loading) => {
+      return false;
+    })
+  }
+
+  loadExternalSource() {
+    return axios.get('http://localhost:7000/js/data/data.json')
+      .then(function(response) {
+        return response.data.gameList;
+      })
+      .catch(function(error) {
+        console.log('Ajax error: ', error);
+      })
+  }
+
   createGame(state, {title, kind} = {action}) {
     return state.update('gameList', (gameList) => {
       return gameList.concat({
@@ -198,16 +154,6 @@ class GameStore extends ReduceStore {
       direction = !this.getState().get('sortDirection');
       return direction;
     })
-    .update('filteredGameList', (filteredGameList) => {
-      switch(direction) {
-        case true: {
-          return filteredGameList = this.sortIncrease(filteredGameList);
-        }
-        case false: {
-          return filteredGameList = this.sortDecrease(filteredGameList);
-        }
-      }
-    })
     .update('gameList', (gameList) => {
       switch(direction) {
         case true: {
@@ -224,28 +170,10 @@ class GameStore extends ReduceStore {
     if(category){
       //console.log('filterGame - category', category);
       const filterBy = category.toLowerCase();
-
-      return state.update('filteredGameList', (filteredGameList) => {
-        const gameList = this.getState().get('gameList');
-
-        switch(filterBy) {
-          case 'type': {
-            return gameList.filter(function(item){
-              return (item.type == value);
-            });
-          }
-          case 'rating': {
-            return gameList.filter(function(item){
-              return (item.rating == value);
-            });
-          }
-          case 'all': {
-            return gameList;
-          }
-        }
-      }).update('filterCategory', (filterCategory) => {
+      return state.update('filterCategory', (filterCategory) => {
         return filterBy;
-      }).update('filterValue', (filterValue) => {
+      })
+      .update('filterValue', (filterValue) => {
         return value;
       })
 

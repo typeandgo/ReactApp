@@ -6,7 +6,7 @@
     "start": "webpack --watch",
     "start-server": "node ./server.js",
     "test": "mocha -w js/test/browser.js js/**/*.spec.js",
-    "debug": "iron-node node_modules/mocha/bin/_mocha -w js/test/browser.js js/**/*.spec.js"
+    "debug": "iron-node node_modules/mocha/bin/_mocha -w js/**/*.spec.js"
   },
   "author": "Engin Ozturk",
   "license": "ISC",
