@@ -1,0 +1,53 @@
+{
+  "gameList" : [
+    {
+      "id": 1,
+      "title": "Super Mario",
+      "img": "/img/mario.jpg",
+      "type": "shooter",
+      "rating": 2
+    },
+    {
+      "id": 2,
+      "title": "Worms",
+      "img": "/img/worms.jpg",
+      "type": "strategy",
+      "rating": 3
+    },
+    {
+      "id": 3,
+      "title": "Bomberman",
+      "img": "/img/bomberman.jpg",
+      "type": "racing",
+      "rating": 4
+    },
+    {
+      "id": 4,
+      "title": "Pokemon",
+      "img": "/img/pikachu.png",
+      "type": "action",
+      "rating": 1
+    },
+    {
+      "id": 5,
+      "title": "Sonic",
+      "img": "/img/sonic.png",
+      "type": "racing",
+      "rating": 5
+    },
+    {
+      "id": 6,
+      "title": "Space Invader",
+      "img": "/img/space-invader.png",
+      "type": "racing",
+      "rating": 2
+    },
+    {
+      "id": 7,
+      "title": "Street Fighter",
+      "img": "/img/street-fighter.png",
+      "type": "action",
+      "rating": 4
+    }
+  ]
+}

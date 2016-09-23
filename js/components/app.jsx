@@ -15,21 +15,37 @@ class App extends Component {
 
   static calculateState(prevState) {
     return {
-      gameList: GameStore.getAllGames(),
+      gameList: GameStore.getGameList(),
       typeList: GameStore.getByType(),
       ratingList: GameStore.getByRating(),
-      sortDirection: GameStore.getSortDirection()
+      sortDirection: GameStore.getSortDirection(),
+      loading: GameStore.getLoading()
     };
   }
 
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      gameList: GameStore.getGameList(),
+      typeList: GameStore.getByType(),
+      ratingList: GameStore.getByRating(),
+      sortDirection: GameStore.getSortDirection(),
+      loading: GameStore.getLoading()
+    }
+  }
+
   componentWillMount() {
-    const {filterCategory, filterValue} = this.props.params;
-    GameActions.filterGame(filterCategory, filterValue);
+    // Simulate real-time data loading
+    setTimeout(function(){
+      const {filterCategory, filterValue} = this.props.params;
+      GameActions.loadGames(filterCategory, filterValue);
+    }.bind(this),1000)
   }
 
   render() {
     const {filterCategory, filterValue} = this.props.params;
-    const {gameList, typeList, ratingList, sortDirection} = this.state;
+    let {gameList, typeList, ratingList, sortDirection, loading} = this.state;
 
     return (
         <div className="container">
@@ -46,6 +62,7 @@ class App extends Component {
             filterCategory={filterCategory}
             filterValue={filterValue}
             sortDirection={sortDirection}
+            loading={loading}
           />
         </div>
     )

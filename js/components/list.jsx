@@ -6,12 +6,17 @@ import Add from "../components/add.jsx";
 export default class List extends Component {
 
   render() {
-    //console.log('List - props', this.props);
-    const {gameList, filterCategory, filterValue, sortDirection} = this.props;
+    const {gameList, filterCategory, filterValue, sortDirection, loading} = this.props;
 
-    const GameList = gameList.map((item, i) => {
-      return <Item key={i} {...item} />
-    });
+    let GameList;
+
+    if(loading){
+      GameList= <li className="game-list__li--loading">Games are loading... Please wait.</li>
+    }else{
+      GameList= gameList.map((item, i) => {
+        return <Item key={i} {...item} />
+      });
+    }
 
     return(
       <div className="content">
@@ -37,5 +42,6 @@ List.propTypes = {
   gameList: PropTypes.array.isRequired,
   filterCategory: PropTypes.string,
   filterValue: PropTypes.any,
-  sortDirection: PropTypes.bool
+  sortDirection: PropTypes.bool,
+  loading: PropTypes.bool
 }

@@ -1,11 +1,20 @@
 import dispatcher from "../dispatcher";
 
 export const GAME_ACTIONS = {
+  LOAD_GAMES: "LOAD_GAMES",
   CREATE_GAME: "CREATE_GAME",
   DELETE_GAME: "DELETE_GAME",
   VOTE_GAME: "VOTE_GAME",
   FILTER_GAME: "FILTER_GAME",
   SORT_GAME: "SORT_GAME"
+}
+
+export function loadGames(category, value) {
+  dispatcher.dispatch({
+    type: GAME_ACTIONS.LOAD_GAMES,
+    category,
+    value
+  })
 }
 
 export function createGame(title, kind) {

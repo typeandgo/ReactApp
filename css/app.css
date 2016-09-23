@@ -82,6 +82,14 @@
   margin: 2px 0;
 }
 
+.game-list__li--loading {
+  padding: 55px 10px 20px 10px;
+  border: 1px solid #888888;
+  margin: 2px 0;
+  text-align: center;
+  background: url('../img/loader.gif') top center no-repeat;
+}
+
 .game-image {
   width: 50px;
   height: 50px;
