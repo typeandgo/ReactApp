@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {Link} from "react-router";
-import * as Helpers from "../helpers/toTitleCase";
+import * as Helpers from "../helpers/helperFunctions";
 
 export default class FilterType extends Component {
 

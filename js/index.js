@@ -33695,11 +33695,17 @@
 
 	var _axios2 = _interopRequireDefault(_axios);
 
+	var _helperFunctions = __webpack_require__(283);
+
+	var Helpers = _interopRequireWildcard(_helperFunctions);
+
 	var _dispatcher = __webpack_require__(277);
 
 	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
 	var _GameActions = __webpack_require__(280);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -33708,8 +33714,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var GAME_LIST = void 0;
 
 	var GameStore = function (_ReduceStore) {
 	  _inherits(GameStore, _ReduceStore);
@@ -33772,6 +33776,8 @@
 	            {
 	              return gameList;
 	            }
+	          default:
+	            return gameList;
 	        }
 	      }
 
@@ -33796,7 +33802,7 @@
 	          categoryList.push(item);
 	        }
 
-	        return this.sortAtoZ(categoryList);
+	        return Helpers.sortAtoZ(categoryList);
 	      }
 
 	      return getByType;
@@ -33852,8 +33858,6 @@
 	    key: "loadGames",
 	    value: function () {
 	      function loadGames(state) {
-	        var _this2 = this;
-
 	        var _ref = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
 
 	        var category = _ref.category;
@@ -33861,7 +33865,7 @@
 	        var gameList = _ref.gameList;
 
 	        return state.update('gameList', function (gameData) {
-	          return _this2.sortDecrease(gameList || []);
+	          return Helpers.sortDecrease(gameList || []);
 	        }).update('filterCategory', function (filterCategory) {
 	          return !!category ? category : 'all';
 	        }).update('filterValue', function (filterValue) {
@@ -33950,24 +33954,24 @@
 	    key: "sortGame",
 	    value: function () {
 	      function sortGame(state) {
-	        var _this3 = this;
+	        var _this2 = this;
 
 	        var _ref5 = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
 
 	        var direction = _ref5.direction;
 
 	        return state.update('sortDirection', function (sortDirection) {
-	          direction = !_this3.getState().get('sortDirection');
+	          direction = !_this2.getState().get('sortDirection');
 	          return direction;
 	        }).update('gameList', function (gameList) {
 	          switch (direction) {
 	            case true:
 	              {
-	                return gameList = _this3.sortIncrease(gameList);
+	                return gameList = Helpers.sortIncrease(gameList);
 	              }
 	            case false:
 	              {
-	                return gameList = _this3.sortDecrease(gameList);
+	                return gameList = Helpers.sortDecrease(gameList);
 	              }
 	          }
 	        });
@@ -34006,44 +34010,6 @@
 	      }
 
 	      return filterGame;
-	    }()
-
-	    /*******************************
-	    ** Helpers *********************
-	    *******************************/
-
-	  }, {
-	    key: "sortIncrease",
-	    value: function () {
-	      function sortIncrease(data) {
-	        return data.sort(function (a, b) {
-	          return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	        });
-	      }
-
-	      return sortIncrease;
-	    }()
-	  }, {
-	    key: "sortDecrease",
-	    value: function () {
-	      function sortDecrease(data) {
-	        return data.sort(function (a, b) {
-	          return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	        });
-	      }
-
-	      return sortDecrease;
-	    }()
-	  }, {
-	    key: "sortAtoZ",
-	    value: function () {
-	      function sortAtoZ(data) {
-	        return data.sort(function (a, b) {
-	          return a.key > b.key ? 1 : b.key > a.key ? -1 : 0;
-	        });
-	      }
-
-	      return sortAtoZ;
 	    }()
 
 	    /*******************************
@@ -35905,9 +35871,9 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _toTitleCase = __webpack_require__(283);
+	var _helperFunctions = __webpack_require__(283);
 
-	var Helpers = _interopRequireWildcard(_toTitleCase);
+	var Helpers = _interopRequireWildcard(_helperFunctions);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
@@ -35996,15 +35962,36 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.toTitleCase = toTitleCase;
+	exports.sortIncrease = sortIncrease;
+	exports.sortDecrease = sortDecrease;
+	exports.sortAtoZ = sortAtoZ;
 	function toTitleCase() {
-	    var str = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+	  var str = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
 
-	    return str.replace(/\w\S*/g, function (txt) {
-	        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-	    });
+	  return str.replace(/\w\S*/g, function (txt) {
+	    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+	  });
+	}
+
+	function sortIncrease(data) {
+	  return data.sort(function (a, b) {
+	    return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	  });
+	}
+
+	function sortDecrease(data) {
+	  return data.sort(function (a, b) {
+	    return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	  });
+	}
+
+	function sortAtoZ(data) {
+	  return data.sort(function (a, b) {
+	    return a.key > b.key ? 1 : b.key > a.key ? -1 : 0;
+	  });
 	}
 
 /***/ },
@@ -36024,12 +36011,6 @@
 	var _react2 = _interopRequireDefault(_react);
 
 	var _reactRouter = __webpack_require__(172);
-
-	var _toTitleCase = __webpack_require__(283);
-
-	var Helpers = _interopRequireWildcard(_toTitleCase);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -36241,9 +36222,9 @@
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _toTitleCase = __webpack_require__(283);
+	var _helperFunctions = __webpack_require__(283);
 
-	var Helpers = _interopRequireWildcard(_toTitleCase);
+	var Helpers = _interopRequireWildcard(_helperFunctions);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 

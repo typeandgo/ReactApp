@@ -1,10 +1,9 @@
 import {ReduceStore} from "flux/utils";
 import {Map, List} from "immutable";
 import axios from "axios";
+import * as Helpers from "../helpers/helperFunctions";
 import dispatcher from "../dispatcher";
 import {GAME_ACTIONS} from "../actions/GameActions";
-
-let GAME_LIST;
 
 class GameStore extends ReduceStore {
 
@@ -46,6 +45,8 @@ class GameStore extends ReduceStore {
       case 'all': {
         return gameList;
       }
+      default:
+        return gameList;
     }
   }
 
@@ -63,7 +64,7 @@ class GameStore extends ReduceStore {
       categoryList.push(item);
     }
 
-    return this.sortAtoZ(categoryList);
+    return Helpers.sortAtoZ(categoryList);
   }
 
   getByRating() {
@@ -97,7 +98,7 @@ class GameStore extends ReduceStore {
 
   loadGames(state, {category, value, gameList} = {action}) {
     return state.update('gameList', (gameData) => {
-      return this.sortDecrease(gameList || []);
+      return Helpers.sortDecrease(gameList || []);
     })
     .update('filterCategory', (filterCategory) => {
       return !!category ? category : 'all';
@@ -157,10 +158,10 @@ class GameStore extends ReduceStore {
     .update('gameList', (gameList) => {
       switch(direction) {
         case true: {
-          return gameList = this.sortIncrease(gameList);
+          return gameList = Helpers.sortIncrease(gameList);
         }
         case false: {
-          return gameList = this.sortDecrease(gameList);
+          return gameList = Helpers.sortDecrease(gameList);
         }
       }
     })
@@ -182,28 +183,6 @@ class GameStore extends ReduceStore {
         return gameList;
       })
     }
-  }
-
-  /*******************************
-  ** Helpers *********************
-  *******************************/
-
-  sortIncrease(data) {
-    return data.sort(function(a,b) {
-      return (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
-    });
-  }
-
-  sortDecrease(data) {
-    return data.sort(function(a,b) {
-      return (b.rating > a.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)
-    });
-  }
-
-  sortAtoZ(data) {
-    return data.sort(function(a,b) {
-      return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0)
-    });
   }
 
   /*******************************

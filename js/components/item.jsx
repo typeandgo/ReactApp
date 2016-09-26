@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import Rating from "../components/rating.jsx";
 import * as GameActions from "../actions/GameActions";
-import * as Helpers from "../helpers/toTitleCase";
+import * as Helpers from "../helpers/helperFunctions";
 
 export default class Item extends Component {
 
@@ -11,7 +11,7 @@ export default class Item extends Component {
 
   render() {
     const {id, title, img, type, rating} = this.props;
-    
+
     return(
       <li className="game-list__li" id={id}>
         <img className="game-image" src={img} />

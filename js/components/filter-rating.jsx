@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
 import {Link} from "react-router";
-import * as Helpers from "../helpers/toTitleCase";
 
 export default class FilterRating extends Component {
 
