@@ -3,8 +3,8 @@ import {Container} from 'flux/utils';
 import {Link} from "react-router";
 import GameStore from "../stores/GameStore";
 import * as GameActions from "../actions/GameActions";
-import Filter from "../components/filter.jsx";
-import List from "../components/list.jsx";
+import Filter from "../components/filter";
+import List from "../components/list";
 
 
 class App extends Component {

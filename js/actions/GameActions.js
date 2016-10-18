@@ -14,7 +14,7 @@ export function loadGames(gameList, category, value) {
     type: GAME_ACTIONS.LOAD_GAMES,
     gameList,
     category,
-    value    
+    value
   })
 }
 

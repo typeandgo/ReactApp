@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from "react";
 import {Link} from "react-router";
 import * as GameActions from "../actions/GameActions";
-import FilterType from "../components/filter-type.jsx";
-import FilterRating from "../components/filter-rating.jsx";
+import FilterType from "../components/filter-type";
+import FilterRating from "../components/filter-rating";
 
 export default class Filter extends Component {
 

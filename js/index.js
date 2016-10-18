@@ -27037,11 +27037,11 @@
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
-	var _GameActions = __webpack_require__(280);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _filter = __webpack_require__(281);
+	var _filter = __webpack_require__(282);
 
 	var _filter2 = _interopRequireDefault(_filter);
 
@@ -33695,15 +33695,15 @@
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _helperFunctions = __webpack_require__(283);
+	var _helperFunctions = __webpack_require__(277);
 
 	var Helpers = _interopRequireWildcard(_helperFunctions);
 
-	var _dispatcher = __webpack_require__(277);
+	var _dispatcher = __webpack_require__(278);
 
 	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
-	var _GameActions = __webpack_require__(280);
+	var _GameActions = __webpack_require__(281);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
 
@@ -33849,6 +33849,22 @@
 
 	      return getLoading;
 	    }()
+	  }, {
+	    key: "loadExternalSource",
+	    value: function () {
+	      function loadExternalSource() {
+	        return new Promise(function (resolve, reject) {
+	          _axios2["default"].get('http://localhost:7000/js/data/data.json').then(function (response) {
+	            resolve(response.data.gameList);
+	          })["catch"](function (error) {
+	            console.log('Ajax error: ', error);
+	            reject(error);
+	          });
+	        });
+	      }
+
+	      return loadExternalSource;
+	    }()
 
 	    /*******************************
 	    ** Updaters ********************
@@ -33857,12 +33873,11 @@
 	  }, {
 	    key: "loadGames",
 	    value: function () {
-	      function loadGames(state) {
-	        var _ref = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
-
+	      function loadGames(state, _ref) {
 	        var category = _ref.category;
 	        var value = _ref.value;
 	        var gameList = _ref.gameList;
+
 
 	        return state.update('gameList', function (gameData) {
 	          return Helpers.sortDecrease(gameList || []);
@@ -33878,24 +33893,9 @@
 	      return loadGames;
 	    }()
 	  }, {
-	    key: "loadExternalSource",
-	    value: function () {
-	      function loadExternalSource() {
-	        return _axios2["default"].get('http://localhost:7000/js/data/data.json').then(function (response) {
-	          return response.data.gameList;
-	        })["catch"](function (error) {
-	          console.log('Ajax error: ', error);
-	        });
-	      }
-
-	      return loadExternalSource;
-	    }()
-	  }, {
 	    key: "createGame",
 	    value: function () {
-	      function createGame(state) {
-	        var _ref2 = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
-
+	      function createGame(state, _ref2) {
 	        var title = _ref2.title;
 	        var kind = _ref2.kind;
 
@@ -33915,9 +33915,7 @@
 	  }, {
 	    key: "deleteGame",
 	    value: function () {
-	      function deleteGame(state) {
-	        var _ref3 = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
-
+	      function deleteGame(state, _ref3) {
 	        var id = _ref3.id;
 
 	        return state.update('gameList', function (gameList) {
@@ -33932,9 +33930,7 @@
 	  }, {
 	    key: "voteGame",
 	    value: function () {
-	      function voteGame(state) {
-	        var _ref4 = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
-
+	      function voteGame(state, _ref4) {
 	        var id = _ref4.id;
 	        var rating = _ref4.rating;
 
@@ -33953,10 +33949,8 @@
 	  }, {
 	    key: "sortGame",
 	    value: function () {
-	      function sortGame(state) {
+	      function sortGame(state, _ref5) {
 	        var _this2 = this;
-
-	        var _ref5 = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
 
 	        var direction = _ref5.direction;
 
@@ -33982,9 +33976,7 @@
 	  }, {
 	    key: "filterGame",
 	    value: function () {
-	      function filterGame(state) {
-	        var _ref6 = arguments.length <= 1 || arguments[1] === undefined ? { action: action } : arguments[1];
-
+	      function filterGame(state, _ref6) {
 	        var category = _ref6.category;
 	        var value = _ref6.value;
 
@@ -35406,6 +35398,45 @@
 
 /***/ },
 /* 277 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.toTitleCase = toTitleCase;
+	exports.sortIncrease = sortIncrease;
+	exports.sortDecrease = sortDecrease;
+	exports.sortAtoZ = sortAtoZ;
+	function toTitleCase() {
+	  var str = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+
+	  return str.replace(/\w\S*/g, function (txt) {
+	    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+	  });
+	}
+
+	function sortIncrease(data) {
+	  return data.sort(function (a, b) {
+	    return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	  });
+	}
+
+	function sortDecrease(data) {
+	  return data.sort(function (a, b) {
+	    return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
+	  });
+	}
+
+	function sortAtoZ(data) {
+	  return data.sort(function (a, b) {
+	    return a.key > b.key ? 1 : b.key > a.key ? -1 : 0;
+	  });
+	}
+
+/***/ },
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35414,12 +35445,12 @@
 	  value: true
 	});
 
-	var _flux = __webpack_require__(278);
+	var _flux = __webpack_require__(279);
 
 	exports["default"] = new _flux.Dispatcher();
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -35431,11 +35462,11 @@
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 */
 
-	module.exports.Dispatcher = __webpack_require__(279);
+	module.exports.Dispatcher = __webpack_require__(280);
 
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -35672,7 +35703,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35688,7 +35719,7 @@
 	exports.filterGame = filterGame;
 	exports.sortGame = sortGame;
 
-	var _dispatcher = __webpack_require__(277);
+	var _dispatcher = __webpack_require__(278);
 
 	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
@@ -35751,7 +35782,7 @@
 	}
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35768,11 +35799,11 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _GameActions = __webpack_require__(280);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _filterType = __webpack_require__(282);
+	var _filterType = __webpack_require__(283);
 
 	var _filterType2 = _interopRequireDefault(_filterType);
 
@@ -35854,7 +35885,7 @@
 	};
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35871,7 +35902,7 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _helperFunctions = __webpack_require__(283);
+	var _helperFunctions = __webpack_require__(277);
 
 	var Helpers = _interopRequireWildcard(_helperFunctions);
 
@@ -35954,45 +35985,6 @@
 	FilterType.propTypes = {
 	  typeList: _react.PropTypes.array.isRequired
 	};
-
-/***/ },
-/* 283 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.toTitleCase = toTitleCase;
-	exports.sortIncrease = sortIncrease;
-	exports.sortDecrease = sortDecrease;
-	exports.sortAtoZ = sortAtoZ;
-	function toTitleCase() {
-	  var str = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
-
-	  return str.replace(/\w\S*/g, function (txt) {
-	    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-	  });
-	}
-
-	function sortIncrease(data) {
-	  return data.sort(function (a, b) {
-	    return a.rating > b.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	  });
-	}
-
-	function sortDecrease(data) {
-	  return data.sort(function (a, b) {
-	    return b.rating > a.rating ? 1 : b.rating > a.rating ? -1 : 0;
-	  });
-	}
-
-	function sortAtoZ(data) {
-	  return data.sort(function (a, b) {
-	    return a.key > b.key ? 1 : b.key > a.key ? -1 : 0;
-	  });
-	}
 
 /***/ },
 /* 284 */
@@ -36112,11 +36104,11 @@
 
 	var _item2 = _interopRequireDefault(_item);
 
-	var _sort = __webpack_require__(288);
+	var _sort = __webpack_require__(289);
 
 	var _sort2 = _interopRequireDefault(_sort);
 
-	var _add = __webpack_require__(289);
+	var _add = __webpack_require__(287);
 
 	var _add2 = _interopRequireDefault(_add);
 
@@ -36214,15 +36206,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _rating = __webpack_require__(287);
+	var _rating = __webpack_require__(288);
 
 	var _rating2 = _interopRequireDefault(_rating);
 
-	var _GameActions = __webpack_require__(280);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _helperFunctions = __webpack_require__(283);
+	var _helperFunctions = __webpack_require__(277);
 
 	var Helpers = _interopRequireWildcard(_helperFunctions);
 
@@ -36333,7 +36325,118 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(280);
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _GameActions = __webpack_require__(281);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Add = function (_Component) {
+	  _inherits(Add, _Component);
+
+	  function Add() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Add);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Add.__proto__ || Object.getPrototypeOf(Add)).call.apply(_ref, [this].concat(args))), _this), _this.createGame = function (e) {
+	      e.preventDefault();
+	      var title = _reactDom2["default"].findDOMNode(_this.refs.gameTitle).value;
+	      var kind = _reactDom2["default"].findDOMNode(_this.refs.gameType).value.toLowerCase();
+
+	      if (title.length >= 1 && kind.length >= 1) {
+	        GameActions.createGame(title, kind);
+	        _this.clearInputs();
+	      }
+	    }, _this.clearInputs = function () {
+	      _reactDom2["default"].findDOMNode(_this.refs.gameTitle).value = "";
+	      _reactDom2["default"].findDOMNode(_this.refs.gameType).value = "";
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Add, [{
+	    key: "render",
+	    value: function () {
+	      function render() {
+	        var _this2 = this;
+
+	        return _react2["default"].createElement(
+	          "div",
+	          { className: "game-add" },
+	          _react2["default"].createElement(
+	            "form",
+	            { onSubmit: function () {
+	                function onSubmit(e) {
+	                  return _this2.createGame(e);
+	                }
+
+	                return onSubmit;
+	              }() },
+	            _react2["default"].createElement(
+	              "label",
+	              { className: "game-add__label" },
+	              "Title"
+	            ),
+	            _react2["default"].createElement("input", { ref: "gameTitle", type: "text", className: "game-add__input" }),
+	            _react2["default"].createElement(
+	              "label",
+	              { className: "game-add__label" },
+	              "Type"
+	            ),
+	            _react2["default"].createElement("input", { ref: "gameType", type: "text", className: "game-add__input" }),
+	            _react2["default"].createElement(
+	              "button",
+	              { className: "game-add__button", type: "submit" },
+	              "Create"
+	            )
+	          )
+	        );
+	      }
+
+	      return render;
+	    }()
+	  }]);
+
+	  return Add;
+	}(_react.Component);
+
+	exports["default"] = Add;
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
@@ -36450,7 +36553,7 @@
 	};
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36467,7 +36570,7 @@
 
 	var _utils = __webpack_require__(236);
 
-	var _GameActions = __webpack_require__(280);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
@@ -36565,117 +36668,6 @@
 	  filterValue: _react.PropTypes.any,
 	  sortDirection: _react.PropTypes.bool
 	};
-
-/***/ },
-/* 289 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(34);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _GameActions = __webpack_require__(280);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Add = function (_Component) {
-	  _inherits(Add, _Component);
-
-	  function Add() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, Add);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Add.__proto__ || Object.getPrototypeOf(Add)).call.apply(_ref, [this].concat(args))), _this), _this.createGame = function (e) {
-	      e.preventDefault();
-	      var title = _reactDom2["default"].findDOMNode(_this.refs.gameTitle).value;
-	      var kind = _reactDom2["default"].findDOMNode(_this.refs.gameType).value.toLowerCase();
-
-	      if (title.length >= 1 && kind.length >= 1) {
-	        GameActions.createGame(title, kind);
-	        _this.clearInputs();
-	      }
-	    }, _this.clearInputs = function () {
-	      _reactDom2["default"].findDOMNode(_this.refs.gameTitle).value = "";
-	      _reactDom2["default"].findDOMNode(_this.refs.gameType).value = "";
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(Add, [{
-	    key: "render",
-	    value: function () {
-	      function render() {
-	        var _this2 = this;
-
-	        return _react2["default"].createElement(
-	          "div",
-	          { className: "game-add" },
-	          _react2["default"].createElement(
-	            "form",
-	            { onSubmit: function () {
-	                function onSubmit(e) {
-	                  return _this2.createGame(e);
-	                }
-
-	                return onSubmit;
-	              }() },
-	            _react2["default"].createElement(
-	              "label",
-	              { className: "game-add__label" },
-	              "Title"
-	            ),
-	            _react2["default"].createElement("input", { ref: "gameTitle", type: "text", className: "game-add__input" }),
-	            _react2["default"].createElement(
-	              "label",
-	              { className: "game-add__label" },
-	              "Type"
-	            ),
-	            _react2["default"].createElement("input", { ref: "gameType", type: "text", className: "game-add__input" }),
-	            _react2["default"].createElement(
-	              "button",
-	              { className: "game-add__button", type: "submit" },
-	              "Create"
-	            )
-	          )
-	        );
-	      }
-
-	      return render;
-	    }()
-	  }]);
-
-	  return Add;
-	}(_react.Component);
-
-	exports["default"] = Add;
 
 /***/ }
 /******/ ]);

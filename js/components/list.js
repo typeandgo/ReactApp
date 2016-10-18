@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
-import Item from "../components/item.jsx"
-import Sort from "../components/sort.jsx";
-import Add from "../components/add.jsx";
+import Item from "../components/item"
+import Sort from "../components/sort";
+import Add from "../components/add";
 
 export default class List extends Component {
 

@@ -92,11 +92,25 @@ class GameStore extends ReduceStore {
     return this.getState().get('loading');
   }
 
+  loadExternalSource() {
+    return new Promise((resolve,reject) => {
+      axios.get('http://localhost:7000/js/data/data.json')
+        .then(function(response) {
+          resolve(response.data.gameList);
+        })
+        .catch(function(error) {
+          console.log('Ajax error: ', error);
+          reject(error);
+        })
+    });
+  }
+
   /*******************************
   ** Updaters ********************
   *******************************/
 
-  loadGames(state, {category, value, gameList} = {action}) {
+  loadGames(state, {category, value, gameList}) {
+
     return state.update('gameList', (gameData) => {
       return Helpers.sortDecrease(gameList || []);
     })
@@ -111,17 +125,7 @@ class GameStore extends ReduceStore {
     })
   }
 
-  loadExternalSource() {
-    return axios.get('http://localhost:7000/js/data/data.json')
-      .then(function(response) {
-        return response.data.gameList;
-      })
-      .catch(function(error) {
-        console.log('Ajax error: ', error);
-      })
-  }
-
-  createGame(state, {title, kind} = {action}) {
+  createGame(state, {title, kind}) {
     return state.update('gameList', (gameList) => {
       return gameList.concat({
         id: Date.now(),
@@ -133,13 +137,13 @@ class GameStore extends ReduceStore {
     })
   }
 
-  deleteGame(state, {id} = {action}) {
+  deleteGame(state, {id}) {
     return state.update('gameList', (gameList) => {
       return gameList.filter(game => game.id != id)
     })
   }
 
-  voteGame(state, {id, rating} = {action}) {
+  voteGame(state, {id, rating}) {
     return state.update('gameList', (gameList) => {
       return gameList.map((item) => {
         if(item.id == id){
@@ -150,7 +154,7 @@ class GameStore extends ReduceStore {
     })
   }
 
-  sortGame(state, {direction} = {action}) {
+  sortGame(state, {direction}) {
     return state.update('sortDirection', (sortDirection) => {
       direction = !this.getState().get('sortDirection');
       return direction;
@@ -167,7 +171,7 @@ class GameStore extends ReduceStore {
     })
   }
 
-  filterGame(state, {category, value} = {action}){
+  filterGame(state, {category, value}){
     if(category){
       //console.log('filterGame - category', category);
       const filterBy = category.toLowerCase();

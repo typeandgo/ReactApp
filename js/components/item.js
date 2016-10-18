@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import Rating from "../components/rating.jsx";
+import Rating from "../components/rating";
 import * as GameActions from "../actions/GameActions";
 import * as Helpers from "../helpers/helperFunctions";
 
