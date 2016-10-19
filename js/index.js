@@ -33954,10 +33954,7 @@
 
 	        var direction = _ref5.direction;
 
-	        return state.update('sortDirection', function (sortDirection) {
-	          direction = !_this2.getState().get('sortDirection');
-	          return direction;
-	        }).update('gameList', function (gameList) {
+	        return state.update('gameList', function (gameList) {
 	          switch (direction) {
 	            case true:
 	              {
@@ -33968,6 +33965,9 @@
 	                return gameList = Helpers.sortDecrease(gameList);
 	              }
 	          }
+	        }).update('sortDirection', function (sortDirection) {
+	          direction = !_this2.getState().get('sortDirection');
+	          return direction;
 	        });
 	      }
 
@@ -33982,7 +33982,6 @@
 
 	        if (category) {
 	          var _ret = function () {
-	            //console.log('filterGame - category', category);
 	            var filterBy = category.toLowerCase();
 	            return {
 	              v: state.update('filterCategory', function (filterCategory) {
@@ -36104,11 +36103,11 @@
 
 	var _item2 = _interopRequireDefault(_item);
 
-	var _sort = __webpack_require__(289);
+	var _sort = __webpack_require__(288);
 
 	var _sort2 = _interopRequireDefault(_sort);
 
-	var _add = __webpack_require__(287);
+	var _add = __webpack_require__(289);
 
 	var _add2 = _interopRequireDefault(_add);
 
@@ -36206,7 +36205,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _rating = __webpack_require__(288);
+	var _rating = __webpack_require__(287);
 
 	var _rating2 = _interopRequireDefault(_rating);
 
@@ -36311,117 +36310,6 @@
 
 /***/ },
 /* 287 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(34);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _GameActions = __webpack_require__(281);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Add = function (_Component) {
-	  _inherits(Add, _Component);
-
-	  function Add() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, Add);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Add.__proto__ || Object.getPrototypeOf(Add)).call.apply(_ref, [this].concat(args))), _this), _this.createGame = function (e) {
-	      e.preventDefault();
-	      var title = _reactDom2["default"].findDOMNode(_this.refs.gameTitle).value;
-	      var kind = _reactDom2["default"].findDOMNode(_this.refs.gameType).value.toLowerCase();
-
-	      if (title.length >= 1 && kind.length >= 1) {
-	        GameActions.createGame(title, kind);
-	        _this.clearInputs();
-	      }
-	    }, _this.clearInputs = function () {
-	      _reactDom2["default"].findDOMNode(_this.refs.gameTitle).value = "";
-	      _reactDom2["default"].findDOMNode(_this.refs.gameType).value = "";
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(Add, [{
-	    key: "render",
-	    value: function () {
-	      function render() {
-	        var _this2 = this;
-
-	        return _react2["default"].createElement(
-	          "div",
-	          { className: "game-add" },
-	          _react2["default"].createElement(
-	            "form",
-	            { onSubmit: function () {
-	                function onSubmit(e) {
-	                  return _this2.createGame(e);
-	                }
-
-	                return onSubmit;
-	              }() },
-	            _react2["default"].createElement(
-	              "label",
-	              { className: "game-add__label" },
-	              "Title"
-	            ),
-	            _react2["default"].createElement("input", { ref: "gameTitle", type: "text", className: "game-add__input" }),
-	            _react2["default"].createElement(
-	              "label",
-	              { className: "game-add__label" },
-	              "Type"
-	            ),
-	            _react2["default"].createElement("input", { ref: "gameType", type: "text", className: "game-add__input" }),
-	            _react2["default"].createElement(
-	              "button",
-	              { className: "game-add__button", type: "submit" },
-	              "Create"
-	            )
-	          )
-	        );
-	      }
-
-	      return render;
-	    }()
-	  }]);
-
-	  return Add;
-	}(_react.Component);
-
-	exports["default"] = Add;
-
-/***/ },
-/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36553,7 +36441,7 @@
 	};
 
 /***/ },
-/* 289 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36668,6 +36556,117 @@
 	  filterValue: _react.PropTypes.any,
 	  sortDirection: _react.PropTypes.bool
 	};
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(34);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _GameActions = __webpack_require__(281);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Add = function (_Component) {
+	  _inherits(Add, _Component);
+
+	  function Add() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Add);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Add.__proto__ || Object.getPrototypeOf(Add)).call.apply(_ref, [this].concat(args))), _this), _this.createGame = function (e) {
+	      e.preventDefault();
+	      var title = _reactDom2["default"].findDOMNode(_this.refs.gameTitle).value;
+	      var kind = _reactDom2["default"].findDOMNode(_this.refs.gameType).value.toLowerCase();
+
+	      if (title.length >= 1 && kind.length >= 1) {
+	        GameActions.createGame(title, kind);
+	        _this.clearInputs();
+	      }
+	    }, _this.clearInputs = function () {
+	      _reactDom2["default"].findDOMNode(_this.refs.gameTitle).value = "";
+	      _reactDom2["default"].findDOMNode(_this.refs.gameType).value = "";
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Add, [{
+	    key: "render",
+	    value: function () {
+	      function render() {
+	        var _this2 = this;
+
+	        return _react2["default"].createElement(
+	          "div",
+	          { className: "game-add" },
+	          _react2["default"].createElement(
+	            "form",
+	            { onSubmit: function () {
+	                function onSubmit(e) {
+	                  return _this2.createGame(e);
+	                }
+
+	                return onSubmit;
+	              }() },
+	            _react2["default"].createElement(
+	              "label",
+	              { className: "game-add__label" },
+	              "Title"
+	            ),
+	            _react2["default"].createElement("input", { ref: "gameTitle", type: "text", className: "game-add__input" }),
+	            _react2["default"].createElement(
+	              "label",
+	              { className: "game-add__label" },
+	              "Type"
+	            ),
+	            _react2["default"].createElement("input", { ref: "gameType", type: "text", className: "game-add__input" }),
+	            _react2["default"].createElement(
+	              "button",
+	              { className: "game-add__button", type: "submit" },
+	              "Create"
+	            )
+	          )
+	        );
+	      }
+
+	      return render;
+	    }()
+	  }]);
+
+	  return Add;
+	}(_react.Component);
+
+	exports["default"] = Add;
 
 /***/ }
 /******/ ]);

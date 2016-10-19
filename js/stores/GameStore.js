@@ -155,11 +155,7 @@ class GameStore extends ReduceStore {
   }
 
   sortGame(state, {direction}) {
-    return state.update('sortDirection', (sortDirection) => {
-      direction = !this.getState().get('sortDirection');
-      return direction;
-    })
-    .update('gameList', (gameList) => {
+    return state.update('gameList', (gameList) => {
       switch(direction) {
         case true: {
           return gameList = Helpers.sortIncrease(gameList);
@@ -168,12 +164,14 @@ class GameStore extends ReduceStore {
           return gameList = Helpers.sortDecrease(gameList);
         }
       }
+    }).update('sortDirection', (sortDirection) => {
+      direction = !this.getState().get('sortDirection');
+      return direction;
     })
   }
 
   filterGame(state, {category, value}){
     if(category){
-      //console.log('filterGame - category', category);
       const filterBy = category.toLowerCase();
       return state.update('filterCategory', (filterCategory) => {
         return filterBy;
@@ -181,7 +179,6 @@ class GameStore extends ReduceStore {
       .update('filterValue', (filterValue) => {
         return value;
       })
-
     }else{
       return state.update('gameList', (gameList) => {
         return gameList;
