@@ -56,7 +56,7 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _app = __webpack_require__(235);
+	var _app = __webpack_require__(290);
 
 	var _app2 = _interopRequireDefault(_app);
 
@@ -27014,149 +27014,80 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 235 */
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
 
 	"use strict";
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRouter = __webpack_require__(172);
-
-	var _GameStore = __webpack_require__(236);
-
-	var _GameStore2 = _interopRequireDefault(_GameStore);
-
-	var _GameActions = __webpack_require__(242);
-
-	var GameActions = _interopRequireWildcard(_GameActions);
-
-	var _filter = __webpack_require__(243);
-
-	var _filter2 = _interopRequireDefault(_filter);
-
-	var _list = __webpack_require__(247);
-
-	var _list2 = _interopRequireDefault(_list);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var App = function (_React$Component) {
-	  _inherits(App, _React$Component);
-
-	  function App() {
-	    _classCallCheck(this, App);
-
-	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
-
-	    _this.getGames = _this.getGames.bind(_this);
-	    _this.state = {
-	      gameList: _GameStore2["default"].getAllGames(),
-	      typeList: _GameStore2["default"].getByType(),
-	      ratingList: _GameStore2["default"].getByRating()
-	    };
-	    return _this;
+	var invariant = function (condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV !== 'production') {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
 	  }
 
-	  _createClass(App, [{
-	    key: "componentWillMount",
-	    value: function () {
-	      function componentWillMount() {
-	        _GameStore2["default"].on("change", this.getGames);
-	        var _props$params = this.props.params;
-	        var filterCategory = _props$params.filterCategory;
-	        var filterValue = _props$params.filterValue;
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      }));
+	    }
 
-	        GameActions.filterGame(filterCategory, filterValue);
-	      }
-
-	      return componentWillMount;
-	    }()
-	  }, {
-	    key: "componentWillUnmount",
-	    value: function () {
-	      function componentWillUnmount() {
-	        _GameStore2["default"].removeListener("change", this.getGames);
-	      }
-
-	      return componentWillUnmount;
-	    }()
-	  }, {
-	    key: "getGames",
-	    value: function () {
-	      function getGames() {
-	        this.setState({
-	          gameList: _GameStore2["default"].getAllGames(),
-	          typeList: _GameStore2["default"].getByType(),
-	          ratingList: _GameStore2["default"].getByRating()
-	        });
-	      }
-
-	      return getGames;
-	    }()
-	  }, {
-	    key: "render",
-	    value: function () {
-	      function render() {
-	        var _props$params2 = this.props.params;
-	        var filterCategory = _props$params2.filterCategory;
-	        var filterValue = _props$params2.filterValue;
-	        var _state = this.state;
-	        var gameList = _state.gameList;
-	        var typeList = _state.typeList;
-	        var ratingList = _state.ratingList;
-
-
-	        return _react2["default"].createElement(
-	          "div",
-	          { className: "container" },
-	          _react2["default"].createElement(_filter2["default"], {
-	            typeList: typeList,
-	            ratingList: ratingList,
-	            filterCategory: filterCategory,
-	            filterValue: filterValue
-	          }),
-	          _react2["default"].createElement(_list2["default"], {
-	            gameList: gameList,
-	            filterCategory: filterCategory,
-	            filterValue: filterValue
-	          })
-	        );
-	      }
-
-	      return render;
-	    }()
-	  }]);
-
-	  return App;
-	}(_react2["default"].Component);
-
-	exports["default"] = App;
-
-
-	App.propTypes = {
-	  filterCategory: _react.PropTypes.string,
-	  filterValue: _react.PropTypes.any
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
 	};
 
+	module.exports = invariant;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
 /***/ },
-/* 236 */
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27167,13 +27098,13 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _events = __webpack_require__(237);
+	var _events = __webpack_require__(291);
 
-	var _dispatcher = __webpack_require__(238);
+	var _dispatcher = __webpack_require__(278);
 
 	var _dispatcher2 = _interopRequireDefault(_dispatcher);
 
-	var _GameActions = __webpack_require__(242);
+	var _GameActions = __webpack_require__(281);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -27489,7 +27420,515 @@
 	exports["default"] = gameStore;
 
 /***/ },
-/* 237 */
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _flux = __webpack_require__(279);
+
+	exports["default"] = new _flux.Dispatcher();
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 */
+
+	module.exports.Dispatcher = __webpack_require__(280);
+
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule Dispatcher
+	 * 
+	 * @preventMunge
+	 */
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var invariant = __webpack_require__(239);
+
+	var _prefix = 'ID_';
+
+	/**
+	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
+	 * different from generic pub-sub systems in two ways:
+	 *
+	 *   1) Callbacks are not subscribed to particular events. Every payload is
+	 *      dispatched to every registered callback.
+	 *   2) Callbacks can be deferred in whole or part until other callbacks have
+	 *      been executed.
+	 *
+	 * For example, consider this hypothetical flight destination form, which
+	 * selects a default city when a country is selected:
+	 *
+	 *   var flightDispatcher = new Dispatcher();
+	 *
+	 *   // Keeps track of which country is selected
+	 *   var CountryStore = {country: null};
+	 *
+	 *   // Keeps track of which city is selected
+	 *   var CityStore = {city: null};
+	 *
+	 *   // Keeps track of the base flight price of the selected city
+	 *   var FlightPriceStore = {price: null}
+	 *
+	 * When a user changes the selected city, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'city-update',
+	 *     selectedCity: 'paris'
+	 *   });
+	 *
+	 * This payload is digested by `CityStore`:
+	 *
+	 *   flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'city-update') {
+	 *       CityStore.city = payload.selectedCity;
+	 *     }
+	 *   });
+	 *
+	 * When the user selects a country, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'country-update',
+	 *     selectedCountry: 'australia'
+	 *   });
+	 *
+	 * This payload is digested by both stores:
+	 *
+	 *   CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       CountryStore.country = payload.selectedCountry;
+	 *     }
+	 *   });
+	 *
+	 * When the callback to update `CountryStore` is registered, we save a reference
+	 * to the returned token. Using this token with `waitFor()`, we can guarantee
+	 * that `CountryStore` is updated before the callback that updates `CityStore`
+	 * needs to query its data.
+	 *
+	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       // `CountryStore.country` may not be updated.
+	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
+	 *       // `CountryStore.country` is now guaranteed to be updated.
+	 *
+	 *       // Select the default city for the new country
+	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
+	 *     }
+	 *   });
+	 *
+	 * The usage of `waitFor()` can be chained, for example:
+	 *
+	 *   FlightPriceStore.dispatchToken =
+	 *     flightDispatcher.register(function(payload) {
+	 *       switch (payload.actionType) {
+	 *         case 'country-update':
+	 *         case 'city-update':
+	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
+	 *           FlightPriceStore.price =
+	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
+	 *           break;
+	 *     }
+	 *   });
+	 *
+	 * The `country-update` payload will be guaranteed to invoke the stores'
+	 * registered callbacks in order: `CountryStore`, `CityStore`, then
+	 * `FlightPriceStore`.
+	 */
+
+	var Dispatcher = (function () {
+	  function Dispatcher() {
+	    _classCallCheck(this, Dispatcher);
+
+	    this._callbacks = {};
+	    this._isDispatching = false;
+	    this._isHandled = {};
+	    this._isPending = {};
+	    this._lastID = 1;
+	  }
+
+	  /**
+	   * Registers a callback to be invoked with every dispatched payload. Returns
+	   * a token that can be used with `waitFor()`.
+	   */
+
+	  Dispatcher.prototype.register = function register(callback) {
+	    var id = _prefix + this._lastID++;
+	    this._callbacks[id] = callback;
+	    return id;
+	  };
+
+	  /**
+	   * Removes a callback based on its token.
+	   */
+
+	  Dispatcher.prototype.unregister = function unregister(id) {
+	    !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.unregister(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
+	    delete this._callbacks[id];
+	  };
+
+	  /**
+	   * Waits for the callbacks specified to be invoked before continuing execution
+	   * of the current callback. This method should only be used by a callback in
+	   * response to a dispatched payload.
+	   */
+
+	  Dispatcher.prototype.waitFor = function waitFor(ids) {
+	    !this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Must be invoked while dispatching.') : invariant(false) : undefined;
+	    for (var ii = 0; ii < ids.length; ii++) {
+	      var id = ids[ii];
+	      if (this._isPending[id]) {
+	        !this._isHandled[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Circular dependency detected while ' + 'waiting for `%s`.', id) : invariant(false) : undefined;
+	        continue;
+	      }
+	      !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
+	      this._invokeCallback(id);
+	    }
+	  };
+
+	  /**
+	   * Dispatches a payload to all registered callbacks.
+	   */
+
+	  Dispatcher.prototype.dispatch = function dispatch(payload) {
+	    !!this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.') : invariant(false) : undefined;
+	    this._startDispatching(payload);
+	    try {
+	      for (var id in this._callbacks) {
+	        if (this._isPending[id]) {
+	          continue;
+	        }
+	        this._invokeCallback(id);
+	      }
+	    } finally {
+	      this._stopDispatching();
+	    }
+	  };
+
+	  /**
+	   * Is this Dispatcher currently dispatching.
+	   */
+
+	  Dispatcher.prototype.isDispatching = function isDispatching() {
+	    return this._isDispatching;
+	  };
+
+	  /**
+	   * Call the callback stored with the given id. Also do some internal
+	   * bookkeeping.
+	   *
+	   * @internal
+	   */
+
+	  Dispatcher.prototype._invokeCallback = function _invokeCallback(id) {
+	    this._isPending[id] = true;
+	    this._callbacks[id](this._pendingPayload);
+	    this._isHandled[id] = true;
+	  };
+
+	  /**
+	   * Set up bookkeeping needed when dispatching.
+	   *
+	   * @internal
+	   */
+
+	  Dispatcher.prototype._startDispatching = function _startDispatching(payload) {
+	    for (var id in this._callbacks) {
+	      this._isPending[id] = false;
+	      this._isHandled[id] = false;
+	    }
+	    this._pendingPayload = payload;
+	    this._isDispatching = true;
+	  };
+
+	  /**
+	   * Clear bookkeeping used for dispatching.
+	   *
+	   * @internal
+	   */
+
+	  Dispatcher.prototype._stopDispatching = function _stopDispatching() {
+	    delete this._pendingPayload;
+	    this._isDispatching = false;
+	  };
+
+	  return Dispatcher;
+	})();
+
+	module.exports = Dispatcher;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.GAME_ACTIONS = undefined;
+	exports.createGame = createGame;
+	exports.deleteGame = deleteGame;
+	exports.voteGame = voteGame;
+	exports.filterGame = filterGame;
+	exports.sortGame = sortGame;
+
+	var _dispatcher = __webpack_require__(278);
+
+	var _dispatcher2 = _interopRequireDefault(_dispatcher);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var GAME_ACTIONS = exports.GAME_ACTIONS = {
+	  CREATE_GAME: "CREATE_GAME",
+	  DELETE_GAME: "DELETE_GAME",
+	  VOTE_GAME: "VOTE_GAME",
+	  FILTER_GAME: "FILTER_GAME",
+	  SORT_GAME: "SORT_GAME"
+	};
+
+	function createGame(title, kind) {
+	  _dispatcher2["default"].dispatch({
+	    type: GAME_ACTIONS.CREATE_GAME,
+	    title: title,
+	    kind: kind
+	  });
+	}
+
+	function deleteGame(id) {
+	  _dispatcher2["default"].dispatch({
+	    type: GAME_ACTIONS.DELETE_GAME,
+	    id: id
+	  });
+	}
+
+	function voteGame(id, rating) {
+	  _dispatcher2["default"].dispatch({
+	    type: GAME_ACTIONS.VOTE_GAME,
+	    id: id,
+	    rating: rating
+	  });
+	}
+
+	function filterGame(category, value) {
+	  _dispatcher2["default"].dispatch({
+	    type: GAME_ACTIONS.FILTER_GAME,
+	    category: category,
+	    value: value
+	  });
+	}
+
+	function sortGame(direction) {
+	  _dispatcher2["default"].dispatch({
+	    type: GAME_ACTIONS.SORT_GAME,
+	    direction: direction
+	  });
+	}
+
+/***/ },
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(172);
+
+	var _GameStore = __webpack_require__(254);
+
+	var _GameStore2 = _interopRequireDefault(_GameStore);
+
+	var _GameActions = __webpack_require__(281);
+
+	var GameActions = _interopRequireWildcard(_GameActions);
+
+	var _filter = __webpack_require__(292);
+
+	var _filter2 = _interopRequireDefault(_filter);
+
+	var _list = __webpack_require__(296);
+
+	var _list2 = _interopRequireDefault(_list);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var App = function (_React$Component) {
+	  _inherits(App, _React$Component);
+
+	  function App() {
+	    _classCallCheck(this, App);
+
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+	    _this.getGames = _this.getGames.bind(_this);
+	    _this.state = {
+	      gameList: _GameStore2["default"].getAllGames(),
+	      typeList: _GameStore2["default"].getByType(),
+	      ratingList: _GameStore2["default"].getByRating()
+	    };
+	    return _this;
+	  }
+
+	  _createClass(App, [{
+	    key: "componentWillMount",
+	    value: function () {
+	      function componentWillMount() {
+	        _GameStore2["default"].on("change", this.getGames);
+	        var _props$params = this.props.params;
+	        var filterCategory = _props$params.filterCategory;
+	        var filterValue = _props$params.filterValue;
+
+	        GameActions.filterGame(filterCategory, filterValue);
+	      }
+
+	      return componentWillMount;
+	    }()
+	  }, {
+	    key: "componentWillUnmount",
+	    value: function () {
+	      function componentWillUnmount() {
+	        _GameStore2["default"].removeListener("change", this.getGames);
+	      }
+
+	      return componentWillUnmount;
+	    }()
+	  }, {
+	    key: "getGames",
+	    value: function () {
+	      function getGames() {
+	        this.setState({
+	          gameList: _GameStore2["default"].getAllGames(),
+	          typeList: _GameStore2["default"].getByType(),
+	          ratingList: _GameStore2["default"].getByRating()
+	        });
+	      }
+
+	      return getGames;
+	    }()
+	  }, {
+	    key: "render",
+	    value: function () {
+	      function render() {
+	        var _props$params2 = this.props.params;
+	        var filterCategory = _props$params2.filterCategory;
+	        var filterValue = _props$params2.filterValue;
+	        var _state = this.state;
+	        var gameList = _state.gameList;
+	        var typeList = _state.typeList;
+	        var ratingList = _state.ratingList;
+
+
+	        return _react2["default"].createElement(
+	          "div",
+	          { className: "container" },
+	          _react2["default"].createElement(_filter2["default"], {
+	            typeList: typeList,
+	            ratingList: ratingList,
+	            filterCategory: filterCategory,
+	            filterValue: filterValue
+	          }),
+	          _react2["default"].createElement(_list2["default"], {
+	            gameList: gameList,
+	            filterCategory: filterCategory,
+	            filterValue: filterValue
+	          })
+	        );
+	      }
+
+	      return render;
+	    }()
+	  }]);
+
+	  return App;
+	}(_react2["default"].Component);
+
+	exports["default"] = App;
+
+
+	App.propTypes = {
+	  filterCategory: _react.PropTypes.string,
+	  filterValue: _react.PropTypes.any
+	};
+
+/***/ },
+/* 291 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -27797,397 +28236,7 @@
 
 
 /***/ },
-/* 238 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _flux = __webpack_require__(239);
-
-	exports["default"] = new _flux.Dispatcher();
-
-/***/ },
-/* 239 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 */
-
-	module.exports.Dispatcher = __webpack_require__(240);
-
-
-/***/ },
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule Dispatcher
-	 * 
-	 * @preventMunge
-	 */
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	var invariant = __webpack_require__(241);
-
-	var _prefix = 'ID_';
-
-	/**
-	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
-	 * different from generic pub-sub systems in two ways:
-	 *
-	 *   1) Callbacks are not subscribed to particular events. Every payload is
-	 *      dispatched to every registered callback.
-	 *   2) Callbacks can be deferred in whole or part until other callbacks have
-	 *      been executed.
-	 *
-	 * For example, consider this hypothetical flight destination form, which
-	 * selects a default city when a country is selected:
-	 *
-	 *   var flightDispatcher = new Dispatcher();
-	 *
-	 *   // Keeps track of which country is selected
-	 *   var CountryStore = {country: null};
-	 *
-	 *   // Keeps track of which city is selected
-	 *   var CityStore = {city: null};
-	 *
-	 *   // Keeps track of the base flight price of the selected city
-	 *   var FlightPriceStore = {price: null}
-	 *
-	 * When a user changes the selected city, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'city-update',
-	 *     selectedCity: 'paris'
-	 *   });
-	 *
-	 * This payload is digested by `CityStore`:
-	 *
-	 *   flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'city-update') {
-	 *       CityStore.city = payload.selectedCity;
-	 *     }
-	 *   });
-	 *
-	 * When the user selects a country, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'country-update',
-	 *     selectedCountry: 'australia'
-	 *   });
-	 *
-	 * This payload is digested by both stores:
-	 *
-	 *   CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       CountryStore.country = payload.selectedCountry;
-	 *     }
-	 *   });
-	 *
-	 * When the callback to update `CountryStore` is registered, we save a reference
-	 * to the returned token. Using this token with `waitFor()`, we can guarantee
-	 * that `CountryStore` is updated before the callback that updates `CityStore`
-	 * needs to query its data.
-	 *
-	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       // `CountryStore.country` may not be updated.
-	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
-	 *       // `CountryStore.country` is now guaranteed to be updated.
-	 *
-	 *       // Select the default city for the new country
-	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
-	 *     }
-	 *   });
-	 *
-	 * The usage of `waitFor()` can be chained, for example:
-	 *
-	 *   FlightPriceStore.dispatchToken =
-	 *     flightDispatcher.register(function(payload) {
-	 *       switch (payload.actionType) {
-	 *         case 'country-update':
-	 *         case 'city-update':
-	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
-	 *           FlightPriceStore.price =
-	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
-	 *           break;
-	 *     }
-	 *   });
-	 *
-	 * The `country-update` payload will be guaranteed to invoke the stores'
-	 * registered callbacks in order: `CountryStore`, `CityStore`, then
-	 * `FlightPriceStore`.
-	 */
-
-	var Dispatcher = (function () {
-	  function Dispatcher() {
-	    _classCallCheck(this, Dispatcher);
-
-	    this._callbacks = {};
-	    this._isDispatching = false;
-	    this._isHandled = {};
-	    this._isPending = {};
-	    this._lastID = 1;
-	  }
-
-	  /**
-	   * Registers a callback to be invoked with every dispatched payload. Returns
-	   * a token that can be used with `waitFor()`.
-	   */
-
-	  Dispatcher.prototype.register = function register(callback) {
-	    var id = _prefix + this._lastID++;
-	    this._callbacks[id] = callback;
-	    return id;
-	  };
-
-	  /**
-	   * Removes a callback based on its token.
-	   */
-
-	  Dispatcher.prototype.unregister = function unregister(id) {
-	    !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.unregister(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
-	    delete this._callbacks[id];
-	  };
-
-	  /**
-	   * Waits for the callbacks specified to be invoked before continuing execution
-	   * of the current callback. This method should only be used by a callback in
-	   * response to a dispatched payload.
-	   */
-
-	  Dispatcher.prototype.waitFor = function waitFor(ids) {
-	    !this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Must be invoked while dispatching.') : invariant(false) : undefined;
-	    for (var ii = 0; ii < ids.length; ii++) {
-	      var id = ids[ii];
-	      if (this._isPending[id]) {
-	        !this._isHandled[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Circular dependency detected while ' + 'waiting for `%s`.', id) : invariant(false) : undefined;
-	        continue;
-	      }
-	      !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
-	      this._invokeCallback(id);
-	    }
-	  };
-
-	  /**
-	   * Dispatches a payload to all registered callbacks.
-	   */
-
-	  Dispatcher.prototype.dispatch = function dispatch(payload) {
-	    !!this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.') : invariant(false) : undefined;
-	    this._startDispatching(payload);
-	    try {
-	      for (var id in this._callbacks) {
-	        if (this._isPending[id]) {
-	          continue;
-	        }
-	        this._invokeCallback(id);
-	      }
-	    } finally {
-	      this._stopDispatching();
-	    }
-	  };
-
-	  /**
-	   * Is this Dispatcher currently dispatching.
-	   */
-
-	  Dispatcher.prototype.isDispatching = function isDispatching() {
-	    return this._isDispatching;
-	  };
-
-	  /**
-	   * Call the callback stored with the given id. Also do some internal
-	   * bookkeeping.
-	   *
-	   * @internal
-	   */
-
-	  Dispatcher.prototype._invokeCallback = function _invokeCallback(id) {
-	    this._isPending[id] = true;
-	    this._callbacks[id](this._pendingPayload);
-	    this._isHandled[id] = true;
-	  };
-
-	  /**
-	   * Set up bookkeeping needed when dispatching.
-	   *
-	   * @internal
-	   */
-
-	  Dispatcher.prototype._startDispatching = function _startDispatching(payload) {
-	    for (var id in this._callbacks) {
-	      this._isPending[id] = false;
-	      this._isHandled[id] = false;
-	    }
-	    this._pendingPayload = payload;
-	    this._isDispatching = true;
-	  };
-
-	  /**
-	   * Clear bookkeeping used for dispatching.
-	   *
-	   * @internal
-	   */
-
-	  Dispatcher.prototype._stopDispatching = function _stopDispatching() {
-	    delete this._pendingPayload;
-	    this._isDispatching = false;
-	  };
-
-	  return Dispatcher;
-	})();
-
-	module.exports = Dispatcher;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ },
-/* 241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-
-	"use strict";
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var invariant = function (condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      }));
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-
-	module.exports = invariant;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ },
-/* 242 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.GAME_ACTIONS = undefined;
-	exports.createGame = createGame;
-	exports.deleteGame = deleteGame;
-	exports.voteGame = voteGame;
-	exports.filterGame = filterGame;
-	exports.sortGame = sortGame;
-
-	var _dispatcher = __webpack_require__(238);
-
-	var _dispatcher2 = _interopRequireDefault(_dispatcher);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	var GAME_ACTIONS = exports.GAME_ACTIONS = {
-	  CREATE_GAME: "CREATE_GAME",
-	  DELETE_GAME: "DELETE_GAME",
-	  VOTE_GAME: "VOTE_GAME",
-	  FILTER_GAME: "FILTER_GAME",
-	  SORT_GAME: "SORT_GAME"
-	};
-
-	function createGame(title, kind) {
-	  _dispatcher2["default"].dispatch({
-	    type: GAME_ACTIONS.CREATE_GAME,
-	    title: title,
-	    kind: kind
-	  });
-	}
-
-	function deleteGame(id) {
-	  _dispatcher2["default"].dispatch({
-	    type: GAME_ACTIONS.DELETE_GAME,
-	    id: id
-	  });
-	}
-
-	function voteGame(id, rating) {
-	  _dispatcher2["default"].dispatch({
-	    type: GAME_ACTIONS.VOTE_GAME,
-	    id: id,
-	    rating: rating
-	  });
-	}
-
-	function filterGame(category, value) {
-	  _dispatcher2["default"].dispatch({
-	    type: GAME_ACTIONS.FILTER_GAME,
-	    category: category,
-	    value: value
-	  });
-	}
-
-	function sortGame(direction) {
-	  _dispatcher2["default"].dispatch({
-	    type: GAME_ACTIONS.SORT_GAME,
-	    direction: direction
-	  });
-	}
-
-/***/ },
-/* 243 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28204,15 +28253,15 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _GameActions = __webpack_require__(242);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _filterType = __webpack_require__(244);
+	var _filterType = __webpack_require__(293);
 
 	var _filterType2 = _interopRequireDefault(_filterType);
 
-	var _filterRating = __webpack_require__(246);
+	var _filterRating = __webpack_require__(295);
 
 	var _filterRating2 = _interopRequireDefault(_filterRating);
 
@@ -28289,7 +28338,7 @@
 	};
 
 /***/ },
-/* 244 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28306,7 +28355,7 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _toTitleCase = __webpack_require__(245);
+	var _toTitleCase = __webpack_require__(294);
 
 	var Helpers = _interopRequireWildcard(_toTitleCase);
 
@@ -28391,7 +28440,7 @@
 	};
 
 /***/ },
-/* 245 */
+/* 294 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28409,7 +28458,7 @@
 	}
 
 /***/ },
-/* 246 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28426,7 +28475,7 @@
 
 	var _reactRouter = __webpack_require__(172);
 
-	var _toTitleCase = __webpack_require__(245);
+	var _toTitleCase = __webpack_require__(294);
 
 	var Helpers = _interopRequireWildcard(_toTitleCase);
 
@@ -28511,7 +28560,7 @@
 	};
 
 /***/ },
-/* 247 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28528,15 +28577,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _item = __webpack_require__(248);
+	var _item = __webpack_require__(297);
 
 	var _item2 = _interopRequireDefault(_item);
 
-	var _sort = __webpack_require__(250);
+	var _sort = __webpack_require__(299);
 
 	var _sort2 = _interopRequireDefault(_sort);
 
-	var _add = __webpack_require__(251);
+	var _add = __webpack_require__(300);
 
 	var _add2 = _interopRequireDefault(_add);
 
@@ -28605,7 +28654,7 @@
 	};
 
 /***/ },
-/* 248 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28620,15 +28669,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _rating = __webpack_require__(249);
+	var _rating = __webpack_require__(298);
 
 	var _rating2 = _interopRequireDefault(_rating);
 
-	var _GameActions = __webpack_require__(242);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _toTitleCase = __webpack_require__(245);
+	var _toTitleCase = __webpack_require__(294);
 
 	var Helpers = _interopRequireWildcard(_toTitleCase);
 
@@ -28723,7 +28772,7 @@
 	};
 
 /***/ },
-/* 249 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28738,7 +28787,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(242);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
@@ -28854,7 +28903,7 @@
 	};
 
 /***/ },
-/* 250 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28869,11 +28918,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _GameActions = __webpack_require__(242);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
-	var _GameStore = __webpack_require__(236);
+	var _GameStore = __webpack_require__(254);
 
 	var _GameStore2 = _interopRequireDefault(_GameStore);
 
@@ -29000,7 +29049,7 @@
 	};
 
 /***/ },
-/* 251 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29019,7 +29068,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _GameActions = __webpack_require__(242);
+	var _GameActions = __webpack_require__(281);
 
 	var GameActions = _interopRequireWildcard(_GameActions);
 
